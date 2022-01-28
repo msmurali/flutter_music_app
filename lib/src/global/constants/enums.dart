@@ -1,0 +1,4 @@
+enum Routes {
+  homeRoute,
+  preferencesRoute,
+}

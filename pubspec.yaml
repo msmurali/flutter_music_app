@@ -1,0 +1,43 @@
+name: music
+description: A Music app to play local audio files.
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.15.1 <3.0.0"
+
+dependencies:
+  cupertino_icons: ^1.0.2
+  flutter:
+    sdk: flutter
+  flutter_svg: ^1.0.3
+
+dev_dependencies:
+  flutter_lints: ^1.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - asset/images/
+
+  fonts:
+    - family: IconFont
+      fonts:
+        - asset: asset/fonts/Icon-Font.ttf
+    - family: Poppins
+      fonts:
+        - asset: asset/fonts/Poppins-Light.ttf
+          weight: 200
+        - asset: asset/fonts/Poppins-Thin.ttf
+          weight: 300
+        - asset: asset/fonts/Poppins-Regular.ttf
+          weight: 400
+        - asset: asset/fonts/Poppins-Medium.ttf
+          weight: 500
+        - asset: asset/fonts/Poppins-SemiBold.ttf
+          weight: 600
