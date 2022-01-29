@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Material(
       child: SafeArea(
         child: ScaffoldWithSlidingPanel(
-          body: const MusicLibrary(),
+          body: MusicLibrary(),
           collapsed: const MiniPlayer(),
           expanded: Container(color: Colors.white),
         ),

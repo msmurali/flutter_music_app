@@ -3,9 +3,13 @@ import 'package:music/src/global/constants/constants.dart';
 import 'package:music/src/global/constants/enums.dart';
 import 'package:music/src/interface/utils/custom_icons.dart';
 import 'package:music/src/interface/widgets/circular_icon_button.dart';
+import 'package:music/src/interface/widgets/music_tab.dart';
+import 'package:music/src/logic/providers/songs_provider.dart';
 
 class MusicLibrary extends StatelessWidget {
-  const MusicLibrary({Key? key}) : super(key: key);
+  final SongsProvider _songsProvider = SongsProvider();
+
+  MusicLibrary({Key? key}) : super(key: key);
 
   AppBar _buildAppBar(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -84,7 +88,9 @@ class MusicLibrary extends StatelessWidget {
         child: Scaffold(
           appBar: _buildAppBar(context),
           body: TabBarView(children: [
-            Container(color: Colors.green),
+            MusicTab(
+              futureData: _songsProvider.getSongs(),
+            ),
             Container(color: Colors.white),
             Container(color: Colors.red),
             Container(color: Colors.blue),

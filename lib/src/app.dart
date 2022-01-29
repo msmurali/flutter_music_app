@@ -2,9 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:music/src/global/constants/constants.dart';
 import 'package:music/src/global/constants/enums.dart';
 import 'package:music/src/interface/router/app_router.dart';
+import 'package:music/src/logic/services/app_permissions.dart';
 
-class AppWidget extends StatelessWidget {
+class AppWidget extends StatefulWidget {
   const AppWidget({Key? key}) : super(key: key);
+
+  @override
+  State<AppWidget> createState() => _AppWidgetState();
+}
+
+class _AppWidgetState extends State<AppWidget> {
+  @override
+  void initState() {
+    super.initState();
+    _getStorageAccessPermission();
+  }
+
+  _getStorageAccessPermission() async {
+    await AppPermissions.requestPermissions();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,18 +96,21 @@ class AppWidget extends StatelessWidget {
             fontSize: 14.0,
             fontWeight: FontWeight.w400,
             color: Color(0xFFE4E4E4),
+            overflow: TextOverflow.ellipsis,
           ),
           subtitle1: TextStyle(
             fontFamily: 'Poppins',
             fontSize: 12.0,
             fontWeight: FontWeight.w300,
             color: Color(0xFFE4E4E4),
+            overflow: TextOverflow.ellipsis,
           ),
           subtitle2: TextStyle(
             fontFamily: 'Poppins',
             fontSize: 10.0,
             fontWeight: FontWeight.w300,
             color: Color(0xFFE4E4E4),
+            overflow: TextOverflow.ellipsis,
           ),
         ),
         sliderTheme: const SliderThemeData(
