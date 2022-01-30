@@ -6,15 +6,22 @@ import 'package:music/src/interface/widgets/loading_indicator.dart';
 import 'package:music/src/interface/widgets/song_tile.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-class MusicTab extends StatelessWidget {
+class MusicTab extends StatefulWidget {
   final Future<List<dynamic>> futureData;
 
   const MusicTab({Key? key, required this.futureData}) : super(key: key);
 
   @override
+  State<MusicTab> createState() => _MusicTabState();
+}
+
+class _MusicTabState extends State<MusicTab>
+    with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return FutureBuilder(
-      future: futureData,
+      future: widget.futureData,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         return MusicList(
           snapshot: snapshot,
@@ -22,6 +29,9 @@ class MusicTab extends StatelessWidget {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class MusicList extends StatelessWidget {

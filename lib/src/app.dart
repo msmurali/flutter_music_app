@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:music/src/global/constants/constants.dart';
 import 'package:music/src/global/constants/enums.dart';
 import 'package:music/src/interface/router/app_router.dart';
-import 'package:music/src/logic/services/app_permissions.dart';
+import 'package:music/src/data/services/app_permissions.dart';
 
 class AppWidget extends StatefulWidget {
   const AppWidget({Key? key}) : super(key: key);

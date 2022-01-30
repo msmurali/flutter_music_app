@@ -4,7 +4,7 @@ import 'package:music/src/global/constants/enums.dart';
 import 'package:music/src/interface/utils/custom_icons.dart';
 import 'package:music/src/interface/widgets/circular_icon_button.dart';
 import 'package:music/src/interface/widgets/music_tab.dart';
-import 'package:music/src/logic/providers/songs_provider.dart';
+import 'package:music/src/data/providers/songs_provider.dart';
 
 class MusicLibrary extends StatelessWidget {
   final SongsProvider _songsProvider = SongsProvider();
@@ -87,14 +87,16 @@ class MusicLibrary extends StatelessWidget {
         length: 4,
         child: Scaffold(
           appBar: _buildAppBar(context),
-          body: TabBarView(children: [
-            MusicTab(
-              futureData: _songsProvider.getSongs(),
-            ),
-            Container(color: Colors.white),
-            Container(color: Colors.red),
-            Container(color: Colors.blue),
-          ]),
+          body: TabBarView(
+            children: [
+              Container(color: Colors.white),
+              MusicTab(
+                futureData: _songsProvider.getSongs(),
+              ),
+              Container(color: Colors.red),
+              Container(color: Colors.blue),
+            ],
+          ),
         ),
       ),
     );

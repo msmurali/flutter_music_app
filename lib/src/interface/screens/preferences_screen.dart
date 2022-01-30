@@ -35,44 +35,37 @@ class PreferencesScreen extends StatelessWidget {
     );
   }
 
-  Padding _buildThemePreferences(BuildContext context) {
+  _buildThemePreferences(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 20.0,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Theme',
-            style: theme.textTheme.bodyText2,
-          ),
-          const SizedBox(
-            height: 20.0,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildOption(
-                context: context,
-                asset: 'asset/images/light_theme.svg',
-                title: 'Light',
-              ),
-              _buildOption(
-                context: context,
-                asset: 'asset/images/dark_theme.svg',
-                title: 'Dark',
-              ),
-              _buildOption(
-                context: context,
-                asset: 'asset/images/system_theme.svg',
-                title: 'System',
-              ),
-            ],
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Theme',
+          style: theme.textTheme.bodyText2,
+        ),
+        const SizedBox(height: 20.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildOption(
+              context: context,
+              asset: 'asset/images/light_theme.svg',
+              title: 'Light',
+            ),
+            _buildOption(
+              context: context,
+              asset: 'asset/images/dark_theme.svg',
+              title: 'Dark',
+            ),
+            _buildOption(
+              context: context,
+              asset: 'asset/images/system_theme.svg',
+              title: 'System',
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -101,9 +94,6 @@ class PreferencesScreen extends StatelessWidget {
               asset,
             ),
           ),
-          const SizedBox(
-            height: 8.0,
-          ),
           Text(
             title,
             style: theme.textTheme.subtitle1,
@@ -117,12 +107,10 @@ class PreferencesScreen extends StatelessWidget {
       {required BuildContext context, required String title}) {
     ThemeData theme = Theme.of(context);
     return Container(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          title,
-          style: theme.textTheme.subtitle1,
-        ),
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+        title,
+        style: theme.textTheme.subtitle1,
       ),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.05),
@@ -138,9 +126,8 @@ class PreferencesScreen extends StatelessWidget {
   Padding _buildViewPreferences(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.only(
-        top: 20.0,
-        bottom: 20.0,
+      padding: const EdgeInsets.symmetric(
+        vertical: 20.0,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -149,9 +136,7 @@ class PreferencesScreen extends StatelessWidget {
             'View',
             style: theme.textTheme.bodyText2,
           ),
-          const SizedBox(
-            height: 20.0,
-          ),
+          const SizedBox(height: 20.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -160,7 +145,7 @@ class PreferencesScreen extends StatelessWidget {
                 asset: 'asset/images/light_theme.svg',
                 title: 'List',
               ),
-              const SizedBox(width: 16.0),
+              const SizedBox(width: 12.0),
               _buildOption(
                 context: context,
                 asset: 'asset/images/dark_theme.svg',
@@ -168,24 +153,17 @@ class PreferencesScreen extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(
-            height: 20.0,
-          ),
+          const SizedBox(height: 24.0),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Grid size',
-                style: theme.textTheme.bodyText2,
-              ),
-              const SizedBox(height: 20.0),
               Row(
                 children: [
                   Text(
                     'Number of tiles in\na row',
                     style: theme.textTheme.subtitle1,
                   ),
-                  const SizedBox(width: 32.0),
+                  const Spacer(),
                   _buildGridSizeOption(
                     context: context,
                     title: '2',
@@ -216,16 +194,74 @@ class PreferencesScreen extends StatelessWidget {
 
   _buildSortPreferences(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return DropdownButtonHideUnderline(
-      child: DropdownButton<String>(
-        value: 'Name',
-        items: [
-          _buildDropDownOption(context: context, title: 'Name'),
-          _buildDropDownOption(context: context, title: 'Date Added'),
-          _buildDropDownOption(context: context, title: 'Duration'),
-        ],
-        onChanged: (String? val) {},
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Sort by',
+          style: theme.textTheme.bodyText2,
+        ),
+        const SizedBox(height: 20.0),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 12.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            border: Border.all(
+              width: 1.4,
+              color: Colors.pinkAccent.shade400,
+            ),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              value: 'Name',
+              items: [
+                _buildDropDownOption(context: context, title: 'Name'),
+                _buildDropDownOption(context: context, title: 'Date Added'),
+                _buildDropDownOption(context: context, title: 'Duration'),
+              ],
+              onChanged: (String? val) {},
+            ),
+          ),
+        ),
+        const SizedBox(height: 20.0),
+      ],
+    );
+  }
+
+  _buildOrderPreferences(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Order by',
+          style: theme.textTheme.bodyText2,
+        ),
+        const SizedBox(height: 20.0),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 12.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            border: Border.all(
+              width: 1.4,
+              color: Colors.pinkAccent.shade400,
+            ),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              value: 'Name',
+              items: [
+                _buildDropDownOption(context: context, title: 'Name'),
+                _buildDropDownOption(context: context, title: 'Date Added'),
+                _buildDropDownOption(context: context, title: 'Duration'),
+              ],
+              onChanged: (String? val) {},
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -250,12 +286,14 @@ class PreferencesScreen extends StatelessWidget {
         appBar: _buildAppBar(context),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildThemePreferences(context),
                 _buildViewPreferences(context),
                 _buildSortPreferences(context),
+                _buildOrderPreferences(context),
               ],
             ),
           ),

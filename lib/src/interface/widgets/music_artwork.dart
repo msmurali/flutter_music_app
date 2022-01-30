@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music/src/logic/providers/artwork_provider.dart';
+import 'package:music/src/data/providers/artwork_provider.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class MusicArtwork extends StatelessWidget {
@@ -9,12 +9,11 @@ class MusicArtwork extends StatelessWidget {
   MusicArtwork({Key? key, required this.song}) : super(key: key);
 
   Container _buildArtworkLoadingIndicator() {
-    // TODO: replace
     return Container(
       width: 50,
       height: 50,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.grey,
         borderRadius: BorderRadius.circular(8.0),
       ),
     );
@@ -58,7 +57,6 @@ class MusicArtwork extends StatelessWidget {
         } else if (snapshot.hasData && snapshot.data != null) {
           return _buildArtwork(snapshot.data);
         } else {
-          // print(snapshot.data);
           return _buildArtworkPlaceholder();
         }
       },
