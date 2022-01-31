@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music/src/interface/widgets/circular_icon_button.dart';
+import 'package:music/src/interface/widgets/app_bar_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class PreferencesScreen extends StatelessWidget {
@@ -9,28 +9,10 @@ class PreferencesScreen extends StatelessWidget {
     ThemeData theme = Theme.of(context);
 
     return AppBar(
-      leading: _buildBackButton(context),
+      leading: const AppBarButton(),
       title: Text(
         'Settings',
         style: theme.textTheme.headline6,
-      ),
-    );
-  }
-
-  Container _buildBackButton(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(left: 16.0),
-      child: CircularIconButton(
-        child: const Padding(
-          padding: EdgeInsets.only(left: 6.0),
-          child: Icon(Icons.arrow_back_ios),
-        ),
-        radius: 20.0,
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        iconSize: 16.0,
-        toolTip: 'Back',
       ),
     );
   }
@@ -94,6 +76,7 @@ class PreferencesScreen extends StatelessWidget {
               asset,
             ),
           ),
+          const SizedBox(height: 5.0),
           Text(
             title,
             style: theme.textTheme.subtitle1,
@@ -142,13 +125,13 @@ class PreferencesScreen extends StatelessWidget {
             children: [
               _buildOption(
                 context: context,
-                asset: 'asset/images/light_theme.svg',
+                asset: 'asset/images/list_view.svg',
                 title: 'List',
               ),
               const SizedBox(width: 12.0),
               _buildOption(
                 context: context,
-                asset: 'asset/images/dark_theme.svg',
+                asset: 'asset/images/grid_view.svg',
                 title: 'Grid',
               ),
             ],

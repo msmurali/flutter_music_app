@@ -1,12 +1,24 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:music/src/data/providers/artwork_provider.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class MusicArtwork extends StatelessWidget {
-  final SongModel song;
-  final ArtworkProvider _artworkProvider = ArtworkProvider();
+  final SongModel? song;
+  final ArtistModel? artist;
+  final AlbumModel? album;
+  final PlaylistModel? playlist;
+  final double? borderRadius;
 
-  MusicArtwork({Key? key, required this.song}) : super(key: key);
+  const MusicArtwork({
+    Key? key,
+    this.song,
+    this.artist,
+    this.album,
+    this.playlist,
+    this.borderRadius,
+  }) : super(key: key);
 
   Container _buildArtworkLoadingIndicator() {
     return Container(
@@ -14,7 +26,7 @@ class MusicArtwork extends StatelessWidget {
       height: 50,
       decoration: BoxDecoration(
         color: Colors.grey,
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(borderRadius ?? 8.0),
       ),
     );
   }
@@ -27,8 +39,9 @@ class MusicArtwork extends StatelessWidget {
         image: DecorationImage(
           image: MemoryImage(byteData),
           fit: BoxFit.cover,
+          alignment: Alignment.topCenter,
         ),
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(borderRadius ?? 8.0),
       ),
     );
   }
@@ -42,15 +55,28 @@ class MusicArtwork extends StatelessWidget {
           image: AssetImage('asset/images/placeholder.jpg'),
           fit: BoxFit.cover,
         ),
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(borderRadius ?? 8.0),
       ),
     );
+  }
+
+  Future<Uint8List?> getArtworkData() async {
+    final ArtworkProvider _artworkProvider = ArtworkProvider();
+    if (song != null) {
+      return await _artworkProvider.getSongArtwork(song!);
+    } else if (artist != null) {
+      return await _artworkProvider.getArtistArtwork(artist!);
+    } else if (album != null) {
+      return await _artworkProvider.getAlbumArtwork(album!);
+    } else {
+      return await _artworkProvider.getPlaylistArtwork(playlist!);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _artworkProvider.getArtworkData(song),
+      future: getArtworkData(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return _buildArtworkLoadingIndicator();

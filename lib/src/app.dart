@@ -48,7 +48,7 @@ class _AppWidgetState extends State<AppWidget> {
           ),
         ),
         tabBarTheme: TabBarTheme(
-          labelColor: Colors.pink.shade400,
+          labelColor: Colors.pinkAccent.shade400,
           unselectedLabelColor: const Color(0xFFE4E4E4),
           labelStyle: const TextStyle(
             fontFamily: 'Poppins',

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:music/src/interface/widgets/album_tile.dart';
-import 'package:music/src/interface/widgets/artist_tile.dart';
 import 'package:music/src/interface/widgets/error_indicator.dart';
 import 'package:music/src/interface/widgets/loading_indicator.dart';
-import 'package:music/src/interface/widgets/song_tile.dart';
+import 'package:music/src/interface/widgets/tile.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class MusicTab extends StatefulWidget {
@@ -39,25 +37,51 @@ class MusicList extends StatelessWidget {
 
   const MusicList({Key? key, required this.snapshot}) : super(key: key);
 
-  ListView _buildList(List<dynamic> data) {
+  ListView _buildList(BuildContext context, List<dynamic> data) {
     return ListView.builder(
       physics: const BouncingScrollPhysics(),
       itemCount: data.length,
       itemBuilder: (BuildContext context, int index) {
-        return _buildTile(data[index]);
+        return _buildTile(context, data[index]);
       },
     );
   }
 
-  _buildTile(entity) {
+  GridView _buildGrid(BuildContext context, List<dynamic> data) {
+    return GridView.builder(
+      physics: const BouncingScrollPhysics(),
+      itemCount: data.length,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        mainAxisSpacing: 6.0,
+        crossAxisSpacing: 6.0,
+      ),
+      itemBuilder: (BuildContext context, int index) {
+        return _buildTile(context, data[index]);
+      },
+    );
+  }
+
+  _buildTile(BuildContext context, dynamic entity) {
     if (entity is SongModel) {
-      return SongTile(
+      return Tile(
         song: entity,
       );
     } else if (entity is AlbumModel) {
-      return const AlbumTile();
+      return Tile(
+        album: entity,
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            '/songs',
+            arguments: entity,
+          );
+        },
+      );
     } else {
-      return const ArtistTile();
+      return Tile(
+        artist: entity,
+      );
     }
   }
 
@@ -67,7 +91,7 @@ class MusicList extends StatelessWidget {
       return const LoadingIndicator();
     } else if (snapshot.hasData && snapshot.data != null) {
       List<dynamic> data = snapshot.data;
-      return _buildList(data);
+      return _buildGrid(context, data);
     } else {
       return const ErrorIndicator();
     }

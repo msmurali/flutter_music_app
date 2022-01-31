@@ -68,7 +68,7 @@ class MusicLibrary extends StatelessWidget {
 
   TabBar _buildTabBar() {
     return TabBar(
-      indicatorColor: Colors.pink.shade400,
+      indicatorColor: Colors.pinkAccent.shade400,
       indicatorWeight: 1.4,
       isScrollable: true,
       tabs: const [
@@ -93,8 +93,12 @@ class MusicLibrary extends StatelessWidget {
               MusicTab(
                 futureData: _songsProvider.getSongs(),
               ),
-              Container(color: Colors.red),
-              Container(color: Colors.blue),
+              MusicTab(
+                futureData: _songsProvider.getArtists(),
+              ),
+              MusicTab(
+                futureData: _songsProvider.getAlbums(),
+              ),
             ],
           ),
         ),

@@ -5,11 +5,4 @@
 <rect x="19.158" y="54" width="57.4737" height="4" rx="2" fill="#909090"/>
 <rect x="19.158" y="80" width="50.7684" height="4" rx="2" fill="#909090"/>
 <rect x="19.158" y="67" width="43.1053" height="4" rx="2" fill="#909090"/>
-<rect y="95" width="95" height="6" fill="url(#paint0_linear_87_1477)"/>
-<defs>
-<linearGradient id="paint0_linear_87_1477" x1="47.5" y1="95" x2="47.5" y2="101" gradientUnits="userSpaceOnUse">
-<stop stop-color="#1C1C1C" stop-opacity="0"/>
-<stop offset="1" stop-color="#121212"/>
-</linearGradient>
-</defs>
 </svg>
