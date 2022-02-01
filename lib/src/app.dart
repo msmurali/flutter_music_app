@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music/src/data/services/app_shared_preferences.dart';
 import 'package:music/src/global/constants/constants.dart';
 import 'package:music/src/global/constants/enums.dart';
 import 'package:music/src/interface/router/app_router.dart';
@@ -16,10 +17,16 @@ class _AppWidgetState extends State<AppWidget> {
   void initState() {
     super.initState();
     _getStorageAccessPermission();
+    _initiateSharedPreferences();
   }
 
   _getStorageAccessPermission() async {
     await AppPermissions.requestPermissions();
+  }
+
+  _initiateSharedPreferences() async {
+    final AppSharedPreferences _sharedPreferences = AppSharedPreferences();
+    await _sharedPreferences.init();
   }
 
   @override

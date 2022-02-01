@@ -4,7 +4,7 @@ class CircularIconButton extends StatelessWidget {
   final Widget child;
   final double radius;
   final String? toolTip;
-  final void Function() onPressed;
+  final void Function()? onPressed;
   final double? iconSize;
   final Color? backgroundColor;
 
@@ -12,7 +12,7 @@ class CircularIconButton extends StatelessWidget {
     Key? key,
     required this.child,
     required this.radius,
-    required this.onPressed,
+    this.onPressed,
     this.iconSize,
     this.toolTip,
     this.backgroundColor,

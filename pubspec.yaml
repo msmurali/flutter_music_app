@@ -10,9 +10,11 @@ environment:
 
 dependencies:
   audiotagger: ^2.2.1
+  bloc: ^8.0.2
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.0.1
   flutter_svg: ^1.0.3
   on_audio_query: ^2.5.3+1
   permission_handler: ^8.3.0

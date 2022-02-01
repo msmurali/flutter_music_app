@@ -164,11 +164,29 @@ class SongsScreen extends StatelessWidget {
             stretch: true,
             pinned: true,
             leadingWidth: 56.0,
-            leading: const AppBarButton(),
+            leading: AppBarButton(
+              margin: const EdgeInsets.only(left: 16.0),
+              radius: 20.0,
+              tooltip: 'Back',
+              child: const Padding(
+                padding: EdgeInsets.only(
+                  left: 6.0,
+                ),
+                child: Icon(
+                  Icons.arrow_back_ios,
+                ),
+              ),
+              backgroundColor: Colors.black45,
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
             flexibleSpace: FlexibleSpaceBar(
               title: _getTitle(context),
               centerTitle: true,
-              titlePadding: EdgeInsets.symmetric(horizontal: 8.0,),
+              titlePadding: EdgeInsets.symmetric(
+                horizontal: 8.0,
+              ),
               stretchModes: const [
                 StretchMode.zoomBackground,
                 StretchMode.fadeTitle,

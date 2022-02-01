@@ -1,8 +1,7 @@
-import 'package:music/src/global/player.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class SongsProvider {
-  final OnAudioQuery _audioQuery = Player.instance.audioQuery;
+  final OnAudioQuery _audioQuery = OnAudioQuery();
 
   Future<List<SongModel>> getSongs([
     SongSortType sortType = SongSortType.DATE_ADDED,

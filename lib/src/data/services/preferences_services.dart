@@ -5,18 +5,18 @@ import 'package:on_audio_query/on_audio_query.dart';
 class PreferencesServices {
   final AppSharedPreferences _preferences = AppSharedPreferences();
 
-  AppThemes getTheme() {
+  AppTheme getTheme() {
     String themeString = _preferences.getAppTheme();
-    if (themeString == AppThemes.light.name) {
-      return AppThemes.light;
-    } else if (themeString == AppThemes.dark.name) {
-      return AppThemes.dark;
+    if (themeString == AppTheme.light.name) {
+      return AppTheme.light;
+    } else if (themeString == AppTheme.dark.name) {
+      return AppTheme.dark;
     } else {
-      return AppThemes.system;
+      return AppTheme.system;
     }
   }
 
-  Future<bool> setTheme(AppThemes appTheme) async {
+  Future<bool> setTheme(AppTheme appTheme) async {
     return await _preferences.setAppTheme(appTheme.name);
   }
 
@@ -41,6 +41,19 @@ class PreferencesServices {
 
   Future<bool> setSongSortType(SongSortType sortType) async {
     return await _preferences.setSortType(sortType.name);
+  }
+
+  OrderType getOrderType() {
+    String orderType = _preferences.getSortType();
+    if (orderType == OrderType.ASC_OR_SMALLER.name) {
+      return OrderType.ASC_OR_SMALLER;
+    } else {
+      return OrderType.DESC_OR_GREATER;
+    }
+  }
+
+  Future<bool> setOrderType(OrderType orderType) async {
+    return await _preferences.setSortType(orderType.name);
   }
 
   Future<bool> setView(View viewType) async {

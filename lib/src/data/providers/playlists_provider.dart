@@ -8,7 +8,7 @@ class PlaylistsProvider {
   Future<List<PlaylistModel>> getPlaylists() async {
     List<PlaylistModel> result = await _audioQuery.queryPlaylists();
     result.removeWhere((playlist) {
-      return playlist.playlist == keys[PreferencesKey.favourites];
+      return playlist.playlist == keys[StorageKey.favourites];
     });
     return result;
   }

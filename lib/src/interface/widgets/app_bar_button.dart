@@ -2,23 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:music/src/interface/widgets/circular_icon_button.dart';
 
 class AppBarButton extends StatelessWidget {
-  const AppBarButton({Key? key}) : super(key: key);
+  final Color? backgroundColor;
+  final String tooltip;
+  final double radius;
+  final EdgeInsets? margin;
+  final Widget child;
+  final void Function()? onPressed;
+  final double? iconSize;
+
+  const AppBarButton({
+    Key? key,
+    required this.child,
+    required this.radius,
+    required this.tooltip,
+    this.backgroundColor,
+    this.margin,
+    this.onPressed,
+    this.iconSize,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(left: 16.0),
+      margin: margin,
       child: CircularIconButton(
-        child: const Padding(
-          padding: EdgeInsets.only(left: 6.0),
-          child: Icon(Icons.arrow_back_ios),
-        ),
-        radius: 20.0,
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        iconSize: 16.0,
-        toolTip: 'Back',
+        child: child,
+        radius: radius,
+        onPressed: onPressed,
+        iconSize: iconSize,
+        toolTip: tooltip,
+        backgroundColor: backgroundColor,
       ),
     );
   }

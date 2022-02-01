@@ -11,7 +11,22 @@ class PreferencesScreen extends StatelessWidget {
     ThemeData theme = Theme.of(context);
 
     return AppBar(
-      leading: const AppBarButton(),
+      leading: AppBarButton(
+        margin: const EdgeInsets.only(left: 16.0),
+        radius: 20.0,
+        tooltip: 'Back',
+        child: const Padding(
+          padding: EdgeInsets.only(
+            left: 6.0,
+          ),
+          child: Icon(
+            Icons.arrow_back_ios,
+          ),
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
       title: Text(
         'Settings',
         style: theme.textTheme.headline6,

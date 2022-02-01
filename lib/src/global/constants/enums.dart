@@ -4,7 +4,7 @@ enum Routes {
   songsRoute,
 }
 
-enum PreferencesKey {
+enum StorageKey {
   favourites,
   recents,
   queue,
@@ -16,7 +16,7 @@ enum PreferencesKey {
   orderType,
 }
 
-enum AppThemes {
+enum AppTheme {
   light,
   dark,
   system,

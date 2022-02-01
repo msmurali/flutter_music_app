@@ -1,7 +1,6 @@
 import 'package:music/src/data/providers/favourites_provider.dart';
 import 'package:music/src/data/services/playlist_services.dart';
-import 'package:music/src/global/constants/constants.dart';
-import 'package:music/src/global/constants/enums.dart';
+import 'package:music/src/global/constants/index.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class FavouritesServices {
@@ -10,12 +9,12 @@ class FavouritesServices {
   final FavouritesProvider _favouritesProvider = FavouritesProvider();
 
   Future<bool> createFavourites() async {
-    return await _audioQuery.createPlaylist(keys[PreferencesKey.favourites]!);
+    return await _audioQuery.createPlaylist(keys[StorageKey.favourites]!);
   }
 
   Future<bool> favouritesAlreadyExists() async {
     return await _playlistServices
-        .playlistAlreadyExists(keys[PreferencesKey.favourites]!);
+        .playlistAlreadyExists(keys[StorageKey.favourites]!);
   }
 
   Future<bool> addToFavourites(int songId) async {
@@ -29,7 +28,7 @@ class FavouritesServices {
   }
 
   Future<bool> songAlreadyInFavourites(int songId) async {
-    String _favourites = keys[PreferencesKey.favourites]!;
+    String _favourites = keys[StorageKey.favourites]!;
     return _playlistServices.songAlreadyInPlaylist(songId, _favourites);
   }
 

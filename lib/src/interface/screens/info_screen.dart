@@ -13,7 +13,19 @@ class InfoScreen extends StatelessWidget {
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       leadingWidth: 56.0,
-      leading: const AppBarButton(),
+      leading: const AppBarButton(
+        margin: EdgeInsets.only(left: 16.0),
+        radius: 20.0,
+        tooltip: 'Back',
+        child: Padding(
+          padding: EdgeInsets.only(
+            left: 6.0,
+          ),
+          child: Icon(
+            Icons.arrow_back_ios,
+          ),
+        ),
+      ),
       title: Text(
         song.title,
         style: Theme.of(context).textTheme.headline6,

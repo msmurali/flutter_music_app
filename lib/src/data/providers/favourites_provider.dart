@@ -1,6 +1,5 @@
 import 'package:music/src/data/providers/playlists_provider.dart';
-import 'package:music/src/global/constants/constants.dart';
-import 'package:music/src/global/constants/enums.dart';
+import 'package:music/src/global/constants/index.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class FavouritesProvider {
@@ -11,7 +10,7 @@ class FavouritesProvider {
     List<PlaylistModel> result = await _audioQuery.queryPlaylists();
 
     result.removeWhere(
-        (playlist) => playlist.playlist != keys[PreferencesKey.favourites]);
+        (playlist) => playlist.playlist != keys[StorageKey.favourites]);
 
     return result[0];
   }

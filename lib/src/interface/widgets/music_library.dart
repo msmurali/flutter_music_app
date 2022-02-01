@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:music/src/global/constants/constants.dart';
 import 'package:music/src/global/constants/enums.dart';
 import 'package:music/src/interface/utils/custom_icons.dart';
@@ -89,7 +90,9 @@ class MusicLibrary extends StatelessWidget {
           appBar: _buildAppBar(context),
           body: TabBarView(
             children: [
-              Container(color: Colors.white),
+              Center(
+                child: SvgPicture.asset('asset/images/no_data_error.svg'),
+              ),
               MusicTab(
                 futureData: _songsProvider.getSongs(),
               ),
