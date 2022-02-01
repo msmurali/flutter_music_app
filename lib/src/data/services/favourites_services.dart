@@ -1,0 +1,40 @@
+import 'package:music/src/data/providers/favourites_provider.dart';
+import 'package:music/src/data/services/playlist_services.dart';
+import 'package:music/src/global/constants/constants.dart';
+import 'package:music/src/global/constants/enums.dart';
+import 'package:on_audio_query/on_audio_query.dart';
+
+class FavouritesServices {
+  final OnAudioQuery _audioQuery = OnAudioQuery();
+  final PlaylistServices _playlistServices = PlaylistServices();
+  final FavouritesProvider _favouritesProvider = FavouritesProvider();
+
+  Future<bool> createFavourites() async {
+    return await _audioQuery.createPlaylist(keys[PreferencesKey.favourites]!);
+  }
+
+  Future<bool> favouritesAlreadyExists() async {
+    return await _playlistServices
+        .playlistAlreadyExists(keys[PreferencesKey.favourites]!);
+  }
+
+  Future<bool> addToFavourites(int songId) async {
+    PlaylistModel _favourites = await _favouritesProvider.getFavourites();
+    return await _playlistServices.addToPlaylist(_favourites.id, songId);
+  }
+
+  Future<bool> addAllToFavourites(List<SongModel> songs) async {
+    PlaylistModel _favourites = await _favouritesProvider.getFavourites();
+    return await _playlistServices.addAllToPlaylist(_favourites.id, songs);
+  }
+
+  Future<bool> songAlreadyInFavourites(int songId) async {
+    String _favourites = keys[PreferencesKey.favourites]!;
+    return _playlistServices.songAlreadyInPlaylist(songId, _favourites);
+  }
+
+  Future<bool> rmFromFavourites(int songId) async {
+    PlaylistModel _favourites = await _favouritesProvider.getFavourites();
+    return await _playlistServices.rmFromPlaylist(_favourites.id, songId);
+  }
+}

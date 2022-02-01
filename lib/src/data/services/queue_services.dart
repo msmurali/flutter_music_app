@@ -1,0 +1,18 @@
+import 'package:music/src/data/providers/songs_provider.dart';
+import 'package:music/src/data/services/app_shared_preferences.dart';
+import 'package:on_audio_query/on_audio_query.dart';
+
+class QueueServices {
+  final SongsProvider _songsProvider = SongsProvider();
+  final AppSharedPreferences _preferences = AppSharedPreferences();
+
+  Future<bool> createQueue() async {
+    List<SongModel> songs = await _songsProvider.getSongs();
+    return await _preferences.setQueueList(songs);
+  }
+
+  bool queueAlreadyExists() {
+    final List<SongModel>? _queue = _preferences.getQueueList();
+    return _queue != null ? true : false;
+  }
+}
