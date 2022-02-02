@@ -1,4 +1,4 @@
-import 'package:music/src/global/constants/enums.dart';
+import '../../../global/constants/enums.dart';
 
 class PlaybackModeEvent {
   final PlaybackMode playbackMode;

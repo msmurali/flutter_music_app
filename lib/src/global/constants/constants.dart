@@ -1,4 +1,5 @@
-import 'package:music/src/global/constants/enums.dart';
+import 'package:flutter/material.dart';
+import 'enums.dart';
 
 const routes = <Routes, String>{
   Routes.homeRoute: '/',

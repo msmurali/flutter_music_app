@@ -1,5 +1,5 @@
-import 'package:music/src/data/services/app_shared_preferences.dart';
-import 'package:music/src/global/constants/enums.dart';
+import '../../global/constants/enums.dart';
+import 'app_shared_preferences.dart';
 
 class PlayerServices {
   final AppSharedPreferences _preferences = AppSharedPreferences();

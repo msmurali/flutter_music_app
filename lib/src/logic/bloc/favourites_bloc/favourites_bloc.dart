@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:music/src/data/providers/favourites_provider.dart';
-import 'package:music/src/data/services/favourites_services.dart';
-import './bloc.dart';
+import '../../../data/providers/favourites_provider.dart';
+import '../../../data/services/favourites_services.dart';
+import 'bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class FavouritesBloc extends Bloc<FavouritesEvents, FavouritesState> {

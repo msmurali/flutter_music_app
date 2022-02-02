@@ -1,7 +1,7 @@
-import './bloc.dart';
+import 'bloc.dart';
 import 'package:bloc/bloc.dart';
-import 'package:music/src/data/services/player_services.dart';
-import 'package:music/src/global/constants/enums.dart';
+import '../../../data/services/player_services.dart';
+import '../../../global/constants/enums.dart';
 
 class PlaybackModeBloc extends Bloc<PlaybackModeEvent, PlaybackModeState> {
   final PlayerServices _playerservices = PlayerServices();

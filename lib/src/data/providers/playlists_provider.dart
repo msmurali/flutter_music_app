@@ -1,6 +1,7 @@
-import 'package:music/src/global/constants/constants.dart';
-import 'package:music/src/global/constants/enums.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
+import '../../global/constants/constants.dart';
+import '../../global/constants/enums.dart';
 
 class PlaylistsProvider {
   final OnAudioQuery _audioQuery = OnAudioQuery();

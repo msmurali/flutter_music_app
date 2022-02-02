@@ -1,22 +1,23 @@
-import 'package:music/src/data/services/app_shared_preferences.dart';
-import 'package:music/src/global/constants/enums.dart';
+import 'package:flutter/material.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import '../../global/constants/enums.dart';
+import 'app_shared_preferences.dart';
 
 class PreferencesServices {
   final AppSharedPreferences _preferences = AppSharedPreferences();
 
-  AppTheme getTheme() {
+  ThemeMode getTheme() {
     String themeString = _preferences.getAppTheme();
     if (themeString == AppTheme.light.name) {
-      return AppTheme.light;
+      return ThemeMode.light;
     } else if (themeString == AppTheme.dark.name) {
-      return AppTheme.dark;
+      return ThemeMode.dark;
     } else {
-      return AppTheme.system;
+      return ThemeMode.system;
     }
   }
 
-  Future<bool> setTheme(AppTheme appTheme) async {
+  Future<bool> setTheme(ThemeMode appTheme) async {
     return await _preferences.setAppTheme(appTheme.name);
   }
 

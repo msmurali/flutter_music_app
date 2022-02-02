@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:music/src/data/services/preferences_services.dart';
-import './bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
+import '../../../data/services/preferences_services.dart';
+import 'bloc.dart';
 
 class PreferencesBloc extends Bloc<PreferencesEvent, PreferencesState> {
   final PreferencesServices _preferencesServices = PreferencesServices();

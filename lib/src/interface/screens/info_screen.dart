@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:music/src/interface/widgets/app_bar_button.dart';
-import 'package:music/src/interface/widgets/circular_artwork.dart';
-import 'package:music/src/interface/widgets/scaffold_with_sliding_panel.dart';
-import 'package:music/src/interface/widgets/mini_player.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
+import '../widgets/app_bar_button.dart';
+import '../widgets/mini_player.dart';
+import '../widgets/scaffold_with_sliding_panel.dart';
 
 class InfoScreen extends StatelessWidget {
   final SongModel song;

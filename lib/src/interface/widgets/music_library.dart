@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:music/src/global/constants/constants.dart';
-import 'package:music/src/global/constants/enums.dart';
-import 'package:music/src/interface/utils/custom_icons.dart';
-import 'package:music/src/interface/widgets/circular_icon_button.dart';
-import 'package:music/src/interface/widgets/music_tab.dart';
-import 'package:music/src/data/providers/songs_provider.dart';
+
+import '../../data/providers/songs_provider.dart';
+import '../../global/constants/constants.dart';
+import '../../global/constants/enums.dart';
+import '../utils/custom_icons.dart';
+import 'circular_icon_button.dart';
+import 'home_tab.dart';
+import 'music_tab.dart';
 
 class MusicLibrary extends StatelessWidget {
   final SongsProvider _songsProvider = SongsProvider();
@@ -90,9 +92,7 @@ class MusicLibrary extends StatelessWidget {
           appBar: _buildAppBar(context),
           body: TabBarView(
             children: [
-              Center(
-                child: SvgPicture.asset('asset/images/no_data_error.svg'),
-              ),
+              const HomeTab(),
               MusicTab(
                 futureData: _songsProvider.getSongs(),
               ),

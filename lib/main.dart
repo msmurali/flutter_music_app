@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:music/src/app.dart';
+import 'src/app.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const AppWidget());
+  runApp(const AppWidgetWrapper());
 }

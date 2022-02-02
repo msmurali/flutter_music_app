@@ -32,6 +32,7 @@ class SongsProvider {
       WithFiltersType.AUDIOS,
       args: AudiosArgs.ALBUM,
     );
+    print(result.length);
     return result.toSongModel();
   }
 

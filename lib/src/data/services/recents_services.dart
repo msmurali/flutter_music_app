@@ -1,7 +1,8 @@
-import 'package:music/src/data/providers/recents_provider.dart';
-import 'package:music/src/data/services/app_shared_preferences.dart';
-import 'package:music/src/global/constants/constants.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
+import '../../global/constants/constants.dart';
+import '../providers/recents_provider.dart';
+import 'app_shared_preferences.dart';
 
 class RecentsServices {
   final AppSharedPreferences _preferences = AppSharedPreferences();

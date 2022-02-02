@@ -1,8 +1,10 @@
 import 'dart:typed_data';
+
 import 'package:audiotagger/audiotagger.dart';
-import 'package:music/src/data/providers/playlists_provider.dart';
-import 'package:music/src/data/providers/songs_provider.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
+import 'playlists_provider.dart';
+import 'songs_provider.dart';
 
 class ArtworkProvider {
   final Audiotagger _audiotagger = Audiotagger();
@@ -30,7 +32,7 @@ class ArtworkProvider {
     final ArtworkProvider _artworkProvider = ArtworkProvider();
 
     List<SongModel> _artistSongs =
-        await _songsProvider.getAlbumSongs(artist.artist);
+        await _songsProvider.getArtistSongs(artist.artist);
 
     if (_artistSongs.isEmpty) {
       return null;

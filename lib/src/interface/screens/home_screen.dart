@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:music/src/interface/widgets/mini_player.dart';
-import 'package:music/src/interface/widgets/music_library.dart';
-import 'package:music/src/interface/widgets/scaffold_with_sliding_panel.dart';
+
+import '../widgets/mini_player.dart';
+import '../widgets/music_library.dart';
+import '../widgets/scaffold_with_sliding_panel.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

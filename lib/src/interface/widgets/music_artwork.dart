@@ -1,8 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:music/src/data/providers/artwork_provider.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
+import '../../data/providers/artwork_provider.dart';
 
 class MusicArtwork extends StatelessWidget {
   final SongModel? song;

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:music/src/interface/utils/custom_icons.dart';
-import 'package:music/src/interface/widgets/music_artwork.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
+import '../utils/custom_icons.dart';
+import 'music_artwork.dart';
 
 class Tile extends StatelessWidget {
   final SongModel? song;
   final AlbumModel? album;
   final ArtistModel? artist;
+  final PlaylistModel? playlist;
   final void Function()? onTap;
 
   const Tile({
@@ -15,6 +17,7 @@ class Tile extends StatelessWidget {
     this.album,
     this.artist,
     this.onTap,
+    this.playlist,
   }) : super(key: key);
 
   _getArtwork() {
@@ -26,9 +29,13 @@ class Tile extends StatelessWidget {
       return MusicArtwork(
         album: album,
       );
-    } else {
+    } else if (artist != null) {
       return MusicArtwork(
         artist: artist,
+      );
+    } else {
+      return MusicArtwork(
+        playlist: playlist,
       );
     }
   }
@@ -38,8 +45,10 @@ class Tile extends StatelessWidget {
       return song!.title;
     } else if (artist != null) {
       return artist!.artist;
-    } else {
+    } else if (album != null) {
       return album!.album;
+    } else {
+      return playlist!.playlist;
     }
   }
 
@@ -48,8 +57,10 @@ class Tile extends StatelessWidget {
       return song!.artist ?? 'Unknown Artist';
     } else if (artist != null) {
       return '${artist!.numberOfTracks ?? 0}';
-    } else {
+    } else if (album != null) {
       return album!.artist ?? 'Unknown Artist';
+    } else {
+      return '${playlist!.numOfSongs} songs';
     }
   }
 
@@ -130,9 +141,6 @@ class Tile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: _buildGridTile(context),
-    );
+    return _buildGridTile(context);
   }
 }

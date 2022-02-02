@@ -1,6 +1,7 @@
-import 'package:music/src/data/providers/playlists_provider.dart';
-import 'package:music/src/global/constants/index.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
+import '../../global/constants/index.dart';
+import 'playlists_provider.dart';
 
 class FavouritesProvider {
   final OnAudioQuery _audioQuery = OnAudioQuery();

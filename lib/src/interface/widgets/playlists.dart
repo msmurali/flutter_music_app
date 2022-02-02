@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:music/src/data/providers/favourites_provider.dart';
+import 'package:music/src/data/providers/playlists_provider.dart';
 import 'package:music/src/interface/widgets/error_indicator.dart';
 import 'package:music/src/interface/widgets/loading_indicator.dart';
 import 'tile.dart';
 
-class Favourites extends StatelessWidget {
-  final _favouritesCount = 5;
-  final FavouritesProvider _favouritesProvider = FavouritesProvider();
+class Playlists extends StatelessWidget {
+  final _playlistsCount = 5;
+  final PlaylistsProvider _playlistsProvider = PlaylistsProvider();
 
-  Favourites({Key? key}) : super(key: key);
+  Playlists({Key? key}) : super(key: key);
 
   Expanded _buildFavouritesList(BuildContext context, List<dynamic> _songs) {
     return Expanded(
       child: ListView.builder(
-        itemCount: _favouritesCount,
+        itemCount: _playlistsCount,
         itemBuilder: (BuildContext context, int index) {
           return Tile(
             onTap: () {},
-            song: _songs[index],
           );
         },
       ),
@@ -27,7 +27,7 @@ class Favourites extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _favouritesProvider.getFavouritesSongs(),
+      future: _playlistsProvider.getPlaylists(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SizedBox(
@@ -38,7 +38,7 @@ class Favourites extends StatelessWidget {
           return const SizedBox(
             height: 300,
             child: ErrorIndicator(
-              asset: 'asset/images/no_favourites.svg',
+              asset: 'asset/images/no_playlists.svg',
             ),
           );
         } else {

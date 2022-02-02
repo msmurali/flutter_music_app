@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:music/src/data/providers/recents_provider.dart';
-import 'package:music/src/data/services/recents_services.dart';
-import './bloc.dart';
+import '../../../data/providers/recents_provider.dart';
+import '../../../data/services/recents_services.dart';
+import 'bloc.dart';
 
 class RecentsBloc extends Bloc<RecentsEvents, RecentsState> {
   final RecentsServices _recentsServices = RecentsServices();

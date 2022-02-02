@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
-import './bloc.dart';
-import 'package:music/src/data/providers/songs_provider.dart';
-import 'package:music/src/data/services/app_shared_preferences.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
+import '../../../data/providers/songs_provider.dart';
+import '../../../data/services/app_shared_preferences.dart';
+import 'bloc.dart';
 
 class QueueBloc extends Bloc<QueueEvents, QueueState> {
   final SongsProvider _songsProvider = SongsProvider();

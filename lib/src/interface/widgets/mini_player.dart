@@ -1,9 +1,10 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:music/src/interface/utils/custom_icons.dart';
-import 'package:music/src/interface/widgets/circular_artwork.dart';
-import 'package:music/src/interface/widgets/circular_icon_button.dart';
-import 'package:music/src/interface/widgets/circular_progress_bar.dart';
+
+import '../utils/custom_icons.dart';
+import 'circular_icon_button.dart';
+import 'circular_progress_bar.dart';
 
 class MiniPlayer extends StatelessWidget {
   const MiniPlayer({Key? key}) : super(key: key);

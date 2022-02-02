@@ -1,10 +1,11 @@
 import 'dart:convert';
-import 'package:music/src/global/constants/index.dart';
+import 'package:flutter/material.dart' show ThemeMode;
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../global/constants/index.dart';
 
 class AppSharedPreferences {
-  late SharedPreferences preferences;
+  static late SharedPreferences preferences;
 
   Future<void> init() async {
     preferences = await SharedPreferences.getInstance();
@@ -20,10 +21,14 @@ class AppSharedPreferences {
     return await preferences.setStringList(_key, _songMapStringList);
   }
 
-  List<SongModel> getRecentsList() {
+  List<SongModel>? getRecentsList() {
     final String _key = keys[StorageKey.recents]!;
 
-    List<String> _songMapStringList = preferences.getStringList(_key)!;
+    List<String>? _songMapStringList = preferences.getStringList(_key);
+
+    if (_songMapStringList == null) {
+      return null;
+    }
 
     return _songMapStringList
         .map((songMapString) => SongModel(jsonDecode(songMapString)))
@@ -40,9 +45,13 @@ class AppSharedPreferences {
     return await preferences.setStringList(_key, _songMapStringList);
   }
 
-  List<SongModel> getQueueList() {
+  List<SongModel>? getQueueList() {
     final String _key = keys[StorageKey.queue]!;
-    final List<String> _songMapStringList = preferences.getStringList(_key)!;
+    final List<String>? _songMapStringList = preferences.getStringList(_key);
+
+    if (_songMapStringList == null) {
+      return null;
+    }
 
     return _songMapStringList
         .map((songMapString) => SongModel(jsonDecode(songMapString)))
@@ -79,7 +88,7 @@ class AppSharedPreferences {
 
   String getAppTheme() {
     final String _key = keys[StorageKey.theme]!;
-    return preferences.getString(_key) ?? AppTheme.light.name;
+    return preferences.getString(_key) ?? ThemeMode.light.name;
   }
 
   /* Sort Type */

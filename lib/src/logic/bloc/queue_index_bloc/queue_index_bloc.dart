@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:music/src/data/services/app_shared_preferences.dart';
-import './bloc.dart';
+
+import '../../../data/services/app_shared_preferences.dart';
+import 'bloc.dart';
 
 class QueueIndexBloc extends Bloc<QueueIndexEvent, QueueIndexState> {
   final AppSharedPreferences _preferences = AppSharedPreferences();

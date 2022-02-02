@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:music/src/data/providers/playlists_provider.dart';
-import 'package:music/src/data/providers/songs_provider.dart';
-import 'package:music/src/interface/widgets/app_bar_button.dart';
-import 'package:music/src/interface/widgets/error_indicator.dart';
-import 'package:music/src/interface/widgets/loading_indicator.dart';
-import 'package:music/src/interface/widgets/mini_player.dart';
-import 'package:music/src/interface/widgets/music_artwork.dart';
-import 'package:music/src/interface/widgets/scaffold_with_sliding_panel.dart';
-import 'package:music/src/interface/widgets/tile.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
+import '../../data/providers/playlists_provider.dart';
+import '../../data/providers/songs_provider.dart';
+import '../widgets/app_bar_button.dart';
+import '../widgets/error_indicator.dart';
+import '../widgets/loading_indicator.dart';
+import '../widgets/mini_player.dart';
+import '../widgets/music_artwork.dart';
+import '../widgets/scaffold_with_sliding_panel.dart';
+import '../widgets/tile.dart';
 
 class SongsScreen extends StatelessWidget {
   final dynamic entity;
@@ -49,7 +50,9 @@ class SongsScreen extends StatelessWidget {
           );
         } else {
           return const SliverFillRemaining(
-            child: ErrorIndicator(),
+            child: ErrorIndicator(
+              asset: 'asset/images/no_data_error.svg',
+            ),
           );
         }
       },
@@ -108,7 +111,7 @@ class SongsScreen extends StatelessWidget {
     );
   }
 
-  MusicArtwork _getArtwork() {
+  _getArtwork() {
     if (entity is AlbumModel) {
       return MusicArtwork(
         borderRadius: 0.0,

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:music/src/interface/widgets/app_bar_button.dart';
-import 'package:music/src/global/constants/constants.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import '../../interface/widgets/preferences_option.dart';
+import '../../interface/widgets/theme_preferences.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import '../../global/constants/constants.dart';
+import '../widgets/app_bar_button.dart';
 
 class PreferencesScreen extends StatelessWidget {
   const PreferencesScreen({Key? key}) : super(key: key);
@@ -71,46 +72,6 @@ class PreferencesScreen extends StatelessWidget {
   }
 }
 
-class ThemePreferences extends StatelessWidget {
-  const ThemePreferences({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Theme',
-          style: theme.textTheme.bodyText2,
-        ),
-        const SizedBox(height: 20.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            PreferencesOption(
-              active: false,
-              asset: 'asset/images/light_theme.svg',
-              title: 'Light',
-            ),
-            PreferencesOption(
-              active: true,
-              asset: 'asset/images/dark_theme.svg',
-              title: 'Dark',
-            ),
-            PreferencesOption(
-              active: false,
-              asset: 'asset/images/system_theme.svg',
-              title: 'System',
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
 class ViewPreferences extends StatelessWidget {
   ViewPreferences({Key? key}) : super(key: key);
 
@@ -121,6 +82,7 @@ class ViewPreferences extends StatelessWidget {
               PreferencesOption(
                 active: true,
                 title: size.toString(),
+                onTap: () {},
               ),
             ],
           ))
@@ -143,17 +105,19 @@ class ViewPreferences extends StatelessWidget {
           const SizedBox(height: 20.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: const [
+            children: [
               PreferencesOption(
                 active: false,
                 asset: 'asset/images/list_view.svg',
                 title: 'List',
+                onTap: () {},
               ),
-              SizedBox(width: 12.0),
+              const SizedBox(width: 12.0),
               PreferencesOption(
                 active: true,
                 asset: 'asset/images/grid_view.svg',
                 title: 'Grid',
+                onTap: () {},
               ),
             ],
           ),
@@ -172,61 +136,6 @@ class ViewPreferences extends StatelessWidget {
                 ],
               ),
             ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class PreferencesOption extends StatelessWidget {
-  final String? asset;
-  final String title;
-  final bool active;
-
-  const PreferencesOption({
-    Key? key,
-    this.asset,
-    required this.active,
-    required this.title,
-  }) : super(key: key);
-
-  Column _buildAsset() {
-    return Column(
-      children: [
-        SizedBox(
-          height: 80.0,
-          width: 80.0,
-          child: SvgPicture.asset(
-            asset!,
-          ),
-        ),
-        const SizedBox(
-          height: 5.0,
-        )
-      ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(8.0),
-        border: Border.all(
-          color: active ? Colors.pinkAccent.shade400 : Colors.transparent,
-          width: 1.4,
-        ),
-      ),
-      child: Column(
-        children: [
-          asset != null ? _buildAsset() : const SizedBox(),
-          Text(
-            title,
-            style: theme.textTheme.subtitle1,
           ),
         ],
       ),
