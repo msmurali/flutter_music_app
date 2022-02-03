@@ -44,7 +44,7 @@ class _RecentsState extends State<Recents> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
           return SizedBox(
-            height: 200,
+            height: 160,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: 20,

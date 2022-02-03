@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'enums.dart';
 
 const routes = <Routes, String>{
@@ -21,4 +20,16 @@ const keys = <StorageKey, String>{
   StorageKey.sortType: 'com.mk.music-sort-type',
   StorageKey.orderType: 'com.mk.music-order-type',
   StorageKey.view: 'com.mk.music-view',
+  StorageKey.gridSize: 'com.mk.music-grid-size'
+};
+
+const optionsText = <Option, String>{
+  Option.select: 'Select',
+  Option.playNext: 'Play next',
+  Option.addToPlaylist: 'Add to playlist',
+  Option.addToFavourites: 'Add to favourites',
+  Option.removeFromFavourites: 'Remove from favourites',
+  Option.addAllToFavourites: 'Add all to favourites',
+  Option.info: 'Song info',
+  Option.addAllToPlaylists: 'Add all to playlists',
 };

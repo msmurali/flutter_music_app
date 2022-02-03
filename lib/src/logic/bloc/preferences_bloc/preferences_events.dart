@@ -4,6 +4,19 @@ class PreferencesEvent {
   const PreferencesEvent();
 }
 
+class SetListView extends PreferencesEvent {
+  const SetListView();
+}
+
+class SetGridView extends PreferencesEvent {
+  const SetGridView();
+}
+
+class ChangeGridSize extends PreferencesEvent {
+  final int size;
+  const ChangeGridSize({required this.size});
+}
+
 class ChangeSongSortType extends PreferencesEvent {
   final SongSortType sortType;
   const ChangeSongSortType({required this.sortType});

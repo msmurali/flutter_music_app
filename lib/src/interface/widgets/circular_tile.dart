@@ -45,20 +45,27 @@ class CircularTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _buildArtwork(),
+          const SizedBox(
+            height: 4.0,
+          ),
           SizedBox(
-            width: 100,
+            width: 120,
             child: Text(
               song.title,
               style: theme.textTheme.bodyText2!.copyWith(
-                fontSize: 12.0,
+                fontSize: 11.0,
               ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
             ),
           ),
           SizedBox(
-            width: 100,
+            width: 60,
             child: Text(
               song.artist ?? 'Unknown',
               style: theme.textTheme.subtitle2,
+              overflow: TextOverflow.clip,
+              maxLines: 1,
             ),
           ),
         ],

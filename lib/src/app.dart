@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music/src/data/services/app_shared_preferences.dart';
+import 'package:music/src/data/services/preferences_services.dart';
+import 'package:music/src/logic/bloc/preferences_bloc/bloc.dart';
 import 'data/services/favourites_services.dart';
 import 'data/services/queue_services.dart';
 import 'data/services/recents_services.dart';
 import 'logic/bloc/theme_mode_bloc/bloc.dart';
 import 'data/services/app_permissions.dart';
 import 'global/constants/index.dart';
-import 'global/themes/themes.dart';
+import './interface/themes/themes.dart';
 import 'interface/router/app_router.dart';
 
 class AppWidgetWrapper extends StatefulWidget {
@@ -18,6 +20,12 @@ class AppWidgetWrapper extends StatefulWidget {
 }
 
 class _AppWidgetWrapperState extends State<AppWidgetWrapper> {
+  final AppSharedPreferences _sharedPreferences = AppSharedPreferences();
+  final FavouritesServices _favouritesServices = FavouritesServices();
+  final RecentsServices _recentsServices = RecentsServices();
+  final QueueServices _queueServices = QueueServices();
+  final PreferencesServices _preferencesServices = PreferencesServices();
+
   @override
   void initState() {
     super.initState();
@@ -30,11 +38,6 @@ class _AppWidgetWrapperState extends State<AppWidgetWrapper> {
   }
 
   Future<void> _initiateStorageRooms() async {
-    AppSharedPreferences _sharedPreferences = AppSharedPreferences();
-    FavouritesServices _favouritesServices = FavouritesServices();
-    RecentsServices _recentsServices = RecentsServices();
-    QueueServices _queueServices = QueueServices();
-
     await _sharedPreferences.init();
 
     if (!await _favouritesServices.favouritesAlreadyExists()) {
@@ -54,8 +57,18 @@ class _AppWidgetWrapperState extends State<AppWidgetWrapper> {
       providers: [
         BlocProvider(
           create: (context) => ThemeModeBloc(
-            initialState: const ThemeModeState(
-              themeMode: ThemeMode.dark,
+            initialState: ThemeModeState(
+              themeMode: ThemeMode.dark, // TODO:
+            ),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => PreferencesBloc(
+            initialState: PreferencesState(
+              view: _preferencesServices.getView(),
+              gridSize: _preferencesServices.getGridSize(),
+              sortType: _preferencesServices.getSongSortType(),
+              orderType: _preferencesServices.getOrderType(),
             ),
           ),
         ),

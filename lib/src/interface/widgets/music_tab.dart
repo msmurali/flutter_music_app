@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music/src/global/constants/index.dart';
+import 'package:music/src/logic/bloc/preferences_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'error_indicator.dart';
 import 'loading_indicator.dart';
@@ -50,44 +53,81 @@ class MusicList extends StatelessWidget {
   Padding _buildGrid(BuildContext context, List<dynamic> data) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
-      child: GridView.builder(
-        physics: const BouncingScrollPhysics(),
-        itemCount: data.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          mainAxisSpacing: 4.0,
-          crossAxisSpacing: 4.0,
-        ),
-        itemBuilder: (BuildContext context, int index) {
-          return _buildTile(context, data[index], index);
+      child: BlocBuilder<PreferencesBloc, PreferencesState>(
+        buildWhen: (PreferencesState previous, PreferencesState current) {
+          return previous.gridSize != current.gridSize;
+        },
+        builder: (context, state) {
+          int _gridSize =
+              BlocProvider.of<PreferencesBloc>(context).state.gridSize;
+          return GridView.builder(
+            physics: const BouncingScrollPhysics(),
+            itemCount: data.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: _gridSize,
+              mainAxisSpacing: 4.0,
+              crossAxisSpacing: 4.0,
+            ),
+            itemBuilder: (BuildContext context, int index) {
+              return _buildTile(context, data[index], index);
+            },
+          );
         },
       ),
     );
   }
 
   _buildTile(BuildContext context, dynamic entity, int index) {
+    View currentView = BlocProvider.of<PreferencesBloc>(context).state.view;
+    // if (entity is SongModel) {
+    //   return Tile(
+    //     song: entity,
+    //   );
+    // } else if (entity is AlbumModel) {
+    //   return Tile(
+    //     album: entity,
+    //     onTap: () {
+    //       Navigator.pushNamed(
+    //         context,
+    //         routes[Routes.songsRoute]!,
+    //         arguments: entity,
+    //       );
+    //     },
+    //   );
+    // } else {
+    //   return Tile(
+    //     artist: entity,
+    //     onTap: () {
+    //       Navigator.pushNamed(
+    //         context,
+    //         routes[Routes.songsRoute]!,
+    //         arguments: entity,
+    //       );
+    //     },
+    //   );
+    // }
     if (entity is SongModel) {
       return Tile(
-        song: entity,
+        entity: entity,
       );
     } else if (entity is AlbumModel) {
       return Tile(
-        album: entity,
+        entity: entity,
         onTap: () {
           Navigator.pushNamed(
             context,
-            '/songs',
+            routes[Routes.songsRoute]!,
             arguments: entity,
           );
         },
       );
     } else {
       return Tile(
-        artist: entity,
+        entity: entity,
         onTap: () {
           Navigator.pushNamed(
             context,
-            '/songs',
+            routes[Routes.songsRoute]!,
             arguments: entity,
           );
         },
@@ -101,7 +141,19 @@ class MusicList extends StatelessWidget {
       return const LoadingIndicator();
     } else if (snapshot.hasData && snapshot.data != null) {
       List<dynamic> data = snapshot.data;
-      return _buildGrid(context, data);
+      return BlocBuilder<PreferencesBloc, PreferencesState>(
+        buildWhen: (PreferencesState previous, PreferencesState current) {
+          return (previous.view != current.view ||
+              previous.gridSize != current.gridSize);
+        },
+        builder: (BuildContext context, PreferencesState state) {
+          if (state.view == View.list) {
+            return _buildList(context, data);
+          } else {
+            return _buildGrid(context, data);
+          }
+        },
+      );
     } else {
       return const ErrorIndicator(
         asset: 'asset/images/no_data_error.svg',

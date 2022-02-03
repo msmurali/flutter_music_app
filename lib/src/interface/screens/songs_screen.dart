@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music/src/global/constants/enums.dart';
+import 'package:music/src/logic/bloc/preferences_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../data/providers/playlists_provider.dart';
@@ -42,7 +45,14 @@ class SongsScreen extends StatelessWidget {
           );
         } else if (snapshot.hasData && snapshot.data != null) {
           return SliverPadding(
-            sliver: _buildGrid(snapshot.data),
+            sliver: BlocBuilder<PreferencesBloc, PreferencesState>(
+                builder: (BuildContext context, PreferencesState state) {
+              if (state.view == View.list) {
+                return _buildList(snapshot.data);
+              } else {
+                return _buildGrid(snapshot.data);
+              }
+            }),
             padding: const EdgeInsets.symmetric(
               vertical: 16.0,
               horizontal: 8.0,
@@ -64,7 +74,7 @@ class SongsScreen extends StatelessWidget {
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
           return Tile(
-            song: data[index],
+            entity: data[index],
           );
         },
         childCount: data.length,
@@ -82,7 +92,7 @@ class SongsScreen extends StatelessWidget {
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
           return Tile(
-            song: data[index],
+            entity: data[index],
           );
         },
         childCount: data.length,
@@ -112,22 +122,26 @@ class SongsScreen extends StatelessWidget {
   }
 
   _getArtwork() {
-    if (entity is AlbumModel) {
-      return MusicArtwork(
-        borderRadius: 0.0,
-        album: entity,
-      );
-    } else if (entity is ArtistModel) {
-      return MusicArtwork(
-        borderRadius: 0.0,
-        artist: entity,
-      );
-    } else {
-      return MusicArtwork(
-        borderRadius: 0.0,
-        playlist: entity,
-      );
-    }
+    // if (entity is AlbumModel) {
+    //   return MusicArtwork(
+    //     borderRadius: 0.0,
+    //     entity: entity,
+    //   );
+    // } else if (entity is ArtistModel) {
+    //   return MusicArtwork(
+    //     borderRadius: 0.0,
+    //     entity: entity,
+    //   );
+    // } else {
+    //   return MusicArtwork(
+    //     borderRadius: 0.0,
+    //     entity: entity,
+    //   );
+    // }
+    return MusicArtwork(
+      borderRadius: 0.0,
+      entity: entity,
+    );
   }
 
   _buildAppBarBackground(BuildContext context) {
@@ -187,7 +201,7 @@ class SongsScreen extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(
               title: _getTitle(context),
               centerTitle: true,
-              titlePadding: EdgeInsets.symmetric(
+              titlePadding: const EdgeInsets.symmetric(
                 horizontal: 8.0,
               ),
               stretchModes: const [

@@ -12,6 +12,7 @@ enum StorageKey {
   playback,
   theme,
   view,
+  gridSize,
   sortType,
   orderType,
 }
@@ -31,4 +32,15 @@ enum PlaybackMode {
 enum View {
   list,
   grid,
+}
+
+enum Option {
+  select,
+  playNext,
+  addToFavourites,
+  addToPlaylist,
+  removeFromFavourites,
+  info,
+  addAllToFavourites,
+  addAllToPlaylists,
 }

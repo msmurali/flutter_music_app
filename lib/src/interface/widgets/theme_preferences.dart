@@ -9,7 +9,6 @@ class ThemePreferences extends StatelessWidget {
   Row _themeModeBlocBuilder(BuildContext context, ThemeModeState themeState) {
     ThemeMode currentThemeMode =
         BlocProvider.of<ThemeModeBloc>(context).state.themeMode;
-    // print(currentThemeMode.name);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

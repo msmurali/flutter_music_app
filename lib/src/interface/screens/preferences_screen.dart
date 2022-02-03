@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music/src/interface/widgets/view_preferences.dart';
 import '../../interface/widgets/preferences_option.dart';
 import '../../interface/widgets/theme_preferences.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -67,77 +68,6 @@ class PreferencesScreen extends StatelessWidget {
           ),
           physics: const BouncingScrollPhysics(),
         ),
-      ),
-    );
-  }
-}
-
-class ViewPreferences extends StatelessWidget {
-  ViewPreferences({Key? key}) : super(key: key);
-
-  final gridSizeOptionWidgets = gridSizes
-      .map((size) => Row(
-            children: [
-              const SizedBox(width: 20.0),
-              PreferencesOption(
-                active: true,
-                title: size.toString(),
-                onTap: () {},
-              ),
-            ],
-          ))
-      .toList();
-
-  @override
-  Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 20.0,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'View',
-            style: theme.textTheme.bodyText2,
-          ),
-          const SizedBox(height: 20.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              PreferencesOption(
-                active: false,
-                asset: 'asset/images/list_view.svg',
-                title: 'List',
-                onTap: () {},
-              ),
-              const SizedBox(width: 12.0),
-              PreferencesOption(
-                active: true,
-                asset: 'asset/images/grid_view.svg',
-                title: 'Grid',
-                onTap: () {},
-              ),
-            ],
-          ),
-          const SizedBox(height: 24.0),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    'Number of tiles in\na row',
-                    style: theme.textTheme.subtitle1,
-                  ),
-                  const Spacer(),
-                  ...gridSizeOptionWidgets,
-                ],
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }

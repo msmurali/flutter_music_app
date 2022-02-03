@@ -123,4 +123,15 @@ class AppSharedPreferences {
     final String _key = keys[StorageKey.view]!;
     return preferences.getString(_key) ?? View.list.name;
   }
+
+  /* grid size */
+  Future<bool> setGridSize(int size) async {
+    final String _key = keys[StorageKey.gridSize]!;
+    return await preferences.setInt(_key, size);
+  }
+
+  int getGridSize() {
+    final String _key = keys[StorageKey.gridSize]!;
+    return preferences.getInt(_key) ?? 3;
+  }
 }

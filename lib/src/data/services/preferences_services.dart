@@ -65,4 +65,12 @@ class PreferencesServices {
     final String _view = _preferences.getView();
     return _view == View.list.name ? View.list : View.grid;
   }
+
+  Future<bool> setGridSize(int size) async {
+    return await _preferences.setGridSize(size);
+  }
+
+  int getGridSize() {
+    return _preferences.getGridSize();
+  }
 }

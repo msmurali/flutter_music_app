@@ -6,18 +6,20 @@ import 'package:on_audio_query/on_audio_query.dart';
 import '../../data/providers/artwork_provider.dart';
 
 class MusicArtwork extends StatelessWidget {
-  final SongModel? song;
-  final ArtistModel? artist;
-  final AlbumModel? album;
-  final PlaylistModel? playlist;
+  // final SongModel? song;
+  // final ArtistModel? artist;
+  // final AlbumModel? album;
+  // final PlaylistModel? playlist;
+  final dynamic entity;
   final double? borderRadius;
 
   const MusicArtwork({
     Key? key,
-    this.song,
-    this.artist,
-    this.album,
-    this.playlist,
+    // this.song,
+    // this.artist,
+    // this.album,
+    // this.playlist,
+    required this.entity,
     this.borderRadius,
   }) : super(key: key);
 
@@ -63,14 +65,23 @@ class MusicArtwork extends StatelessWidget {
 
   Future<Uint8List?> getArtworkData() async {
     final ArtworkProvider _artworkProvider = ArtworkProvider();
-    if (song != null) {
-      return await _artworkProvider.getSongArtwork(song!);
-    } else if (artist != null) {
-      return await _artworkProvider.getArtistArtwork(artist!);
-    } else if (album != null) {
-      return await _artworkProvider.getAlbumArtwork(album!);
+
+    if (entity is SongModel) {
+      return await _artworkProvider.getSongArtwork(
+        entity as SongModel,
+      );
+    } else if (entity is ArtistModel) {
+      return await _artworkProvider.getArtistArtwork(
+        entity as ArtistModel,
+      );
+    } else if (entity is AlbumModel) {
+      return await _artworkProvider.getAlbumArtwork(
+        entity as AlbumModel,
+      );
     } else {
-      return await _artworkProvider.getPlaylistArtwork(playlist!);
+      return await _artworkProvider.getPlaylistArtwork(
+        entity as PlaylistModel,
+      );
     }
   }
 

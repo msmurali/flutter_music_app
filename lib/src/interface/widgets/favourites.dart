@@ -17,7 +17,7 @@ class Favourites extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return Tile(
             onTap: () {},
-            song: _songs[index],
+            entity: _songs[index],
           );
         },
       ),
