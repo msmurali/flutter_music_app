@@ -26,7 +26,7 @@ class ScaffoldWithSlidingPanel extends StatelessWidget {
   }
 }
 
-class AnimatedSheet extends StatelessWidget {
+class AnimatedSheet extends StatefulWidget {
   final Widget collapsed;
   final Widget expanded;
 
@@ -34,8 +34,17 @@ class AnimatedSheet extends StatelessWidget {
       {Key? key, required this.collapsed, required this.expanded})
       : super(key: key);
 
+  @override
+  State<AnimatedSheet> createState() => _AnimatedSheetState();
+}
+
+class _AnimatedSheetState extends State<AnimatedSheet> {
+  bool _expanded = false;
+
   final bool _snapable = true;
+
   final double _maxSizeFactor = 1.0;
+
   final double _collapsedHeight = 88;
 
   double _calculateOpacity(BuildContext context, ScrollController controller) {
@@ -52,8 +61,10 @@ class AnimatedSheet extends StatelessWidget {
         (_screenHeight - _collapsedHeight);
 
     if (_percentage < 0.2) {
+      _expanded = false;
       return 0;
     } else if (_percentage > 0.8) {
+      _expanded = true;
       return 1;
     } else {
       return _percentage;
@@ -85,38 +96,50 @@ class AnimatedSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final double _screenHeight = MediaQuery.of(context).size.height;
 
-    return DraggableScrollableSheet(
-      initialChildSize: _collapsedHeight / _screenHeight,
-      minChildSize: _collapsedHeight / _screenHeight,
-      maxChildSize: _maxSizeFactor,
-      snap: _snapable,
-      builder: (BuildContext context, ScrollController scrollController) {
-        return NotificationListener<OverscrollIndicatorNotification>(
-          onNotification: (OverscrollIndicatorNotification notification) {
-            notification.disallowIndicator();
-            return true;
-          },
-          child: SingleChildScrollView(
-            controller: scrollController,
-            child: Stack(
-              children: [
-                _buildAnimatedOpacityWidget(
-                  child: collapsed,
-                  controller: scrollController,
-                  context: context,
-                  initialOpacity: 1,
+    return DraggableScrollableActuator(
+      child: DraggableScrollableSheet(
+        initialChildSize: _collapsedHeight / _screenHeight,
+        minChildSize: _collapsedHeight / _screenHeight,
+        maxChildSize: _maxSizeFactor,
+        snap: _snapable,
+        builder: (BuildContext context, ScrollController scrollController) {
+          return NotificationListener<OverscrollIndicatorNotification>(
+            onNotification: (OverscrollIndicatorNotification notification) {
+              notification.disallowIndicator();
+              return true;
+            },
+            child: WillPopScope(
+              onWillPop: () async {
+                if (_expanded) {
+                  DraggableScrollableActuator.reset(context);
+                  return false;
+                } else {
+                  return true;
+                }
+              },
+              child: SingleChildScrollView(
+                controller: scrollController,
+                child: Stack(
+                  children: [
+                    _buildAnimatedOpacityWidget(
+                      child: widget.collapsed,
+                      controller: scrollController,
+                      context: context,
+                      initialOpacity: 1,
+                    ),
+                    _buildAnimatedOpacityWidget(
+                      child: widget.expanded,
+                      controller: scrollController,
+                      context: context,
+                      initialOpacity: 0,
+                    ),
+                  ],
                 ),
-                _buildAnimatedOpacityWidget(
-                  child: expanded,
-                  controller: scrollController,
-                  context: context,
-                  initialOpacity: 0,
-                ),
-              ],
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

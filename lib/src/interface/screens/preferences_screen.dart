@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:music/src/interface/widgets/view_preferences.dart';
-import '../../interface/widgets/preferences_option.dart';
-import '../../interface/widgets/theme_preferences.dart';
-import 'package:on_audio_query/on_audio_query.dart';
-import '../../global/constants/constants.dart';
+import '../widgets/sorting_preferences.dart';
+import '../widgets/view_preferences.dart';
+import '../widgets/theme_preferences.dart';
 import '../widgets/app_bar_button.dart';
 
 class PreferencesScreen extends StatelessWidget {
@@ -46,92 +44,15 @@ class PreferencesScreen extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const ThemePreferences(),
+              children: const [
+                ThemePreferences(),
                 ViewPreferences(),
-                PreferencesDropDown(
-                  title: 'Sort by',
-                  value: 'Name',
-                  options: SongSortType.values
-                      .map((sortType) => sortType.name)
-                      .toList(),
-                ),
-                PreferencesDropDown(
-                  title: 'Order by',
-                  value: 'ASC',
-                  options: OrderType.values
-                      .map((orderType) => orderType.name)
-                      .toList(),
-                ),
+                SortingPreferences(),
               ],
             ),
           ),
           physics: const BouncingScrollPhysics(),
         ),
-      ),
-    );
-  }
-}
-
-class PreferencesDropDown extends StatelessWidget {
-  final String title;
-  final String value;
-  final List<String> options;
-
-  const PreferencesDropDown({
-    Key? key,
-    required this.title,
-    required this.value,
-    required this.options,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.bodyText2,
-          ),
-          const SizedBox(height: 20.0),
-          Container(
-            width: double.infinity,
-            padding:
-                const EdgeInsets.symmetric(vertical: 2.0, horizontal: 12.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0),
-              border: Border.all(
-                width: 1.4,
-                color: Colors.pinkAccent.shade400,
-              ),
-            ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                hint: Text(
-                  value,
-                  style: Theme.of(context).textTheme.bodyText2,
-                ),
-                items: options
-                    .map(
-                      (option) => DropdownMenuItem<String>(
-                        value: option,
-                        child: Text(
-                          option,
-                          style: Theme.of(context).textTheme.bodyText2,
-                        ),
-                      ),
-                    )
-                    .toList(),
-                onChanged: (String? val) {
-                  print(val);
-                },
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

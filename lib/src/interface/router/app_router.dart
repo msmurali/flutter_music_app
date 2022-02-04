@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music/src/interface/screens/info_screen.dart';
 import '../../global/constants/constants.dart';
 import '../../global/constants/enums.dart';
 import '../screens/home_screen.dart';
@@ -23,6 +24,14 @@ class AppRouter {
       return MaterialPageRoute(
         builder: (BuildContext context) => SongsScreen(
           entity: _entity,
+        ),
+      );
+    } else if (_route == routes[Routes.infoRoute]) {
+      dynamic _entity = settings.arguments;
+
+      return MaterialPageRoute(
+        builder: (BuildContext context) => InfoScreen(
+          song: _entity,
         ),
       );
     } else {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music/src/global/constants/index.dart';
+import 'package:music/src/interface/utils/helpers.dart';
 import 'package:music/src/logic/bloc/preferences_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'error_indicator.dart';
@@ -78,46 +79,24 @@ class MusicList extends StatelessWidget {
   }
 
   _buildTile(BuildContext context, dynamic entity, int index) {
-    View currentView = BlocProvider.of<PreferencesBloc>(context).state.view;
-    // if (entity is SongModel) {
-    //   return Tile(
-    //     song: entity,
-    //   );
-    // } else if (entity is AlbumModel) {
-    //   return Tile(
-    //     album: entity,
-    //     onTap: () {
-    //       Navigator.pushNamed(
-    //         context,
-    //         routes[Routes.songsRoute]!,
-    //         arguments: entity,
-    //       );
-    //     },
-    //   );
-    // } else {
-    //   return Tile(
-    //     artist: entity,
-    //     onTap: () {
-    //       Navigator.pushNamed(
-    //         context,
-    //         routes[Routes.songsRoute]!,
-    //         arguments: entity,
-    //       );
-    //     },
-    //   );
-    // }
     if (entity is SongModel) {
       return Tile(
         entity: entity,
-      );
-    } else if (entity is AlbumModel) {
-      return Tile(
-        entity: entity,
-        onTap: () {
-          Navigator.pushNamed(
+        onTap: () {},
+        onLongPress: (LongPressStartDetails details) async {
+          await showMenuDialog(
             context,
-            routes[Routes.songsRoute]!,
-            arguments: entity,
+            details,
+            entity,
+            songOptions,
+          );
+        },
+        onTrailingEndPress: (TapDownDetails details) async {
+          await showMenuDialog(
+            context,
+            details,
+            entity,
+            otherEntitiesOptions,
           );
         },
       );
@@ -125,14 +104,18 @@ class MusicList extends StatelessWidget {
       return Tile(
         entity: entity,
         onTap: () {
-          Navigator.pushNamed(
-            context,
-            routes[Routes.songsRoute]!,
-            arguments: entity,
-          );
+          _navigateToSongsScreen(context, entity);
         },
       );
     }
+  }
+
+  void _navigateToSongsScreen(BuildContext context, dynamic entity) {
+    Navigator.pushNamed(
+      context,
+      routes[Routes.songsRoute]!,
+      arguments: entity,
+    );
   }
 
   @override

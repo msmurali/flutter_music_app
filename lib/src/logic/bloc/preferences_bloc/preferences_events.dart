@@ -22,7 +22,27 @@ class ChangeSongSortType extends PreferencesEvent {
   const ChangeSongSortType({required this.sortType});
 }
 
-class ChangeSortingOrderType extends PreferencesEvent {
+class ChangeSongOrderType extends PreferencesEvent {
   final OrderType orderType;
-  const ChangeSortingOrderType({required this.orderType});
+  const ChangeSongOrderType({required this.orderType});
+}
+
+class ChangeAlbumSortType extends PreferencesEvent {
+  final AlbumSortType sortType;
+  const ChangeAlbumSortType({required this.sortType});
+}
+
+class ChangeAlbumOrderType extends PreferencesEvent {
+  final OrderType orderType;
+  const ChangeAlbumOrderType({required this.orderType});
+}
+
+class ChangeArtistSortType extends PreferencesEvent {
+  final ArtistSortType sortType;
+  const ChangeArtistSortType({required this.sortType});
+}
+
+class ChangeArtistOrderType extends PreferencesEvent {
+  final OrderType orderType;
+  const ChangeArtistOrderType({required this.orderType});
 }

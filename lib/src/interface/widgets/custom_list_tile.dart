@@ -7,7 +7,8 @@ class CustomListTile extends StatelessWidget {
   final String title;
   final String subtitle;
   final void Function()? onTap;
-  final void Function() onTrailingPressed;
+  final void Function(TapDownDetails)? onTrailingPressed;
+  final dynamic entity;
 
   const CustomListTile({
     Key? key,
@@ -16,6 +17,7 @@ class CustomListTile extends StatelessWidget {
     required this.subtitle,
     required this.onTap,
     required this.onTrailingPressed,
+    required this.entity,
   }) : super(key: key);
 
   @override
@@ -34,9 +36,7 @@ class CustomListTile extends StatelessWidget {
         maxLines: 1,
       ),
       trailing: GestureDetector(
-        onTapDown: (details) async {
-          showMenuDialog(context, details);
-        },
+        onTapDown: onTrailingPressed,
         child: const Icon(
           CustomIcons.more,
           size: 18.0,

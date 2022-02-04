@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:music/src/interface/screens/player_screen.dart';
 import '../widgets/mini_player.dart';
 import '../widgets/music_library.dart';
 import '../widgets/scaffold_with_sliding_panel.dart';
@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ScaffoldWithSlidingPanel(
           body: MusicLibrary(),
           collapsed: const MiniPlayer(),
-          expanded: Container(color: Colors.white),
+          expanded: const Player(),
         ),
       ),
     );

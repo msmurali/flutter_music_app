@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music/src/logic/bloc/preferences_bloc/bloc.dart';
 import '../../data/providers/songs_provider.dart';
 import '../../global/constants/constants.dart';
 import '../../global/constants/enums.dart';
@@ -93,19 +93,103 @@ class MusicLibrary extends StatelessWidget {
           body: TabBarView(
             children: [
               const HomeTab(),
-              MusicTab(
-                futureData: _songsProvider.getSongs(),
-              ),
-              MusicTab(
-                futureData: _songsProvider.getArtists(),
-              ),
-              MusicTab(
-                futureData: _songsProvider.getAlbums(),
-              ),
+              SongsTab(songsProvider: _songsProvider),
+              ArtistsTab(songsProvider: _songsProvider),
+              AlbumsTab(songsProvider: _songsProvider),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class AlbumsTab extends StatelessWidget {
+  const AlbumsTab({
+    Key? key,
+    required SongsProvider songsProvider,
+  })  : _songsProvider = songsProvider,
+        super(key: key);
+
+  final SongsProvider _songsProvider;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<PreferencesBloc, PreferencesState>(
+      buildWhen: (PreferencesState previous, PreferencesState current) {
+        return (previous.albumsSortType != current.albumsSortType ||
+            previous.albumsOrderType != current.albumsOrderType);
+      },
+      builder: (context, state) {
+        PreferencesState _currentState =
+            BlocProvider.of<PreferencesBloc>(context).state;
+        return MusicTab(
+          futureData: _songsProvider.getAlbums(
+            _currentState.albumsSortType,
+            _currentState.albumsOrderType,
+          ),
+        );
+      },
+    );
+  }
+}
+
+class ArtistsTab extends StatelessWidget {
+  const ArtistsTab({
+    Key? key,
+    required SongsProvider songsProvider,
+  })  : _songsProvider = songsProvider,
+        super(key: key);
+
+  final SongsProvider _songsProvider;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<PreferencesBloc, PreferencesState>(
+      buildWhen: (PreferencesState previous, PreferencesState current) {
+        return (previous.artistsSortType != current.artistsSortType ||
+            previous.artistsOrderType != current.artistsOrderType);
+      },
+      builder: (context, state) {
+        PreferencesState _currentState =
+            BlocProvider.of<PreferencesBloc>(context).state;
+        return MusicTab(
+          futureData: _songsProvider.getArtists(
+            _currentState.artistsSortType,
+            _currentState.artistsOrderType,
+          ),
+        );
+      },
+    );
+  }
+}
+
+class SongsTab extends StatelessWidget {
+  const SongsTab({
+    Key? key,
+    required SongsProvider songsProvider,
+  })  : _songsProvider = songsProvider,
+        super(key: key);
+
+  final SongsProvider _songsProvider;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<PreferencesBloc, PreferencesState>(
+      buildWhen: (PreferencesState previous, PreferencesState current) {
+        return (previous.songsSortType != current.songsSortType ||
+            previous.songsOrderType != current.songsOrderType);
+      },
+      builder: (context, state) {
+        PreferencesState _currentState =
+            BlocProvider.of<PreferencesBloc>(context).state;
+        return MusicTab(
+          futureData: _songsProvider.getSongs(
+            _currentState.songsSortType,
+            _currentState.songsOrderType,
+          ),
+        );
+      },
     );
   }
 }

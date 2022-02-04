@@ -11,25 +11,40 @@ class HomeTab extends StatelessWidget {
     ThemeData theme = Theme.of(context);
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(
-        vertical: 16.0,
+        vertical: 20.0,
       ),
       physics: const BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Recently Played',
-            style: theme.textTheme.bodyText2,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Text(
+              'Recently Played',
+              style: theme.textTheme.bodyText2,
+            ),
           ),
-          const Recents(),
-          Text(
-            'Favourites',
-            style: theme.textTheme.bodyText2,
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 20.0),
+            child: Recents(),
           ),
-          Favourites(),
-          Text(
-            'Playlists',
-            style: theme.textTheme.bodyText2,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Text(
+              'Favourites',
+              style: theme.textTheme.bodyText2,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
+            child: Favourites(),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Text(
+              'Playlists',
+              style: theme.textTheme.bodyText2,
+            ),
           ),
           Playlists(),
         ],

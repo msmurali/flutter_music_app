@@ -91,25 +91,69 @@ class AppSharedPreferences {
     return preferences.getString(_key) ?? ThemeMode.light.name;
   }
 
-  /* Sort Type */
-  Future<bool> setSortType(String sortType) async {
-    final String _key = keys[StorageKey.sortType]!;
+  /* Song Sort Type */
+  Future<bool> setSongsSortType(String sortType) async {
+    final String _key = keys[StorageKey.songsSortType]!;
     return await preferences.setString(_key, sortType);
   }
 
-  String getSortType() {
-    final String _key = keys[StorageKey.sortType]!;
+  String getSongsSortType() {
+    final String _key = keys[StorageKey.songsSortType]!;
     return preferences.getString(_key) ?? SongSortType.DISPLAY_NAME.name;
   }
 
-  /* Order Type */
-  Future<bool> setOrderType(String orderType) async {
-    final String _key = keys[StorageKey.orderType]!;
+  /* Song Order Type */
+  Future<bool> setSongsOrderType(String orderType) async {
+    final String _key = keys[StorageKey.songsOrderType]!;
     return await preferences.setString(_key, orderType);
   }
 
-  String getOrderType() {
-    final String _key = keys[StorageKey.orderType]!;
+  String getSongsOrderType() {
+    final String _key = keys[StorageKey.songsOrderType]!;
+    return preferences.getString(_key) ?? OrderType.ASC_OR_SMALLER.name;
+  }
+
+  /* Artist Sort Type */
+  Future<bool> setArtistsSortType(String sortType) async {
+    final String _key = keys[StorageKey.artistsSortType]!;
+    return await preferences.setString(_key, sortType);
+  }
+
+  String getArtistsSortType() {
+    final String _key = keys[StorageKey.artistsSortType]!;
+    return preferences.getString(_key) ?? ArtistSortType.ARTIST.name;
+  }
+
+  /* Artist Order Type */
+  Future<bool> setArtistsOrderType(String orderType) async {
+    final String _key = keys[StorageKey.artistsOrderType]!;
+    return await preferences.setString(_key, orderType);
+  }
+
+  String getArtistsOrderType() {
+    final String _key = keys[StorageKey.artistsOrderType]!;
+    return preferences.getString(_key) ?? OrderType.ASC_OR_SMALLER.name;
+  }
+
+  /* Album Sort Type */
+  Future<bool> setAlbumsSortType(String sortType) async {
+    final String _key = keys[StorageKey.albumsSortType]!;
+    return await preferences.setString(_key, sortType);
+  }
+
+  String getAlbumsSortType() {
+    final String _key = keys[StorageKey.albumsSortType]!;
+    return preferences.getString(_key) ?? AlbumSortType.ALBUM.name;
+  }
+
+  /* Album Order Type */
+  Future<bool> setAlbumsOrderType(String orderType) async {
+    final String _key = keys[StorageKey.albumsOrderType]!;
+    return await preferences.setString(_key, orderType);
+  }
+
+  String getAlbumsOrderType() {
+    final String _key = keys[StorageKey.albumsOrderType]!;
     return preferences.getString(_key) ?? OrderType.ASC_OR_SMALLER.name;
   }
 

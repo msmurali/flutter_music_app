@@ -45,7 +45,11 @@ class PreferencesOption extends StatelessWidget {
           color: theme.colorScheme.secondary.withOpacity(0.1),
           borderRadius: BorderRadius.circular(8.0),
           border: Border.all(
-            color: active ? Colors.pinkAccent.shade400 : Colors.transparent,
+            color: enabled == false
+                ? Colors.grey[800]!
+                : active
+                    ? Colors.pinkAccent.shade400
+                    : Colors.transparent,
             width: 1.8,
           ),
         ),
@@ -54,7 +58,11 @@ class PreferencesOption extends StatelessWidget {
             asset != null ? _buildAsset() : const SizedBox(),
             Text(
               title,
-              style: theme.textTheme.subtitle1,
+              style: theme.textTheme.subtitle1!.copyWith(
+                color: enabled == false
+                    ? Colors.grey[600]
+                    : theme.colorScheme.secondary,
+              ),
             ),
           ],
         ),

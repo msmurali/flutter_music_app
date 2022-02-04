@@ -8,54 +8,24 @@ import 'custom_list_tile.dart';
 import 'music_artwork.dart';
 
 class Tile extends StatelessWidget {
-  // final SongModel? song;
-  // final AlbumModel? album;
-  // final ArtistModel? artist;
-  // final PlaylistModel? playlist;
   final dynamic entity;
   final void Function()? onTap;
+  final void Function(LongPressStartDetails)? onLongPress;
+  final void Function(TapDownDetails)? onTrailingEndPress;
 
   const Tile({
     Key? key,
-    // this.song,
-    // this.album,
-    // this.artist,
-    // this.playlist,
     this.entity,
     this.onTap,
+    this.onLongPress,
+    this.onTrailingEndPress,
   }) : super(key: key);
 
   Widget _getArtwork() {
-    // if (song != null) {
-    //   return MusicArtwork(
-    //     song: song,
-    //   );
-    // } else if (album != null) {
-    //   return MusicArtwork(
-    //     album: album,
-    //   );
-    // } else if (artist != null) {
-    //   return MusicArtwork(
-    //     artist: artist,
-    //   );
-    // } else {
-    //   return MusicArtwork(
-    //     playlist: playlist,
-    //   );
-    // }
     return MusicArtwork(entity: entity);
   }
 
   String _getTitle() {
-    // if (song != null) {
-    //   return song!.title;
-    // } else if (artist != null) {
-    //   return artist!.artist;
-    // } else if (album != null) {
-    //   return album!.album;
-    // } else {
-    //   return playlist!.playlist;
-    // }
     if (entity is SongModel) {
       return entity!.title;
     } else if (entity is ArtistModel) {
@@ -68,19 +38,10 @@ class Tile extends StatelessWidget {
   }
 
   String _getSubtitle() {
-    // if (song != null) {
-    //   return song!.artist ?? 'Unknown Artist';
-    // } else if (artist != null) {
-    //   return '${artist!.numberOfTracks ?? 0}';
-    // } else if (album != null) {
-    //   return album!.artist ?? 'Unknown Artist';
-    // } else {
-    //   return '${playlist!.numOfSongs} songs';
-    // }
     if (entity is SongModel) {
       return entity!.artist ?? 'Unknown Artist';
     } else if (entity is ArtistModel) {
-      return '${entity!.numberOfTracks ?? 0}';
+      return '${entity!.numberOfTracks ?? 0} Songs';
     } else if (entity is AlbumModel) {
       return entity.artist ?? 'Unknown Artist';
     } else {
@@ -98,15 +59,17 @@ class Tile extends StatelessWidget {
         subtitle: _getSubtitle(),
         artwork: _getArtwork(),
         onTap: onTap,
-        onTrailingPressed: () {},
+        onTrailingPressed: onTrailingEndPress,
+        entity: entity,
       );
     } else {
       return GridTile(
         artwork: _getArtwork(),
-        onLongPress: () {},
+        onLongPress: onLongPress,
         title: _getTitle(),
         onTap: onTap,
         gridSize: _currentState.gridSize,
+        entity: entity,
       );
     }
   }

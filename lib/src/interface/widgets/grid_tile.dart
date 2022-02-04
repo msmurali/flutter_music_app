@@ -4,9 +4,10 @@ import 'package:music/src/interface/utils/helpers.dart';
 class GridTile extends StatelessWidget {
   final Widget artwork;
   final void Function()? onTap;
-  final void Function() onLongPress;
+  final void Function(LongPressStartDetails)? onLongPress;
   final String title;
   final int gridSize;
+  final dynamic entity;
 
   const GridTile({
     Key? key,
@@ -15,23 +16,21 @@ class GridTile extends StatelessWidget {
     required this.onLongPress,
     required this.title,
     required this.gridSize,
+    required this.entity,
   }) : super(key: key);
 
-  _onLongPressStart(
-    BuildContext context,
-    LongPressStartDetails details,
-  ) async {
-    showMenuDialog(context, details);
-  }
+  // _onLongPressStart(
+  //   BuildContext context,
+  //   LongPressStartDetails details,
+  // ) async {
+  //   showMenuDialog(context, details, entity);
+  // }
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return GestureDetector(
-      onLongPressStart: (LongPressStartDetails details) => _onLongPressStart(
-        context,
-        details,
-      ),
+      onLongPressStart: onLongPress,
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(

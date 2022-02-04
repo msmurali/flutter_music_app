@@ -21,8 +21,8 @@ class PreferencesServices {
     return await _preferences.setAppTheme(appTheme.name);
   }
 
-  SongSortType getSongSortType() {
-    String sortTypeString = _preferences.getSortType();
+  SongSortType getSongsSortType() {
+    String sortTypeString = _preferences.getSongsSortType();
     if (sortTypeString == SongSortType.ALBUM.name) {
       return SongSortType.ALBUM;
     } else if (sortTypeString == SongSortType.ARTIST.name) {
@@ -40,12 +40,12 @@ class PreferencesServices {
     }
   }
 
-  Future<bool> setSongSortType(SongSortType sortType) async {
-    return await _preferences.setSortType(sortType.name);
+  Future<bool> setSongsSortType(SongSortType sortType) async {
+    return await _preferences.setSongsSortType(sortType.name);
   }
 
-  OrderType getOrderType() {
-    String orderType = _preferences.getSortType();
+  OrderType getSongsOrderType() {
+    String orderType = _preferences.getSongsSortType();
     if (orderType == OrderType.ASC_OR_SMALLER.name) {
       return OrderType.ASC_OR_SMALLER;
     } else {
@@ -53,8 +53,64 @@ class PreferencesServices {
     }
   }
 
-  Future<bool> setOrderType(OrderType orderType) async {
-    return await _preferences.setSortType(orderType.name);
+  Future<bool> setSongsOrderType(OrderType orderType) async {
+    return await _preferences.setSongsSortType(orderType.name);
+  }
+
+  AlbumSortType getAlbumsSortType() {
+    String sortTypeString = _preferences.getAlbumsSortType();
+    if (sortTypeString == AlbumSortType.ALBUM.name) {
+      return AlbumSortType.ALBUM;
+    } else if (sortTypeString == AlbumSortType.ARTIST.name) {
+      return AlbumSortType.ARTIST;
+    } else {
+      return AlbumSortType.NUM_OF_SONGS;
+    }
+  }
+
+  Future<bool> setAlbumsSortType(AlbumSortType sortType) async {
+    return await _preferences.setAlbumsSortType(sortType.name);
+  }
+
+  OrderType getAlbumsOrderType() {
+    String orderType = _preferences.getAlbumsOrderType();
+    if (orderType == OrderType.ASC_OR_SMALLER.name) {
+      return OrderType.ASC_OR_SMALLER;
+    } else {
+      return OrderType.DESC_OR_GREATER;
+    }
+  }
+
+  Future<bool> setAlbumsOrderType(OrderType orderType) async {
+    return await _preferences.setAlbumsOrderType(orderType.name);
+  }
+
+  ArtistSortType getArtistsSortType() {
+    String sortTypeString = _preferences.getArtistsSortType();
+    if (sortTypeString == ArtistSortType.ARTIST.name) {
+      return ArtistSortType.ARTIST;
+    } else if (sortTypeString == ArtistSortType.NUM_OF_ALBUMS.name) {
+      return ArtistSortType.NUM_OF_ALBUMS;
+    } else {
+      return ArtistSortType.NUM_OF_TRACKS;
+    }
+  }
+
+  Future<bool> setArtistSortType(ArtistSortType sortType) async {
+    return await _preferences.setArtistsSortType(sortType.name);
+  }
+
+  OrderType getArtistsOrderType() {
+    String orderType = _preferences.getArtistsOrderType();
+    if (orderType == OrderType.ASC_OR_SMALLER.name) {
+      return OrderType.ASC_OR_SMALLER;
+    } else {
+      return OrderType.DESC_OR_GREATER;
+    }
+  }
+
+  Future<bool> setArtistsOrderType(OrderType orderType) async {
+    return await _preferences.setArtistsOrderType(orderType.name);
   }
 
   Future<bool> setView(View viewType) async {

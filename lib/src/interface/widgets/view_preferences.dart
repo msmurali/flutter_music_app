@@ -27,7 +27,7 @@ class ViewPreferences extends StatelessWidget {
               children: [
                 PreferencesOption(
                   active: currentState.view == View.list,
-                  asset: 'asset/images/list_view.svg',
+                  asset: 'asset/images/list.svg',
                   title: 'List',
                   onTap: () {
                     BlocProvider.of<PreferencesBloc>(context).add(
@@ -38,7 +38,7 @@ class ViewPreferences extends StatelessWidget {
                 const SizedBox(width: 12.0),
                 PreferencesOption(
                   active: currentState.view == View.grid,
-                  asset: 'asset/images/grid_view.svg',
+                  asset: 'asset/images/grid.svg',
                   title: 'Grid',
                   onTap: () {
                     BlocProvider.of<PreferencesBloc>(context).add(
@@ -55,7 +55,7 @@ class ViewPreferences extends StatelessWidget {
                   'Number of tiles in\na row',
                   style: theme.textTheme.subtitle1!.copyWith(
                     color: currentState.view == View.list
-                        ? Colors.green
+                        ? Colors.grey[800]
                         : theme.colorScheme.secondary,
                   ),
                 ),

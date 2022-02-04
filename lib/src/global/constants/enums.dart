@@ -2,6 +2,7 @@ enum Routes {
   homeRoute,
   preferencesRoute,
   songsRoute,
+  infoRoute,
 }
 
 enum StorageKey {
@@ -13,8 +14,12 @@ enum StorageKey {
   theme,
   view,
   gridSize,
-  sortType,
-  orderType,
+  songsSortType,
+  songsOrderType,
+  artistsSortType,
+  artistsOrderType,
+  albumsSortType,
+  albumsOrderType,
 }
 
 enum AppTheme {
@@ -42,5 +47,5 @@ enum Option {
   removeFromFavourites,
   info,
   addAllToFavourites,
-  addAllToPlaylists,
+  addAllToPlaylist,
 }

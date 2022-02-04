@@ -49,14 +49,15 @@ class CircularTile extends StatelessWidget {
             height: 4.0,
           ),
           SizedBox(
-            width: 120,
+            width: 100,
             child: Text(
               song.title,
               style: theme.textTheme.bodyText2!.copyWith(
                 fontSize: 11.0,
               ),
-              overflow: TextOverflow.ellipsis,
+              overflow: TextOverflow.clip,
               maxLines: 1,
+              softWrap: false,
             ),
           ),
           SizedBox(
