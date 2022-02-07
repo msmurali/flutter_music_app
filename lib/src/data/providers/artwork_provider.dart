@@ -11,7 +11,12 @@ class ArtworkProvider {
   final SongsProvider _songsProvider = SongsProvider();
 
   Future<Uint8List?> getSongArtwork(SongModel song) async {
-    Uint8List? result = await _audiotagger.readArtwork(path: song.data);
+    Uint8List? result;
+    try {
+      result = await _audiotagger.readArtwork(path: song.data);
+    } catch (exception) {
+      result = null;
+    }
     return result;
   }
 

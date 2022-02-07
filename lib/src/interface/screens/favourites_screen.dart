@@ -34,7 +34,7 @@ class FavouritesScreen extends StatelessWidget {
         },
       ),
       title: Text(
-        'Favourites ',
+        'Favourites',
         style: theme.textTheme.headline6,
       ),
     );

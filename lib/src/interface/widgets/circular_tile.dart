@@ -61,7 +61,7 @@ class CircularTile extends StatelessWidget {
             ),
           ),
           SizedBox(
-            width: 60,
+            width: 50,
             child: Text(
               song.artist ?? 'Unknown',
               style: theme.textTheme.subtitle2,

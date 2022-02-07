@@ -6,19 +6,11 @@ import 'package:on_audio_query/on_audio_query.dart';
 import '../../data/providers/artwork_provider.dart';
 
 class MusicArtwork extends StatelessWidget {
-  // final SongModel? song;
-  // final ArtistModel? artist;
-  // final AlbumModel? album;
-  // final PlaylistModel? playlist;
   final dynamic entity;
   final double? borderRadius;
 
   const MusicArtwork({
     Key? key,
-    // this.song,
-    // this.artist,
-    // this.album,
-    // this.playlist,
     required this.entity,
     this.borderRadius,
   }) : super(key: key);
