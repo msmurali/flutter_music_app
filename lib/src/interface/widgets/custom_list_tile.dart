@@ -24,6 +24,7 @@ class CustomListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return ListTile(
+      visualDensity: const VisualDensity(vertical: 2),
       leading: artwork,
       title: Text(
         title,

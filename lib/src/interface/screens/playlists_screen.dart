@@ -38,6 +38,10 @@ class PlaylistsScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildPlaylists() {
+    return Container();
+  }
+
   @override
   Widget build(BuildContext context) {
     final PlaylistsProvider _playlistsProvider = PlaylistsProvider();
@@ -46,12 +50,7 @@ class PlaylistsScreen extends StatelessWidget {
         child: ScaffoldWithSlidingPanel(
           body: Scaffold(
             appBar: _buildAppBar(context),
-            body: MusicTab(
-              futureData: _playlistsProvider.getPlaylists(),
-              errorIndicator: const ErrorIndicator(
-                asset: 'asset/images/no_playlists.svg',
-              ),
-            ),
+            body: _buildPlaylists(),
           ),
           collapsed: const MiniPlayer(),
           expanded: Container(color: Colors.white),

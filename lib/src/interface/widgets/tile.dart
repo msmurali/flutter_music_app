@@ -12,13 +12,15 @@ class Tile extends StatelessWidget {
   final void Function()? onTap;
   final void Function(LongPressStartDetails)? onLongPress;
   final void Function(TapDownDetails)? onTrailingEndPress;
+  final View? view;
 
   const Tile({
     Key? key,
-    this.entity,
+    required this.entity,
     this.onTap,
     this.onLongPress,
     this.onTrailingEndPress,
+    this.view,
   }) : super(key: key);
 
   Widget _getArtwork() {
@@ -53,7 +55,8 @@ class Tile extends StatelessWidget {
   Widget build(BuildContext context) {
     PreferencesState _currentState =
         BlocProvider.of<PreferencesBloc>(context).state;
-    if (_currentState.view == View.list) {
+
+    if (view == View.list || _currentState.view == View.list) {
       return CustomListTile(
         title: _getTitle(),
         subtitle: _getSubtitle(),

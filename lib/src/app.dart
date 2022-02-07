@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music/src/data/providers/favourites_provider.dart';
 import 'package:music/src/data/services/app_shared_preferences.dart';
 import 'package:music/src/data/services/preferences_services.dart';
 import 'package:music/src/logic/bloc/preferences_bloc/bloc.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'data/services/favourites_services.dart';
 import 'data/services/queue_services.dart';
 import 'data/services/recents_services.dart';
+import 'logic/bloc/favourites_bloc/bloc.dart';
 import 'logic/bloc/theme_mode_bloc/bloc.dart';
 import 'data/services/app_permissions.dart';
 import 'global/constants/index.dart';
@@ -25,12 +28,20 @@ class _AppWidgetWrapperState extends State<AppWidgetWrapper> {
   final RecentsServices _recentsServices = RecentsServices();
   final QueueServices _queueServices = QueueServices();
   final PreferencesServices _preferencesServices = PreferencesServices();
+  final FavouritesProvider _favouritesProvider = FavouritesProvider();
+
+  late List<SongModel> favouritesSongs;
 
   @override
   void initState() {
     super.initState();
     _getStorageAccessPermission();
     _initiateStorageRooms();
+    _getFavouritesSongs();
+  }
+
+  Future<void> _getFavouritesSongs() async {
+    favouritesSongs = await _favouritesProvider.getFavouritesSongs();
   }
 
   Future<void> _getStorageAccessPermission() async {
@@ -57,7 +68,7 @@ class _AppWidgetWrapperState extends State<AppWidgetWrapper> {
       providers: [
         BlocProvider(
           create: (context) => ThemeModeBloc(
-            initialState: ThemeModeState(
+            initialState: const ThemeModeState(
               themeMode: ThemeMode.dark, // TODO:
             ),
           ),
@@ -76,6 +87,13 @@ class _AppWidgetWrapperState extends State<AppWidgetWrapper> {
             ),
           ),
         ),
+        BlocProvider(
+          create: (context) => FavouritesBloc(
+            initialState: FavouritesState(
+              songs: favouritesSongs,
+            ),
+          ),
+        )
       ],
       child: const AppWidget(),
     );

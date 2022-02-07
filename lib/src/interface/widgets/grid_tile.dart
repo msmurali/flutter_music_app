@@ -19,13 +19,6 @@ class GridTile extends StatelessWidget {
     required this.entity,
   }) : super(key: key);
 
-  // _onLongPressStart(
-  //   BuildContext context,
-  //   LongPressStartDetails details,
-  // ) async {
-  //   showMenuDialog(context, details, entity);
-  // }
-
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);

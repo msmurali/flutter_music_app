@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:music/src/data/providers/playlists_provider.dart';
 import 'package:music/src/interface/widgets/error_indicator.dart';
 import 'package:music/src/interface/widgets/loading_indicator.dart';
+import '../../global/constants/enums.dart';
 import 'tile.dart';
 
 class Playlists extends StatelessWidget {
@@ -10,16 +11,18 @@ class Playlists extends StatelessWidget {
 
   Playlists({Key? key}) : super(key: key);
 
-  Expanded _buildFavouritesList(BuildContext context, List<dynamic> _songs) {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: _playlistsCount,
-        itemBuilder: (BuildContext context, int index) {
-          return Tile(
-            onTap: () {},
-          );
-        },
-      ),
+  _buildFavouritesList(BuildContext context, List<dynamic> _playlists) {
+    return ListView.builder(
+      itemCount: _playlists.length < _playlistsCount
+          ? _playlists.length
+          : _playlistsCount,
+      itemBuilder: (BuildContext context, int index) {
+        return Tile(
+          entity: _playlists[index],
+          view: View.list,
+        );
+      },
+      shrinkWrap: true,
     );
   }
 

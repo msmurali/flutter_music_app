@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:music/src/interface/widgets/circular_icon_button.dart';
 import 'package:music/src/interface/widgets/recents.dart';
+import '../utils/custom_icons.dart';
+import '../utils/helpers.dart';
 import 'playlists.dart';
 import 'favourites.dart';
 
@@ -40,10 +43,26 @@ class HomeTab extends StatelessWidget {
             child: Favourites(),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Text(
-              'Playlists',
-              style: theme.textTheme.bodyText2,
+            padding: const EdgeInsets.only(
+              left: 24.0,
+              right: 8.0,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Playlists',
+                  style: theme.textTheme.bodyText2,
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.add,
+                    size: 20.0,
+                  ),
+                  onPressed: () => showFormDialog(context),
+                  splashColor: Colors.white10,
+                ),
+              ],
             ),
           ),
           Playlists(),

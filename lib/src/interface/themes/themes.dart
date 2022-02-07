@@ -8,7 +8,7 @@ const Color lightPrimary = Color(0xFFFFFFFF);
 const Color lightPrimaryLight = Colors.white70;
 const Color lightSecondary = Color(0xFF121212);
 
-const Color onPrimary = Color(0xFFF50057);
+const Color onSurface = Color(0xFFF50057);
 
 final darkThemeData = ThemeData(
   brightness: Brightness.dark,
@@ -32,7 +32,7 @@ final darkThemeData = ThemeData(
     ),
   ),
   tabBarTheme: const TabBarTheme(
-    labelColor: onPrimary,
+    labelColor: onSurface,
     unselectedLabelColor: darkSecondary,
     labelStyle: TextStyle(
       fontFamily: 'Poppins',
@@ -56,7 +56,6 @@ final darkThemeData = ThemeData(
   ),
   colorScheme: const ColorScheme(
     primary: darkPrimary,
-    primaryVariant: Colors.black,
     background: darkPrimary,
     error: Colors.red,
     onError: Colors.white,
@@ -65,9 +64,8 @@ final darkThemeData = ThemeData(
     onBackground: darkSecondary,
     onPrimary: darkSecondary,
     onSecondary: darkPrimary,
-    onSurface: Colors.white,
+    onSurface: onSurface,
     secondary: darkSecondary,
-    secondaryVariant: Colors.grey,
   ),
   textTheme: const TextTheme(
     headline6: TextStyle(
@@ -85,8 +83,8 @@ final darkThemeData = ThemeData(
     ),
     subtitle1: TextStyle(
       fontFamily: 'Poppins',
-      fontSize: 12.0,
-      fontWeight: FontWeight.w300,
+      fontSize: 13.0,
+      fontWeight: FontWeight.w400,
       color: darkSecondary,
       overflow: TextOverflow.ellipsis,
     ),
@@ -110,7 +108,48 @@ final darkThemeData = ThemeData(
     ),
     overlayShape: const RoundSliderOverlayShape(overlayRadius: 0.0),
   ),
-  splashColor: Colors.transparent,
+  // splashColor: Colors.transparent,
+  dialogTheme: const DialogTheme(
+    backgroundColor: Color(0xFF181818),
+    elevation: 20.0,
+    titleTextStyle: TextStyle(
+      fontFamily: 'Poppins',
+      fontSize: 18.0,
+      fontWeight: FontWeight.w400,
+      color: darkSecondary,
+    ),
+  ),
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      textStyle: MaterialStateProperty.all(
+        const TextStyle(
+          fontFamily: 'Poppins',
+          fontSize: 14.0,
+          fontWeight: FontWeight.w400,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+      shape: MaterialStateProperty.all(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            20.0,
+          ),
+        ),
+      ),
+      foregroundColor: MaterialStateProperty.all(
+        onSurface,
+      ),
+      backgroundColor: MaterialStateProperty.all(
+        Colors.transparent,
+      ),
+      padding: MaterialStateProperty.all(
+        const EdgeInsets.symmetric(
+          horizontal: 10.0,
+          vertical: 8.0,
+        ),
+      ),
+    ),
+  ),
 );
 
 final lightThemeData = ThemeData(
@@ -135,7 +174,7 @@ final lightThemeData = ThemeData(
     ),
   ),
   tabBarTheme: const TabBarTheme(
-    labelColor: onPrimary,
+    labelColor: onSurface,
     unselectedLabelColor: lightSecondary,
     labelStyle: TextStyle(
       fontFamily: 'Poppins',
@@ -159,7 +198,6 @@ final lightThemeData = ThemeData(
   ),
   colorScheme: const ColorScheme(
     primary: lightPrimary,
-    primaryVariant: Colors.white,
     background: lightPrimary,
     error: Colors.red,
     onError: Colors.white,
@@ -168,9 +206,8 @@ final lightThemeData = ThemeData(
     onBackground: lightSecondary,
     onPrimary: lightSecondary,
     onSecondary: lightPrimary,
-    onSurface: Colors.black,
+    onSurface: onSurface,
     secondary: lightSecondary,
-    secondaryVariant: Colors.grey,
   ),
   textTheme: const TextTheme(
     headline6: TextStyle(
@@ -214,4 +251,21 @@ final lightThemeData = ThemeData(
     overlayShape: const RoundSliderOverlayShape(overlayRadius: 0.0),
   ),
   splashColor: Colors.transparent,
+  dialogTheme: const DialogTheme(
+    backgroundColor: lightPrimary,
+    elevation: 10.0,
+    titleTextStyle: TextStyle(
+      fontFamily: 'Poppins',
+      fontSize: 18.0,
+      fontWeight: FontWeight.w400,
+      color: darkSecondary,
+    ),
+    contentTextStyle: TextStyle(
+      fontFamily: 'Poppins',
+      fontSize: 14.0,
+      fontWeight: FontWeight.w400,
+      color: darkSecondary,
+      overflow: TextOverflow.ellipsis,
+    ),
+  ),
 );

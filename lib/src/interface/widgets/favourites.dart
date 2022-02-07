@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:music/src/data/providers/favourites_provider.dart';
 import 'package:music/src/interface/widgets/error_indicator.dart';
 import 'package:music/src/interface/widgets/loading_indicator.dart';
+import '../../global/constants/index.dart';
 import 'tile.dart';
 
 class Favourites extends StatelessWidget {
@@ -10,16 +11,46 @@ class Favourites extends StatelessWidget {
 
   Favourites({Key? key}) : super(key: key);
 
-  Expanded _buildFavouritesList(BuildContext context, List<dynamic> _songs) {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: _favouritesCount,
-        itemBuilder: (BuildContext context, int index) {
-          return Tile(
-            onTap: () {},
-            entity: _songs[index],
-          );
-        },
+  _buildFavouritesList(BuildContext context, List<dynamic> _songs) {
+    ThemeData theme = Theme.of(context);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Column(
+        children: [
+          ListView.builder(
+            itemCount: _songs.length < _favouritesCount
+                ? _songs.length
+                : _favouritesCount,
+            itemBuilder: (BuildContext context, int index) {
+              return Tile(
+                entity: _songs[index],
+                onTap: () {},
+                view: View.list,
+              );
+            },
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 10.0,
+            ),
+            child: TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, routes[Routes.favouritesRoute]!);
+              },
+              child: Text(
+                'See More',
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  color: Colors.pinkAccent.shade400,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -34,7 +65,8 @@ class Favourites extends StatelessWidget {
             child: LoadingIndicator(),
             height: 400.0,
           );
-        } else if (snapshot.hasData && snapshot.data.isEmpty) {
+        } else if (snapshot.hasData &&
+            (snapshot.data.isEmpty || snapshot.data == null)) {
           return const SizedBox(
             height: 300,
             child: ErrorIndicator(

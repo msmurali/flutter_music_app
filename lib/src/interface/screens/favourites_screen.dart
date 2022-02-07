@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:music/src/data/providers/favourites_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music/src/global/constants/enums.dart';
+import 'package:music/src/logic/bloc/preferences_bloc/bloc.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
+import '../../logic/bloc/favourites_bloc/bloc.dart';
 import '../widgets/app_bar_button.dart';
 import '../widgets/error_indicator.dart';
 import '../widgets/mini_player.dart';
-import '../widgets/music_tab.dart';
 import '../widgets/scaffold_with_sliding_panel.dart';
+import '../widgets/tile.dart';
 
 class FavouritesScreen extends StatelessWidget {
   const FavouritesScreen({
@@ -40,21 +44,59 @@ class FavouritesScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildFavourites(BuildContext context, List<SongModel> songs) {
+    if (songs.isEmpty) {
+      return const ErrorIndicator(
+        asset: 'asset/images/no_favourites.svg',
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: BlocBuilder<PreferencesBloc, PreferencesState>(
+          builder: (BuildContext context, PreferencesState state) {
+            PreferencesState _currentState =
+                BlocProvider.of<PreferencesBloc>(context).state;
+            if (_currentState.view == View.grid) {
+              return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: _currentState.gridSize,
+                  crossAxisSpacing: 6.0,
+                  mainAxisSpacing: 6.0,
+                ),
+                itemCount: songs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Tile(
+                    entity: songs[index],
+                  );
+                },
+              );
+            } else {
+              return ListView.builder(
+                itemCount: songs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Tile(
+                    entity: songs[index],
+                  );
+                },
+              );
+            }
+          },
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    FavouritesProvider _favouritesProvider = FavouritesProvider();
-
     return Material(
       child: SafeArea(
         child: ScaffoldWithSlidingPanel(
           body: Scaffold(
             appBar: _buildAppBar(context),
-            body: MusicTab(
-              futureData: _favouritesProvider.getFavouritesSongs(),
-              errorIndicator: const ErrorIndicator(
-                asset: 'asset/images/no_favourites.svg',
-              ),
-            ),
+            body: BlocBuilder<FavouritesBloc, FavouritesState>(
+                builder: (context, state) {
+              return _buildFavourites(context, state.songs);
+            }),
           ),
           collapsed: const MiniPlayer(),
           expanded: Container(color: Colors.white),

@@ -8,6 +8,8 @@ import '../../data/providers/artwork_provider.dart';
 class MusicArtwork extends StatelessWidget {
   final dynamic entity;
   final double? borderRadius;
+  final double _width = 60;
+  final double _height = 60;
 
   const MusicArtwork({
     Key? key,
@@ -17,8 +19,8 @@ class MusicArtwork extends StatelessWidget {
 
   Container _buildArtworkLoadingIndicator() {
     return Container(
-      width: 50,
-      height: 50,
+      width: _width,
+      height: _height,
       decoration: BoxDecoration(
         color: Colors.grey,
         borderRadius: BorderRadius.circular(borderRadius ?? 8.0),
@@ -28,8 +30,8 @@ class MusicArtwork extends StatelessWidget {
 
   Container _buildArtwork(byteData) {
     return Container(
-      width: 50,
-      height: 50,
+      width: _width,
+      height: _height,
       decoration: BoxDecoration(
         image: DecorationImage(
           image: MemoryImage(byteData),
@@ -43,8 +45,8 @@ class MusicArtwork extends StatelessWidget {
 
   Container _buildArtworkPlaceholder() {
     return Container(
-      width: 50,
-      height: 50,
+      width: _width,
+      height: _height,
       decoration: BoxDecoration(
         image: const DecorationImage(
           image: AssetImage('asset/images/placeholder.jpg'),

@@ -8,7 +8,8 @@ class FavouritesBloc extends Bloc<FavouritesEvents, FavouritesState> {
   final FavouritesServices _favouritesServices = FavouritesServices();
   final FavouritesProvider _favouritesProvider = FavouritesProvider();
 
-  FavouritesBloc(FavouritesState initialState) : super(initialState) {
+  FavouritesBloc({required FavouritesState initialState})
+      : super(initialState) {
     on<AddSongToFavouritesEvent>(_onAddSongFromFavourites);
     on<RemoveSongToFavouritesEvent>(_onRemoveSongFromFavourites);
   }

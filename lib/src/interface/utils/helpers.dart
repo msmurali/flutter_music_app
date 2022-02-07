@@ -1,10 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music/src/data/providers/songs_provider.dart';
 import 'package:music/src/data/services/favourites_services.dart';
 import 'package:music/src/data/services/playlist_services.dart';
 import 'package:music/src/global/constants/index.dart';
+import 'package:music/src/logic/bloc/favourites_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
+import '../widgets/playlist_form.dart';
 
 final FavouritesServices _favouritesServices = FavouritesServices();
 final PlaylistServices _playlistServices = PlaylistServices();
@@ -43,7 +47,11 @@ Future<void> showMenuDialog(
     } else if (value == Option.info) {
       _navigateToInfoScreen(context, entity);
     } else if (value == Option.addToFavourites) {
-      await _addToFavourites(entity);
+      final SongModel _song = entity as SongModel;
+
+      FavouritesBloc _favBloc = BlocProvider.of<FavouritesBloc>(context);
+
+      _favBloc.add(AddSongToFavouritesEvent(song: _song));
     } else if (value == Option.addToPlaylist) {
     } else if (value == Option.addAllToPlaylist) {
     } else if (value == Option.addAllToFavourites) {
@@ -63,10 +71,6 @@ void _navigateToInfoScreen(BuildContext context, entity) {
   );
 }
 
-Future<bool> _addToFavourites(entity) async {
-  return await _favouritesServices.addToFavourites(entity.id);
-}
-
 Future<bool> _addAllToFavourites(entity) async {
   late List<SongModel> songs;
   if (entity is AlbumModel) {
@@ -75,4 +79,14 @@ Future<bool> _addAllToFavourites(entity) async {
     songs = await _songsProvider.getArtistSongs(entity.artist);
   }
   return await _favouritesServices.addAllToFavourites(songs);
+}
+
+Future<void> showFormDialog(BuildContext context) async {
+  await showDialog(
+    barrierColor: Colors.black26,
+    context: context,
+    builder: (BuildContext context) {
+      return const PlaylistForm();
+    },
+  );
 }
