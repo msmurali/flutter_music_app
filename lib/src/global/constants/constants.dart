@@ -7,6 +7,7 @@ const routes = <Routes, String>{
   Routes.preferencesRoute: '/preferences',
   Routes.songsRoute: '/songs',
   Routes.infoRoute: '/info',
+  Routes.favouritesRoute: '/favourites',
 };
 
 const recentsListSize = 20;

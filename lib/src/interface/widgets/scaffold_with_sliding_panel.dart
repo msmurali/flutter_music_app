@@ -40,6 +40,8 @@ class AnimatedSheet extends StatefulWidget {
 
 class _AnimatedSheetState extends State<AnimatedSheet> {
   bool _expanded = false;
+  double _collapsedInitialOpacity = 1.0;
+  double _expandedInitialOpacity = 0.0;
 
   final bool _snapable = true;
 

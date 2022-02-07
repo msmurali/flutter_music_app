@@ -10,8 +10,13 @@ import 'tile.dart';
 
 class MusicTab extends StatefulWidget {
   final Future<List<dynamic>> futureData;
+  final Widget? errorIndicator;
 
-  const MusicTab({Key? key, required this.futureData}) : super(key: key);
+  const MusicTab({
+    Key? key,
+    required this.futureData,
+    this.errorIndicator,
+  }) : super(key: key);
 
   @override
   State<MusicTab> createState() => _MusicTabState();
@@ -38,8 +43,10 @@ class _MusicTabState extends State<MusicTab>
 
 class MusicList extends StatelessWidget {
   final AsyncSnapshot snapshot;
+  final Widget? errorIndicator;
 
-  const MusicList({Key? key, required this.snapshot}) : super(key: key);
+  const MusicList({Key? key, required this.snapshot, this.errorIndicator})
+      : super(key: key);
 
   ListView _buildList(BuildContext context, List<dynamic> data) {
     return ListView.builder(
@@ -138,9 +145,10 @@ class MusicList extends StatelessWidget {
         },
       );
     } else {
-      return const ErrorIndicator(
-        asset: 'asset/images/no_data_error.svg',
-      );
+      return errorIndicator ??
+          const ErrorIndicator(
+            asset: 'asset/images/no_data_error.svg',
+          );
     }
   }
 }

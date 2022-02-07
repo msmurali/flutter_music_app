@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music/src/interface/screens/favourites_screen.dart';
 import 'package:music/src/interface/screens/info_screen.dart';
 import '../../global/constants/constants.dart';
 import '../../global/constants/enums.dart';
@@ -33,6 +34,10 @@ class AppRouter {
         builder: (BuildContext context) => InfoScreen(
           song: _entity,
         ),
+      );
+    } else if (_route == routes[Routes.favouritesRoute]) {
+      return MaterialPageRoute(
+        builder: (BuildContext context) => const FavouritesScreen(),
       );
     } else {
       return MaterialPageRoute(

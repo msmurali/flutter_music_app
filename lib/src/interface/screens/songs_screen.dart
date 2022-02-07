@@ -122,22 +122,6 @@ class SongsScreen extends StatelessWidget {
   }
 
   _getArtwork() {
-    // if (entity is AlbumModel) {
-    //   return MusicArtwork(
-    //     borderRadius: 0.0,
-    //     entity: entity,
-    //   );
-    // } else if (entity is ArtistModel) {
-    //   return MusicArtwork(
-    //     borderRadius: 0.0,
-    //     entity: entity,
-    //   );
-    // } else {
-    //   return MusicArtwork(
-    //     borderRadius: 0.0,
-    //     entity: entity,
-    //   );
-    // }
     return MusicArtwork(
       borderRadius: 0.0,
       entity: entity,

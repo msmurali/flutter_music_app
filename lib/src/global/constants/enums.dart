@@ -3,6 +3,7 @@ enum Routes {
   preferencesRoute,
   songsRoute,
   infoRoute,
+  favouritesRoute
 }
 
 enum StorageKey {
