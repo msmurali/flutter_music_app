@@ -6,7 +6,8 @@ import 'bloc.dart';
 class QueueIndexBloc extends Bloc<QueueIndexEvent, QueueIndexState> {
   final AppSharedPreferences _preferences = AppSharedPreferences();
 
-  QueueIndexBloc(QueueIndexState initialState) : super(initialState) {
+  QueueIndexBloc({required QueueIndexState initialState})
+      : super(initialState) {
     on<QueueIndexIncrementEvent>(_onQueueIndexIncrement);
     on<QueueIndexDecrementEvent>(_onQueueIndexDecrement);
     on<SetQueueIndexEvent>(_onSetQueueIndex);

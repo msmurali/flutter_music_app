@@ -1,61 +1,62 @@
+import 'dart:convert';
+
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:music/src/data/services/hive_services.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../global/constants/constants.dart';
 import '../providers/recents_provider.dart';
-import 'app_shared_preferences.dart';
 
 class RecentsServices {
-  final AppSharedPreferences _preferences = AppSharedPreferences();
+  final HiveServices _hiveServices = HiveServices();
   final RecentsProvider _recentsProvider = RecentsProvider();
 
-  Future<bool> createRecents() async {
-    return await _preferences.setRecentsList([]);
+  Future<Box> createRecents() async {
+    return await _hiveServices.initRecentsBox();
   }
 
-  bool recentsAlreadyExists() {
-    final List<SongModel>? _recents = _preferences.getRecentsList();
-    return _recents != null ? true : false;
-  }
+  Future<void> addToRecents(SongModel recentlyPlayed) async {
+    Box _recentsBox = _hiveServices.getRecentsBox();
+    String str = jsonEncode(recentlyPlayed.getMap);
 
-  Future<bool> addToRecents(SongModel recentlyPlayed) async {
-    List<SongModel> _recents = _recentsProvider.getRecents();
-
-    if (_recents.isEmpty) {
-      _recents.add(recentlyPlayed);
+    if (_recentsBox.isEmpty) {
+      _hiveServices.addToRecentsBox(str);
     } else {
       int? _foundAt = songAlreadyInRecents(recentlyPlayed);
       if (_foundAt != null) {
-        _recents.add(_recents.removeAt(_foundAt));
+        String str = _recentsProvider.getFromRecents(_foundAt);
+        await _hiveServices.rmFromRecentsBox(_foundAt);
+        await _hiveServices.addToRecentsBox(str);
       } else {
-        if (_recents.length + 1 > recentsListSize) {
-          await rmFromRecents();
-          _recents = _recentsProvider.getRecents();
-          _recents.add(recentlyPlayed);
-        } else {
-          _recents.add(recentlyPlayed);
+        if (_recentsBox.length + 1 > recentsListSize) {
+          await _hiveServices.rmFirstKeyFromRecentsBox();
         }
+        await _hiveServices.addToRecentsBox(json.encode(recentlyPlayed.getMap));
       }
     }
-
-    return await _preferences.setRecentsList(_recents);
   }
 
-  Future<bool> rmFromRecents() async {
-    List<SongModel> _recents = _recentsProvider.getRecents();
-    _recents.removeAt(0);
-    return await _preferences.setRecentsList(_recents);
+  Future<void> rmFromRecents({int? key}) async {
+    if (key != null) {
+      return await _hiveServices.rmFromRecentsBox(key);
+    } else {
+      return await _hiveServices.rmFirstKeyFromRecentsBox();
+    }
   }
 
   int? songAlreadyInRecents(SongModel recentlyPlayed) {
-    List<SongModel> _recents = _recentsProvider.getRecents();
     int? _foundAt;
 
-    for (var index = 0; index < _recents.length; index++) {
-      if (_recents[index].id == recentlyPlayed.id) {
-        _foundAt = index;
-        break;
+    Box _recentsBox = _hiveServices.getRecentsBox();
+
+    Map<dynamic, dynamic> _recentsMap = _recentsBox.toMap();
+
+    _recentsMap.keys.map((key) {
+      SongModel _song = SongModel(jsonDecode(_recentsMap[key]));
+      if (recentlyPlayed.id == _song.id) {
+        _foundAt = int.parse(key);
       }
-    }
+    });
 
     return _foundAt;
   }

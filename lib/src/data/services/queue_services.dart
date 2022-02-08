@@ -11,8 +11,8 @@ class QueueServices {
     return await _preferences.setQueueList(songs);
   }
 
-  bool queueAlreadyExists() {
-    final List<SongModel>? _queue = _preferences.getQueueList();
+  Future<bool> queueAlreadyExists() async {
+    final List<SongModel>? _queue = await _preferences.getQueueList();
     return _queue != null ? true : false;
   }
 }

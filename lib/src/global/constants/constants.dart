@@ -20,8 +20,8 @@ const keys = <StorageKey, String>{
   StorageKey.recents: 'com.mk.music-recents',
   StorageKey.queue: 'com.mk.music-queue',
   StorageKey.queueIndex: 'com.mk.music-queue-index',
-  StorageKey.playback: 'com.mk.music-playback-mode',
-  StorageKey.theme: 'com.mk.music-theme',
+  StorageKey.playbackMode: 'com.mk.music-playback-mode',
+  StorageKey.theme: 'com.mk.music-theme-mode',
   StorageKey.songsSortType: 'com.mk.music-song-sort-type',
   StorageKey.songsOrderType: 'com.mk.music-song-order-type',
   StorageKey.albumsSortType: 'com.mk.music-album-sort-type',
@@ -29,7 +29,8 @@ const keys = <StorageKey, String>{
   StorageKey.artistsSortType: 'com.mk.music-artist-sort-type',
   StorageKey.artistsOrderType: 'com.mk.music-srtist-order-type',
   StorageKey.view: 'com.mk.music-view',
-  StorageKey.gridSize: 'com.mk.music-grid-size'
+  StorageKey.gridSize: 'com.mk.music-grid-size',
+  StorageKey.preferences: 'com.mk.music-preferences',
 };
 
 const optionsText = <Option, String>{

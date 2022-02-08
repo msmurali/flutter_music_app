@@ -12,7 +12,7 @@ enum StorageKey {
   recents,
   queue,
   queueIndex,
-  playback,
+  playbackMode,
   theme,
   view,
   gridSize,
@@ -22,6 +22,7 @@ enum StorageKey {
   artistsOrderType,
   albumsSortType,
   albumsOrderType,
+  preferences,
 }
 
 enum AppTheme {

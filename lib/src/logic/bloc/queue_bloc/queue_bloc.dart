@@ -9,7 +9,7 @@ class QueueBloc extends Bloc<QueueEvents, QueueState> {
   final SongsProvider _songsProvider = SongsProvider();
   final AppSharedPreferences _preferences = AppSharedPreferences();
 
-  QueueBloc(QueueState initialState) : super(initialState) {
+  QueueBloc({required QueueState initialState}) : super(initialState) {
     on<AddSongToQueueEvent>(_onAddSongEvent);
     on<ChangeQueueEvent>(_onChangeQueueEvent);
     on<PlayNextEvent>(_onPlayNextEvent);

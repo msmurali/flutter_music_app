@@ -1,9 +1,7 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:music/src/global/constants/enums.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-
 import '../../../data/services/preferences_services.dart';
 import 'bloc.dart';
 
@@ -42,7 +40,7 @@ class PreferencesBloc extends Bloc<PreferencesEvent, PreferencesState> {
 
     emitter.call(_preferencesState);
 
-    await _preferencesServices.setSongsSortType(_sortType);
+    await _preferencesServices.setSongSortType(_sortType);
   }
 
   Future<void> _onChangeSongOrderType(
@@ -64,7 +62,7 @@ class PreferencesBloc extends Bloc<PreferencesEvent, PreferencesState> {
 
     emitter.call(_preferencesState);
 
-    await _preferencesServices.setSongsOrderType(_orderType);
+    await _preferencesServices.setSongOrderType(_orderType);
   }
 
   Future<void> _onSetListView(

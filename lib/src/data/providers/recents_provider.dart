@@ -1,11 +1,24 @@
+import 'dart:convert';
+
+import 'package:hive/hive.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import '../services/app_shared_preferences.dart';
+import '../services/hive_services.dart';
 
 class RecentsProvider {
-  final AppSharedPreferences _preferences = AppSharedPreferences();
+  final HiveServices _hiveServices = HiveServices();
 
   List<SongModel> getRecents() {
-    List<SongModel> recents = _preferences.getRecentsList()!;
-    return recents;
+    Box _recentsBox = _hiveServices.getRecentsBox();
+
+    List<SongModel> _recents = _recentsBox.values.map((str) {
+      return SongModel(jsonDecode(str));
+    }).toList();
+
+    return _recents;
+  }
+
+  String getFromRecents(int key) {
+    Box _recentsBox = _hiveServices.getRecentsBox();
+    return _recentsBox.get(key);
   }
 }

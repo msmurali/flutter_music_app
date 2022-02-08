@@ -1,22 +1,27 @@
-import '../../global/constants/enums.dart';
-import 'app_shared_preferences.dart';
+import 'package:music/src/data/services/hive_services.dart';
+
+import '../../global/constants/index.dart';
 
 class PlayerServices {
-  final AppSharedPreferences _preferences = AppSharedPreferences();
+  final HiveServices _hiveServices = HiveServices();
 
-  Future<bool> setPlaybackMode(PlaybackMode playbackMode) async {
-    return await _preferences.setPlaybackMode(playbackMode.name);
+  Future<void> setPlaybackMode(PlaybackMode playbackMode) async {
+    return await _hiveServices.setPreferenceToBox(
+      keys[StorageKey.playbackMode]!,
+      playbackMode.name,
+    );
   }
 
   PlaybackMode getPlaybackMode() {
-    String _playbackMode = _preferences.getPlaybackMode();
+    String _playbackMode =
+        _hiveServices.getPreference(keys[StorageKey.playbackMode]!);
 
-    if (_playbackMode == PlaybackMode.order.name) {
-      return PlaybackMode.order;
+    if (_playbackMode == PlaybackMode.repeat.name) {
+      return PlaybackMode.repeat;
     } else if (_playbackMode == PlaybackMode.shuffle.name) {
       return PlaybackMode.shuffle;
     } else {
-      return PlaybackMode.repeat;
+      return PlaybackMode.order;
     }
   }
 }

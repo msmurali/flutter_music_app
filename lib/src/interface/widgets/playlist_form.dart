@@ -17,57 +17,64 @@ class _PlaylistFormState extends State<PlaylistForm> {
 
   Widget _buildForm(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return Form(
-      child: Column(
-        children: [
-          TextField(
-            cursorColor: theme.colorScheme.onSurface,
-            decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.white.withOpacity(0.05),
-                  width: 1.4,
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Form(
+        child: Column(
+          children: [
+            const SizedBox(height: 20.0),
+            TextField(
+              cursorColor: theme.colorScheme.onSurface,
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.white.withOpacity(0.05),
+                    width: 1.4,
+                  ),
                 ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: theme.colorScheme.onSurface,
-                  width: 1.4,
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: theme.colorScheme.onSurface,
+                    width: 1.4,
+                  ),
                 ),
+                isDense: true,
+                border: const OutlineInputBorder(),
+                filled: true,
+                fillColor: Colors.white.withOpacity(0.05),
               ),
-              isDense: true,
-              border: const OutlineInputBorder(),
-              filled: true,
-              fillColor: Colors.white.withOpacity(0.05),
+              controller: _textEditingController,
             ),
-            controller: _textEditingController,
-          ),
-          const SizedBox(height: 20.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text(
-                  'Discard',
+            const SizedBox(height: 20.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    'Discard',
+                  ),
+                  style: theme.textButtonTheme.style,
                 ),
-                style: theme.textButtonTheme.style,
-              ),
-              TextButton(
-                onPressed: () {
-                  // check value is null
-                  // check if playlist name already exits
-                  // create playlist
-                },
-                child: const Text(
-                  'Create',
+                const SizedBox(width: 20.0),
+                TextButton(
+                  onPressed: () {
+                    // check value is null
+                    // check if playlist name already exits
+                    // create playlist
+                  },
+                  child: const Text(
+                    'Create',
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

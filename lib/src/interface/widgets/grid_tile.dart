@@ -47,7 +47,7 @@ class GridTile extends StatelessWidget {
                       decoration: const BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            Colors.black,
+                            Colors.black45,
                             Colors.transparent,
                           ],
                           begin: Alignment.bottomCenter,
@@ -63,6 +63,7 @@ class GridTile extends StatelessWidget {
                         child: Text(
                           title,
                           style: theme.textTheme.bodyText2,
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
