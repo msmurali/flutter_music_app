@@ -12,6 +12,8 @@ class HiveServices {
 
   final String _recentsKey = keys[StorageKey.recents]!;
   final String _preferencesKey = keys[StorageKey.preferences]!;
+  final String _queueKey = keys[StorageKey.queue]!;
+  final String _queueIndexKey = keys[StorageKey.queueIndex]!;
 
   Future<void> init() async {
     return await Hive.initFlutter();
@@ -41,7 +43,6 @@ class HiveServices {
     await _recentsBox.delete(key);
   }
 
-
   Future<int> clearRecentsBox() async {
     return await Hive.box(_recentsKey).clear();
   }
@@ -66,5 +67,34 @@ class HiveServices {
       return _preferencesBox.get(key, defaultValue: defaultVal);
     }
     return _preferencesBox.get(key);
+  }
+
+  /* Queue */
+  Future<Box> initQueueBox() async {
+    return await Hive.openBox(_queueKey);
+  }
+
+  Box getQueueBox() {
+    return Hive.box(_queueKey);
+  }
+
+  List<String>? getQueue() {
+    Box _queueBox = Hive.box(_queueKey);
+    return _queueBox.get(_queueKey);
+  }
+
+  Future<void> setQueue(List<String> queue) async {
+    Box _queueBox = Hive.box(_queueKey);
+    return await _queueBox.put(_queueKey, queue);
+  }
+
+  int? getQueueIndex() {
+    Box _queueBox = Hive.box(_queueKey);
+    return _queueBox.get(_queueIndexKey);
+  }
+
+  Future<void> setQueueIndex(int index) async {
+    Box _queueBox = Hive.box(_queueKey);
+    return await _queueBox.put(_queueIndexKey, index);
   }
 }
