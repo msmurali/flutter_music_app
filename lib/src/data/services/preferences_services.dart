@@ -7,7 +7,7 @@ class PreferencesServices {
   final HiveServices _hiveServices = HiveServices();
 
   ThemeMode getTheme() {
-    String _theme = _hiveServices.getPreference(keys[StorageKey.theme]!);
+    String? _theme = _hiveServices.getPreference(keys[StorageKey.theme]!);
     if (_theme == ThemeMode.light.name) {
       return ThemeMode.light;
     } else if (_theme == ThemeMode.dark.name) {
@@ -25,7 +25,7 @@ class PreferencesServices {
   }
 
   SongSortType getSongSortType() {
-    String _songSortType =
+    String? _songSortType =
         _hiveServices.getPreference(keys[StorageKey.songsSortType]!);
     if (_songSortType == SongSortType.ALBUM.name) {
       return SongSortType.ALBUM;
@@ -52,7 +52,7 @@ class PreferencesServices {
   }
 
   OrderType getSongOrderType() {
-    String _songOrderType =
+    String? _songOrderType =
         _hiveServices.getPreference(keys[StorageKey.songsOrderType]!);
     if (_songOrderType == OrderType.DESC_OR_GREATER.name) {
       return OrderType.DESC_OR_GREATER;
@@ -69,7 +69,7 @@ class PreferencesServices {
   }
 
   AlbumSortType getAlbumsSortType() {
-    String _albumSortType =
+    String? _albumSortType =
         _hiveServices.getPreference(keys[StorageKey.albumsSortType]!);
     if (_albumSortType == AlbumSortType.ARTIST.name) {
       return AlbumSortType.ARTIST;
@@ -88,7 +88,7 @@ class PreferencesServices {
   }
 
   OrderType getAlbumOrderType() {
-    String _albumOrderType =
+    String? _albumOrderType =
         _hiveServices.getPreference(keys[StorageKey.albumsOrderType]!);
     if (_albumOrderType == OrderType.DESC_OR_GREATER.name) {
       return OrderType.DESC_OR_GREATER;
@@ -105,7 +105,7 @@ class PreferencesServices {
   }
 
   ArtistSortType getArtistSortType() {
-    String _artistSortType =
+    String? _artistSortType =
         _hiveServices.getPreference(keys[StorageKey.artistsSortType]!);
     if (_artistSortType == ArtistSortType.NUM_OF_ALBUMS.name) {
       return ArtistSortType.NUM_OF_TRACKS;
@@ -124,7 +124,7 @@ class PreferencesServices {
   }
 
   OrderType getArtistOrderType() {
-    String _artistOrderType =
+    String? _artistOrderType =
         _hiveServices.getPreference(keys[StorageKey.artistsOrderType]!);
     if (_artistOrderType == OrderType.DESC_OR_GREATER.name) {
       return OrderType.DESC_OR_GREATER;
@@ -148,7 +148,7 @@ class PreferencesServices {
   }
 
   View getView() {
-    String _view = _hiveServices.getPreference(keys[StorageKey.view]!);
+    String? _view = _hiveServices.getPreference(keys[StorageKey.view]!);
     return _view == View.grid.name ? View.grid : View.list;
   }
 
@@ -163,7 +163,7 @@ class PreferencesServices {
     String _gridSize = _hiveServices.getPreference(
       keys[StorageKey.gridSize]!,
       defaultVal: '3',
-    );
+    )!;
 
     return int.parse(_gridSize);
   }

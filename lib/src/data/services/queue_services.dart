@@ -1,18 +1,22 @@
-import '../providers/songs_provider.dart';
-import 'app_shared_preferences.dart';
+import 'dart:convert';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'hive_services.dart';
 
 class QueueServices {
-  final SongsProvider _songsProvider = SongsProvider();
-  final AppSharedPreferences _preferences = AppSharedPreferences();
+  final HiveServices _hiveServices = HiveServices();
 
-  Future<bool> createQueue() async {
-    List<SongModel> songs = await _songsProvider.getSongs();
-    return await _preferences.setQueueList(songs);
+  Future<void> setQueue(List<SongModel> songs) {
+    List<String> _songsMapStringList =
+        songs.map((song) => jsonEncode(song.getMap)).toList();
+
+    return _hiveServices.setQueue(_songsMapStringList);
   }
 
-  Future<bool> queueAlreadyExists() async {
-    final List<SongModel>? _queue = await _preferences.getQueueList();
-    return _queue != null ? true : false;
+  Future<void> setQueueIndex(int index) async {
+    await _hiveServices.setQueueIndex(index);
+  }
+
+  int getQueueIndex() {
+    return _hiveServices.getQueueIndex() ?? 0;
   }
 }

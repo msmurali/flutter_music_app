@@ -1,10 +1,11 @@
 import 'package:bloc/bloc.dart';
+import 'package:music/src/data/services/hive_services.dart';
+import 'package:music/src/data/services/queue_services.dart';
 
-import '../../../data/services/app_shared_preferences.dart';
 import 'bloc.dart';
 
 class QueueIndexBloc extends Bloc<QueueIndexEvent, QueueIndexState> {
-  final AppSharedPreferences _preferences = AppSharedPreferences();
+  final QueueServices _queueServices = QueueServices();
 
   QueueIndexBloc({required QueueIndexState initialState})
       : super(initialState) {
@@ -57,6 +58,6 @@ class QueueIndexBloc extends Bloc<QueueIndexEvent, QueueIndexState> {
   }
 
   Future<void> _storeQueueIndexInPreferences(int index) async {
-    await _preferences.setQueueIndex(index);
+    await _queueServices.setQueueIndex(index);
   }
 }

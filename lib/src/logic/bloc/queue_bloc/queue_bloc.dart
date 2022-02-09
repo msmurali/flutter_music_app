@@ -2,12 +2,12 @@ import 'package:bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../data/providers/songs_provider.dart';
-import '../../../data/services/app_shared_preferences.dart';
+import '../../../data/services/queue_services.dart';
 import 'bloc.dart';
 
 class QueueBloc extends Bloc<QueueEvents, QueueState> {
   final SongsProvider _songsProvider = SongsProvider();
-  final AppSharedPreferences _preferences = AppSharedPreferences();
+  final QueueServices _queueServices = QueueServices();
 
   QueueBloc({required QueueState initialState}) : super(initialState) {
     on<AddSongToQueueEvent>(_onAddSongEvent);
@@ -20,32 +20,32 @@ class QueueBloc extends Bloc<QueueEvents, QueueState> {
     AddSongToQueueEvent event,
     Emitter<QueueState> emitter,
   ) async {
-    List<SongModel> newSongs = state.songs;
+    List<SongModel> _newSongs = state.songs;
 
-    newSongs.add(event.song);
+    _newSongs.add(event.song);
 
     QueueState newState = QueueState(
-      songs: newSongs,
+      songs: _newSongs,
     );
 
     emitter.call(newState);
 
-    await _preferences.setQueueList(newState.songs);
+    await _queueServices.setQueue(_newSongs);
   }
 
   _onChangeQueueEvent(
     ChangeQueueEvent event,
     Emitter<QueueState> emitter,
   ) async {
-    List<SongModel> newSongs = event.songs;
+    List<SongModel> _newSongs = event.songs;
 
     QueueState newState = QueueState(
-      songs: newSongs,
+      songs: _newSongs,
     );
 
     emitter.call(newState);
 
-    await _preferences.setQueueList(newState.songs);
+    await _queueServices.setQueue(_newSongs);
   }
 
   _onPlayNextEvent(
@@ -61,7 +61,7 @@ class QueueBloc extends Bloc<QueueEvents, QueueState> {
 
     emitter.call(newState);
 
-    await _preferences.setQueueList(newState.songs);
+    await _queueServices.setQueue(_newSongs);
   }
 
   _onResetQueueEvent(
@@ -76,6 +76,6 @@ class QueueBloc extends Bloc<QueueEvents, QueueState> {
 
     emitter.call(newState);
 
-    await _preferences.setQueueList(newState.songs);
+    await _queueServices.setQueue(_newSongs);
   }
 }

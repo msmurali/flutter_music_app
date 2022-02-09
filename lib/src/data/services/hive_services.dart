@@ -16,7 +16,10 @@ class HiveServices {
   final String _queueIndexKey = keys[StorageKey.queueIndex]!;
 
   Future<void> init() async {
-    return await Hive.initFlutter();
+    await Hive.initFlutter();
+    await initRecentsBox();
+    await initPreferencesBox();
+    await initQueueBox();
   }
 
   /* Recents */
@@ -61,7 +64,7 @@ class HiveServices {
     return await _preferencesBox.put(key, value);
   }
 
-  String getPreference(String key, {dynamic defaultVal}) {
+  String? getPreference(String key, {dynamic defaultVal}) {
     Box _preferencesBox = Hive.box(_preferencesKey);
     if (defaultVal != null) {
       return _preferencesBox.get(key, defaultValue: defaultVal);

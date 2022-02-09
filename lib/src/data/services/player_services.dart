@@ -13,7 +13,7 @@ class PlayerServices {
   }
 
   PlaybackMode getPlaybackMode() {
-    String _playbackMode =
+    String? _playbackMode =
         _hiveServices.getPreference(keys[StorageKey.playbackMode]!);
 
     if (_playbackMode == PlaybackMode.repeat.name) {
