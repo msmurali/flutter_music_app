@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'player_screen.dart';
 
 import '../../data/providers/playlists_provider.dart';
 import '../widgets/app_bar_button.dart';
@@ -53,7 +54,7 @@ class PlaylistsScreen extends StatelessWidget {
             body: _buildPlaylists(),
           ),
           collapsed: const MiniPlayer(),
-          expanded: Container(color: Colors.white),
+          expanded: const PlayerScreen(),
         ),
       ),
     );

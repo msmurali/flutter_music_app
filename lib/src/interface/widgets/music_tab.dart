@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music/src/global/constants/index.dart';
-import 'package:music/src/interface/utils/helpers.dart';
-import 'package:music/src/logic/bloc/preferences_bloc/bloc.dart';
+import '../../global/constants/index.dart';
+import '../utils/helpers.dart';
+import '../../logic/bloc/preferences_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'error_indicator.dart';
 import 'loading_indicator.dart';

@@ -7,7 +7,7 @@ class RecentsBloc extends Bloc<RecentsEvents, RecentsState> {
   final RecentsServices _recentsServices = RecentsServices();
   final RecentsProvider _recentsProvider = RecentsProvider();
 
-  RecentsBloc(RecentsState initialState) : super(initialState) {
+  RecentsBloc({required RecentsState initialState}) : super(initialState) {
     on<AddSongEventToRecents>(_onAddSongEvent);
     on<RemoveSongEventFromRecents>(_onRemoveSongEvent);
   }

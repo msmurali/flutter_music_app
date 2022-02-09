@@ -1,8 +1,9 @@
 import 'dart:convert';
 
-import 'package:music/src/data/providers/songs_provider.dart';
-import 'package:music/src/data/services/hive_services.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
+import '../services/hive_services.dart';
+import 'songs_provider.dart';
 
 class QueueProvider {
   final HiveServices _hiveServices = HiveServices();

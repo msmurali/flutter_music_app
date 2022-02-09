@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:music/src/interface/utils/custom_icons.dart';
-import 'package:music/src/interface/utils/helpers.dart';
+
+import '../utils/custom_icons.dart';
 
 class CustomListTile extends StatelessWidget {
   final Widget artwork;

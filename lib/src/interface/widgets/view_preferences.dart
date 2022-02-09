@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music/src/global/constants/index.dart';
-import 'package:music/src/interface/widgets/preferences_option.dart';
-import 'package:music/src/logic/bloc/preferences_bloc/bloc.dart';
+
+import '../../global/constants/index.dart';
+import '../../logic/bloc/preferences_bloc/bloc.dart';
+import 'preferences_option.dart';
 
 class ViewPreferences extends StatelessWidget {
   const ViewPreferences({Key? key}) : super(key: key);

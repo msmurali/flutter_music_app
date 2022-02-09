@@ -1,6 +1,5 @@
-import 'package:music/src/data/services/hive_services.dart';
-
 import '../../global/constants/index.dart';
+import 'hive_services.dart';
 
 class PlayerServices {
   final HiveServices _hiveServices = HiveServices();

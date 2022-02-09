@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music/src/global/constants/index.dart';
-import 'package:music/src/logic/bloc/preferences_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
+import '../../global/constants/index.dart';
+import '../../logic/bloc/preferences_bloc/bloc.dart';
 
 class SortingPreferences extends StatelessWidget {
   const SortingPreferences({

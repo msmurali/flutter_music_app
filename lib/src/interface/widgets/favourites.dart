@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:music/src/data/providers/favourites_provider.dart';
-import 'package:music/src/interface/widgets/error_indicator.dart';
-import 'package:music/src/interface/widgets/loading_indicator.dart';
+
+import '../../data/providers/favourites_provider.dart';
 import '../../global/constants/index.dart';
+import 'error_indicator.dart';
+import 'loading_indicator.dart';
 import 'tile.dart';
 
 class Favourites extends StatelessWidget {

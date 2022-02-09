@@ -1,7 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../logic/bloc/player_bloc/bloc.dart';
 import '../utils/custom_icons.dart';
 import 'circular_icon_button.dart';
 import 'circular_progress_bar.dart';
@@ -47,16 +49,29 @@ class MiniPlayer extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(28.0),
-            child: Container(
+            child: SizedBox(
               width: 56.0,
               height: 56.0,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(
-                    'asset/images/placeholder.jpg',
-                  ),
-                  fit: BoxFit.cover,
-                ),
+              child: BlocBuilder<PlayerBloc, PlayerBlocState>(
+                builder: (BuildContext context, PlayerBlocState state) {
+                  if (state.artworkData != null) {
+                    return SizedBox.expand(
+                      child: Image.memory(
+                        state.artworkData!,
+                        fit: BoxFit.cover,
+                        gaplessPlayback: true,
+                      ),
+                    );
+                  } else {
+                    return SizedBox.expand(
+                      child: Image.asset(
+                        'asset/images/placeholder.jpg',
+                        fit: BoxFit.cover,
+                        gaplessPlayback: true,
+                      ),
+                    );
+                  }
+                },
               ),
             ),
           ),
@@ -65,19 +80,23 @@ class MiniPlayer extends StatelessWidget {
               padding: const EdgeInsets.symmetric(
                 horizontal: 12.0,
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Havana',
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
-                  Text(
-                    'Camila Cabello',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                ],
+              child: BlocBuilder<PlayerBloc, PlayerBlocState>(
+                builder: (context, state) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        state.nowPlaying.title,
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
+                      Text(
+                        state.nowPlaying.artist ?? 'Unknown',
+                        style: Theme.of(context).textTheme.subtitle2,
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
           ),
@@ -123,7 +142,11 @@ class MiniPlayer extends StatelessWidget {
     return SizedBox(
       height: 88.0,
       child: Container(
-        margin: const EdgeInsets.all(8.0),
+        margin: const EdgeInsets.only(
+          left: 16.0,
+          right: 16.0,
+          bottom: 16.0,
+        ),
         child: Stack(
           children: [
             _buildBackground(),

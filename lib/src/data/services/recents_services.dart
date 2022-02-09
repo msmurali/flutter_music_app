@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:music/src/data/services/hive_services.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../global/constants/constants.dart';
 import '../providers/recents_provider.dart';
+import 'hive_services.dart';
 
 class RecentsServices {
   final HiveServices _hiveServices = HiveServices();

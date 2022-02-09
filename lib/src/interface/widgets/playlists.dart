@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:music/src/data/providers/playlists_provider.dart';
-import 'package:music/src/interface/widgets/error_indicator.dart';
-import 'package:music/src/interface/widgets/loading_indicator.dart';
+import '../../data/providers/playlists_provider.dart';
+import 'error_indicator.dart';
+import 'loading_indicator.dart';
 import '../../global/constants/enums.dart';
 import 'tile.dart';
 

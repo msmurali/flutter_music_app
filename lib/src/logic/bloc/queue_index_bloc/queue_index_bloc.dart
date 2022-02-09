@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:music/src/data/services/hive_services.dart';
-import 'package:music/src/data/services/queue_services.dart';
+import '../../../data/services/hive_services.dart';
+import '../../../data/services/queue_services.dart';
 
 import 'bloc.dart';
 

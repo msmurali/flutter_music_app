@@ -1,12 +1,14 @@
-import 'bloc.dart';
 import 'package:bloc/bloc.dart';
+
 import '../../../data/services/player_services.dart';
 import '../../../global/constants/enums.dart';
+import 'bloc.dart';
 
 class PlaybackModeBloc extends Bloc<PlaybackModeEvent, PlaybackModeState> {
   final PlayerServices _playerservices = PlayerServices();
 
-  PlaybackModeBloc(PlaybackModeState initialState) : super(initialState) {
+  PlaybackModeBloc({required PlaybackModeState initialState})
+      : super(initialState) {
     on<PlaybackModeEvent>(_onPlaybackModeEvent);
   }
 

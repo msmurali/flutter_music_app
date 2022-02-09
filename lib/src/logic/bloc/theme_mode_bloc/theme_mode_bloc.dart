@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:music/src/data/services/preferences_services.dart';
-import './bloc.dart';
+
+import '../../../data/services/preferences_services.dart';
+import 'bloc.dart';
 
 class ThemeModeBloc extends Bloc<ThemeModeEvents, ThemeModeState> {
   final PreferencesServices _preferencesServices = PreferencesServices();

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:music/src/interface/widgets/theme_preferences.dart';
 
 import '../../data/services/playlist_services.dart';
 

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:music/src/interface/screens/favourites_screen.dart';
-import 'package:music/src/interface/screens/info_screen.dart';
-import 'package:music/src/interface/screens/playlists_screen.dart';
+
 import '../../global/constants/constants.dart';
 import '../../global/constants/enums.dart';
+import '../screens/favourites_screen.dart';
 import '../screens/home_screen.dart';
+import '../screens/info_screen.dart';
+import '../screens/playlists_screen.dart';
 import '../screens/preferences_screen.dart';
 import '../screens/songs_screen.dart';
 

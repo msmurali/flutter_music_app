@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart' hide GridTile;
-import 'grid_tile.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music/src/global/constants/enums.dart';
-import 'package:music/src/logic/bloc/preferences_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
+import '../../global/constants/enums.dart';
+import '../../logic/bloc/preferences_bloc/bloc.dart';
 import 'custom_list_tile.dart';
+import 'grid_tile.dart';
 import 'music_artwork.dart';
 
 class Tile extends StatelessWidget {

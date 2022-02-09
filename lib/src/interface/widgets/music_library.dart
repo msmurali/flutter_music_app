@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music/src/logic/bloc/preferences_bloc/bloc.dart';
+import '../../logic/bloc/preferences_bloc/bloc.dart';
 import '../../data/providers/songs_provider.dart';
 import '../../global/constants/constants.dart';
 import '../../global/constants/enums.dart';

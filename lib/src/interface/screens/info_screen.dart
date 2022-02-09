@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music/src/interface/widgets/circular_artwork.dart';
+import '../widgets/circular_artwork.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import '../widgets/app_bar_button.dart';
 import '../widgets/mini_player.dart';

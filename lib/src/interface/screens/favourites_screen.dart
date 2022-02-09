@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music/src/global/constants/enums.dart';
-import 'package:music/src/logic/bloc/preferences_bloc/bloc.dart';
+import '../../global/constants/enums.dart';
+import 'player_screen.dart';
+import '../../logic/bloc/preferences_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../logic/bloc/favourites_bloc/bloc.dart';
@@ -99,7 +100,7 @@ class FavouritesScreen extends StatelessWidget {
             }),
           ),
           collapsed: const MiniPlayer(),
-          expanded: Container(color: Colors.white),
+          expanded: const PlayerScreen(),
         ),
       ),
     );

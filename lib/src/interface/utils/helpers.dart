@@ -1,13 +1,14 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music/src/data/providers/songs_provider.dart';
-import 'package:music/src/data/services/favourites_services.dart';
-import 'package:music/src/data/services/playlist_services.dart';
-import 'package:music/src/global/constants/index.dart';
-import 'package:music/src/logic/bloc/favourites_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
+import '../../data/providers/songs_provider.dart';
+import '../../data/services/favourites_services.dart';
+import '../../data/services/playlist_services.dart';
+import '../../global/constants/index.dart';
+import '../../logic/bloc/favourites_bloc/bloc.dart';
 import '../widgets/playlist_form.dart';
 
 final FavouritesServices _favouritesServices = FavouritesServices();

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:music/src/interface/widgets/circular_icon_button.dart';
-import 'package:music/src/interface/widgets/recents.dart';
-import '../utils/custom_icons.dart';
+
 import '../utils/helpers.dart';
-import 'playlists.dart';
 import 'favourites.dart';
+import 'playlists.dart';
+import 'recents.dart';
 
 class HomeTab extends StatelessWidget {
   const HomeTab({Key? key}) : super(key: key);

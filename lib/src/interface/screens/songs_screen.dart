@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music/src/global/constants/enums.dart';
-import 'package:music/src/logic/bloc/preferences_bloc/bloc.dart';
+import '../../global/constants/enums.dart';
+import 'player_screen.dart';
+import '../../logic/bloc/preferences_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../data/providers/playlists_provider.dart';
@@ -209,7 +210,7 @@ class SongsScreen extends StatelessWidget {
         child: ScaffoldWithSlidingPanel(
           body: _buildSongsScreen(context),
           collapsed: const MiniPlayer(),
-          expanded: Container(color: Colors.white),
+          expanded: const PlayerScreen(),
         ),
       ),
     );
