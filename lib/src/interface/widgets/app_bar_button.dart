@@ -4,6 +4,7 @@ import 'circular_icon_button.dart';
 
 class AppBarButton extends StatelessWidget {
   final Color? backgroundColor;
+  final Color? highlightColor;
   final String tooltip;
   final double radius;
   final EdgeInsets? margin;
@@ -20,6 +21,7 @@ class AppBarButton extends StatelessWidget {
     this.margin,
     this.onPressed,
     this.iconSize,
+    this.highlightColor,
   }) : super(key: key);
 
   @override

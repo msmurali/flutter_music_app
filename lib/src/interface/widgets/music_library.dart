@@ -26,13 +26,13 @@ class MusicLibrary extends StatelessWidget {
       leadingWidth: 56.0,
       leading: _buildPreferencesButton(context),
       actions: [
-        _buildSearchButton(),
+        _buildSearchButton(context),
       ],
       bottom: _buildTabBar(),
     );
   }
 
-  Container _buildSearchButton() {
+  Container _buildSearchButton(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(right: 16.0),
       child: CircularIconButton(
@@ -41,7 +41,9 @@ class MusicLibrary extends StatelessWidget {
           width: 18.0,
         ),
         radius: 20.0,
-        onPressed: () {}, // TODO
+        onPressed: () {
+          Navigator.pushNamed(context, routes[Routes.searchRoute]!);
+        },
         iconSize: 18.0,
         toolTip: 'Search',
       ),

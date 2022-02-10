@@ -32,7 +32,6 @@ class SongsProvider {
       WithFiltersType.AUDIOS,
       args: AudiosArgs.ALBUM,
     );
-    print(result.length);
     return result.toSongModel();
   }
 
@@ -55,5 +54,44 @@ class SongsProvider {
       args: AudiosArgs.ARTIST,
     );
     return result.toSongModel();
+  }
+
+  /* search songs, albums, artist*/
+  Future<List<dynamic>> search(String query) async {
+    List<dynamic> _songs = await searchSongs(query);
+    List<dynamic> _artists = await searchArtists(query);
+    List<dynamic> _albums = await searchAlbums(query);
+    print(_songs.length);
+    print(_artists.length);
+    print(_albums.length);
+
+    return _songs.followedBy(_artists).followedBy(_albums).toList();
+  }
+
+  Future<List<SongModel>> searchSongs(String query) async {
+    List<dynamic> result = await _audioQuery.queryWithFilters(
+      query,
+      WithFiltersType.AUDIOS,
+      args: AudiosArgs.TITLE,
+    );
+    return result.toSongModel();
+  }
+
+  Future<List<ArtistModel>> searchArtists(String query) async {
+    List<dynamic> result = await _audioQuery.queryWithFilters(
+      query,
+      WithFiltersType.ARTISTS,
+      args: AudiosArgs.ARTIST,
+    );
+    return result.toArtistModel();
+  }
+
+  Future<List<AlbumModel>> searchAlbums(String query) async {
+    List<dynamic> result = await _audioQuery.queryWithFilters(
+      query,
+      WithFiltersType.ALBUMS,
+      args: AudiosArgs.ALBUM,
+    );
+    return result.toAlbumModel();
   }
 }

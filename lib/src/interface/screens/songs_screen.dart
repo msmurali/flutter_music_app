@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide BackButton;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../global/constants/enums.dart';
 import 'player_screen.dart';
@@ -7,7 +7,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../data/providers/playlists_provider.dart';
 import '../../data/providers/songs_provider.dart';
-import '../widgets/app_bar_button.dart';
+import '../widgets/back_button.dart';
 import '../widgets/error_indicator.dart';
 import '../widgets/loading_indicator.dart';
 import '../widgets/mini_player.dart';
@@ -166,23 +166,7 @@ class SongsScreen extends StatelessWidget {
             stretch: true,
             pinned: true,
             leadingWidth: 56.0,
-            leading: AppBarButton(
-              margin: const EdgeInsets.only(left: 16.0),
-              radius: 20.0,
-              tooltip: 'Back',
-              child: const Padding(
-                padding: EdgeInsets.only(
-                  left: 6.0,
-                ),
-                child: Icon(
-                  Icons.arrow_back_ios,
-                ),
-              ),
-              backgroundColor: Colors.black45,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
+            leading: const BackButton(),
             flexibleSpace: FlexibleSpaceBar(
               title: _getTitle(context),
               centerTitle: true,

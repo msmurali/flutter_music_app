@@ -1,8 +1,7 @@
 import 'package:bloc/bloc.dart';
-import '../../../data/services/hive_services.dart';
-import '../../../data/services/queue_services.dart';
 
 import 'bloc.dart';
+import '../../../data/services/queue_services.dart';
 
 class QueueIndexBloc extends Bloc<QueueIndexEvent, QueueIndexState> {
   final QueueServices _queueServices = QueueServices();
@@ -18,6 +17,7 @@ class QueueIndexBloc extends Bloc<QueueIndexEvent, QueueIndexState> {
     QueueIndexIncrementEvent event,
     Emitter<QueueIndexState> emitter,
   ) async {
+    // print(event.currIndex);
     late int _newIndex;
 
     if (event.currIndex + 1 < event.queueSize) {
@@ -28,13 +28,14 @@ class QueueIndexBloc extends Bloc<QueueIndexEvent, QueueIndexState> {
 
     emitter.call(QueueIndexState(index: _newIndex));
 
-    await _storeQueueIndexInPreferences(_newIndex);
+    await _queueServices.setQueueIndex(_newIndex);
   }
 
   _onQueueIndexDecrement(
     QueueIndexDecrementEvent event,
     Emitter<QueueIndexState> emitter,
   ) async {
+    // print(event.currIndex);
     late int _newIndex;
 
     if (event.currIndex - 1 >= 0) {
@@ -45,19 +46,20 @@ class QueueIndexBloc extends Bloc<QueueIndexEvent, QueueIndexState> {
 
     emitter.call(QueueIndexState(index: _newIndex));
 
-    await _storeQueueIndexInPreferences(_newIndex);
+    await _queueServices.setQueueIndex(_newIndex);
   }
 
   _onSetQueueIndex(
     SetQueueIndexEvent event,
     Emitter<QueueIndexState> emitter,
   ) async {
+    // print(event.index);
     emitter.call(QueueIndexState(index: event.index));
 
-    await _storeQueueIndexInPreferences(event.index);
+    await _queueServices.setQueueIndex(event.index);
   }
 
-  Future<void> _storeQueueIndexInPreferences(int index) async {
-    await _queueServices.setQueueIndex(index);
-  }
+  // Future<void> _storeQueueIndexInPreferences(int index) async {
+
+  // }
 }

@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide BackButton;
+import '../widgets/back_button.dart';
 import '../widgets/sorting_preferences.dart';
 import '../widgets/view_preferences.dart';
 import '../widgets/theme_preferences.dart';
-import '../widgets/app_bar_button.dart';
 
 class PreferencesScreen extends StatelessWidget {
   const PreferencesScreen({Key? key}) : super(key: key);
@@ -11,22 +11,7 @@ class PreferencesScreen extends StatelessWidget {
     ThemeData theme = Theme.of(context);
 
     return AppBar(
-      leading: AppBarButton(
-        margin: const EdgeInsets.only(left: 16.0),
-        radius: 20.0,
-        tooltip: 'Back',
-        child: const Padding(
-          padding: EdgeInsets.only(
-            left: 6.0,
-          ),
-          child: Icon(
-            Icons.arrow_back_ios,
-          ),
-        ),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
+      leading: const BackButton(),
       title: Text(
         'Settings',
         style: theme.textTheme.headline6,

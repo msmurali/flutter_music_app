@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:music/src/interface/widgets/placeholder_image.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../data/providers/artwork_provider.dart';
@@ -28,17 +29,26 @@ class MusicArtwork extends StatelessWidget {
     );
   }
 
-  Container _buildArtwork(byteData) {
-    return Container(
-      width: _width,
-      height: _height,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: MemoryImage(byteData),
-          fit: BoxFit.cover,
-          alignment: Alignment.topCenter,
+  ClipRRect _buildArtwork(byteData) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(borderRadius ?? 8.0),
+      child: Container(
+        width: _width,
+        height: _height,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(borderRadius ?? 8.0),
         ),
-        borderRadius: BorderRadius.circular(borderRadius ?? 8.0),
+        child: SizedBox.expand(
+            child: Image.memory(
+          byteData,
+          fit: BoxFit.cover,
+          errorBuilder: (
+            BuildContext context,
+            Object exception,
+            StackTrace? stackTrace,
+          ) =>
+              const PlaceholderImage(),
+        )),
       ),
     );
   }

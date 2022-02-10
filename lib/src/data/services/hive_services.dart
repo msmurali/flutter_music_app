@@ -32,17 +32,17 @@ class HiveServices {
     return Hive.box(_recentsKey);
   }
 
-  Future<int> addToRecentsBox(String str) async {
-    return await Hive.box(_recentsKey).add(str);
+  Future<void> addToRecentsBox(String key, String str) async {
+    return await Hive.box(_recentsKey).put(key, str);
   }
 
-  Future<void> rmFirstKeyFromRecentsBox() async {
+  Future<void> rmOldestFromRecentsBox() async {
     Box _recentsBox = Hive.box(_recentsKey);
-    int _firstIndex = _recentsBox.keyAt(0);
-    await _recentsBox.delete(_firstIndex);
+    String _key = _recentsBox.keyAt(_recentsBox.length - 1);
+    await _recentsBox.delete(_key);
   }
 
-  Future<void> rmFromRecentsBox(int key) async {
+  Future<void> rmFromRecentsBox(String key) async {
     Box _recentsBox = Hive.box(_recentsKey);
     await _recentsBox.delete(key);
   }

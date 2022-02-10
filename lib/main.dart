@@ -2,6 +2,9 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:music/src/data/services/favourites_services.dart';
+import 'package:music/src/global/constants/index.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import 'src/data/providers/artwork_provider.dart';
@@ -22,6 +25,7 @@ import 'src/app.dart';
 final HiveServices _hiveServices = HiveServices();
 final PreferencesServices _preferencesServices = PreferencesServices();
 final FavouritesProvider _favouritesProvider = FavouritesProvider();
+final FavouritesServices _favouritesServices = FavouritesServices();
 final QueueProvider _queueProvider = QueueProvider();
 final QueueServices _queueServices = QueueServices();
 final ArtworkProvider _artworkProvider = ArtworkProvider();
@@ -56,6 +60,7 @@ Future<void> main() async {
   await _hiveServices.init();
 
   await _getStorageAccessPermission();
+  // await _favouritesServices.createFavourites();
   await _getFavouritesSongs();
   await _getQueueSongs();
   queueIndex = _queueServices.getQueueIndex();
@@ -131,5 +136,6 @@ Future<void> main() async {
     child: const AppWidget(),
   );
 
+  // await Hive.box(keys[StorageKey.recents]!).clear();
   runApp(source);
 }

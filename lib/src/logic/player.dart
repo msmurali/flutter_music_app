@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 class Player {
   Player._();
@@ -7,10 +8,13 @@ class Player {
 
   final AudioPlayer audioPlayer = AudioPlayer(playerId: '5ed7f');
 
-  Future<int> playLocalFile(String filePath) async {
+  Future<int> playLocalFile(SongModel song) async {
+    String filePath = song.data;
+
     return await audioPlayer.play(
       filePath,
       isLocal: true,
+      volume: 0.4, // TODO:
     );
   }
 

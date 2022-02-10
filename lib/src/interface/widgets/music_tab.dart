@@ -32,6 +32,7 @@ class _MusicTabState extends State<MusicTab>
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         return MusicList(
           snapshot: snapshot,
+          errorIndicator: widget.errorIndicator,
         );
       },
     );

@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music/src/data/services/recents_services.dart';
+import 'package:music/src/logic/bloc/recents_bloc/bloc.dart';
 import '../utils/custom_icons.dart';
 import '../widgets/circular_artwork.dart';
 import '../widgets/circular_icon_button.dart';
@@ -17,6 +19,7 @@ import '../../logic/player.dart';
 
 final Player _player = Player.instance;
 final AudioPlayer _audioPlayer = _player.audioPlayer;
+final RecentsServices _recentsServices = RecentsServices();
 
 class PlayerScreen extends StatelessWidget {
   const PlayerScreen({Key? key}) : super(key: key);
@@ -58,6 +61,14 @@ class Background extends StatelessWidget {
                   state.artworkData!,
                   fit: BoxFit.cover,
                   gaplessPlayback: true,
+                  errorBuilder: (BuildContext context, Object exception,
+                      StackTrace? stackTrace) {
+                    return Image.asset(
+                      'asset/images/placeholder.jpg',
+                      fit: BoxFit.cover,
+                      gaplessPlayback: true,
+                    );
+                  },
                 ),
               );
             }
@@ -156,10 +167,10 @@ class Info extends StatelessWidget {
         Text(
           song.title,
           textAlign: TextAlign.center,
-          style: Theme.of(context)
-              .textTheme
-              .bodyText2!
-              .copyWith(fontWeight: FontWeight.w500),
+          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                fontWeight: FontWeight.w500,
+                fontSize: 18.0,
+              ),
         ),
         const SizedBox(height: 6.0),
         Text(
@@ -221,37 +232,47 @@ class ProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Slider(
-          value: 0.5,
-          onChanged: (val) {},
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              StreamBuilder<Duration>(
-                stream: _audioPlayer.onAudioPositionChanged,
-                builder: (context, snapshot) {
-                  return Text(
-                    formatDuration(snapshot.data),
-                  );
-                },
-              ),
-              StreamBuilder<Duration>(
-                stream: _audioPlayer.onDurationChanged,
-                builder: (context, snapshot) {
-                  return Text(
-                    formatDuration(snapshot.data),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-      ],
+    return StreamBuilder<Duration>(
+      stream: _audioPlayer.onDurationChanged,
+      builder: (context, totalDurationSnapshot) {
+        return StreamBuilder<Duration>(
+          stream: _audioPlayer.onAudioPositionChanged,
+          builder: (context, currentDurationSnapshot) {
+            return Column(
+              children: [
+                Slider(
+                  value: currentDurationSnapshot.data == null
+                      ? 0.0
+                      : currentDurationSnapshot.data!.inMicroseconds /
+                          totalDurationSnapshot.data!.inMicroseconds,
+                  onChanged: (val) {
+                    Duration duration = Duration(
+                      microseconds:
+                          (val * totalDurationSnapshot.data!.inMicroseconds)
+                              .toInt(),
+                    );
+                    _player.seek(duration);
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        formatDuration(currentDurationSnapshot.data),
+                      ),
+                      Text(
+                        formatDuration(totalDurationSnapshot.data),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 }
@@ -324,7 +345,7 @@ class PlayNextButton extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  void _onPressed(BuildContext context, QueueIndexState state) {
+  void _onPressed(BuildContext context) {
     QueueIndexBloc _queueIndexBloc = BlocProvider.of<QueueIndexBloc>(context);
 
     PlayerBloc _playerBloc = BlocProvider.of<PlayerBloc>(context);
@@ -333,9 +354,11 @@ class PlayNextButton extends StatelessWidget {
 
     List<SongModel> _queueSongs = _queueBloc.state.songs;
 
+    // print(_queueIndexBloc.state.index);
+
     _queueIndexBloc.add(
       QueueIndexIncrementEvent(
-        currIndex: state.index,
+        currIndex: BlocProvider.of<QueueIndexBloc>(context).state.index,
         queueSize: _queueSongs.length,
       ),
     );
@@ -344,6 +367,11 @@ class PlayNextButton extends StatelessWidget {
       ChangeSong(
         song: _queueSongs[_queueIndexBloc.state.index],
       ),
+    );
+
+    _audioPlayer.setUrl(
+      BlocProvider.of<PlayerBloc>(context).state.nowPlaying.data,
+      isLocal: true,
     );
   }
 
@@ -356,7 +384,7 @@ class PlayNextButton extends StatelessWidget {
           child: const Icon(CustomIcons.next),
           radius: 25.0,
           iconSize: 18.0,
-          onPressed: () => _onPressed(context, state),
+          onPressed: () => _onPressed(context),
         );
       },
     );
@@ -368,7 +396,7 @@ class PlayPreviousButton extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  void _onPressed(BuildContext context, QueueIndexState state) {
+  void _onPressed(BuildContext context) {
     QueueIndexBloc _queueIndexBloc = BlocProvider.of<QueueIndexBloc>(context);
 
     PlayerBloc _playerBloc = BlocProvider.of<PlayerBloc>(context);
@@ -377,15 +405,24 @@ class PlayPreviousButton extends StatelessWidget {
 
     List<SongModel> _queueSongs = _queueBloc.state.songs;
 
+    // print(_queueIndexBloc.state.index);
+
     _queueIndexBloc.add(
       QueueIndexDecrementEvent(
-          currIndex: state.index, queueSize: _queueSongs.length),
+        currIndex: BlocProvider.of<QueueIndexBloc>(context).state.index,
+        queueSize: _queueSongs.length,
+      ),
     );
 
     _playerBloc.add(
       ChangeSong(
         song: _queueSongs[_queueIndexBloc.state.index],
       ),
+    );
+
+    _audioPlayer.setUrl(
+      BlocProvider.of<PlayerBloc>(context).state.nowPlaying.data,
+      isLocal: true,
     );
   }
 
@@ -398,7 +435,7 @@ class PlayPreviousButton extends StatelessWidget {
           child: const Icon(CustomIcons.previous),
           radius: 25.0,
           iconSize: 18.0,
-          onPressed: () => _onPressed(context, state),
+          onPressed: () => _onPressed(context),
         );
       },
     );
@@ -415,32 +452,37 @@ class PlayPauseButton extends StatelessWidget {
     return BlocBuilder<PlayerBloc, PlayerBlocState>(
       builder: (context, state) {
         return StreamBuilder<PlayerState>(
-            stream: _audioPlayer.onPlayerStateChanged,
-            builder: (context, snapshot) {
-              if (snapshot.data == PlayerState.PLAYING) {
-                return CircularIconButton(
-                  backgroundColor: Colors.black12,
-                  child: const Icon(CustomIcons.pause),
-                  radius: 30.0,
-                  onPressed: () {
-                    _player.pause();
-                  },
-                );
-              } else {
-                return CircularIconButton(
-                  backgroundColor: Colors.black12,
-                  child: const Align(
-                    child: Icon(CustomIcons.play),
-                    alignment: Alignment(0.7, 0.0),
-                  ),
-                  radius: 30.0,
-                  onPressed: () {
-                    String filePath = state.nowPlaying.data;
-                    _player.playLocalFile(filePath);
-                  },
-                );
-              }
-            });
+          stream: _audioPlayer.onPlayerStateChanged,
+          builder: (context, snapshot) {
+            if (snapshot.data == PlayerState.PLAYING) {
+              return CircularIconButton(
+                backgroundColor: Colors.black12,
+                child: const Icon(CustomIcons.pause),
+                radius: 30.0,
+                onPressed: () {
+                  _player.pause();
+                },
+              );
+            } else {
+              return CircularIconButton(
+                backgroundColor: Colors.black12,
+                child: const Align(
+                  child: Icon(CustomIcons.play),
+                  alignment: Alignment(0.7, 0.0),
+                ),
+                radius: 30.0,
+                onPressed: () {
+                  _player.playLocalFile(state.nowPlaying);
+
+                  RecentsBloc _recentsBloc =
+                      BlocProvider.of<RecentsBloc>(context);
+
+                  _recentsBloc.add(AddSongEventToRecents(state.nowPlaying));
+                },
+              );
+            }
+          },
+        );
       },
     );
   }

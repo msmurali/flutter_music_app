@@ -18,7 +18,7 @@ class RecentsProvider {
     return _recents;
   }
 
-  String getFromRecents(int key) {
+  String getFromRecents(String key) {
     Box _recentsBox = _hiveServices.getRecentsBox();
     return _recentsBox.get(key);
   }

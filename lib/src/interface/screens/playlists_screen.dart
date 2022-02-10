@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide BackButton;
+import '../widgets/back_button.dart';
 import 'player_screen.dart';
 
 import '../../data/providers/playlists_provider.dart';
@@ -15,23 +16,7 @@ class PlaylistsScreen extends StatelessWidget {
     ThemeData theme = Theme.of(context);
 
     return AppBar(
-      leading: AppBarButton(
-        margin: const EdgeInsets.only(left: 16.0),
-        radius: 20.0,
-        tooltip: 'Back',
-        child: const Padding(
-          padding: EdgeInsets.only(
-            left: 6.0,
-          ),
-          child: Icon(
-            Icons.arrow_back_ios,
-            size: 16.0,
-          ),
-        ),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
+      leading: const BackButton(),
       title: Text(
         'Playlists',
         style: theme.textTheme.headline6,

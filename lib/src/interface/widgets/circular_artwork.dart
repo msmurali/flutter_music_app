@@ -2,32 +2,47 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:music/src/interface/widgets/placeholder_image.dart';
 
 class CircularArtwork extends StatelessWidget {
   final Uint8List? imageData;
   final double radius;
-  final String placeholderImg = 'asset/images/placeholder.jpg';
 
-  const CircularArtwork({Key? key, this.imageData, required this.radius})
-      : super(key: key);
+  const CircularArtwork({
+    Key? key,
+    required this.radius,
+    this.imageData,
+  }) : super(key: key);
 
   _getArtworkImage() {
     if (imageData == null) {
-      return AssetImage(placeholderImg);
+      return const PlaceholderImage();
     } else {
-      return MemoryImage(imageData!);
+      return Image.memory(
+        imageData!,
+        fit: BoxFit.cover,
+        gaplessPlayback: true,
+        errorBuilder: (
+          BuildContext context,
+          Object exception,
+          StackTrace? stackTrace,
+        ) =>
+            const PlaceholderImage(),
+      );
     }
   }
 
   Widget _buildCircularImage(double diameter) {
-    return Container(
-      width: diameter,
-      height: diameter,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: _getArtworkImage(),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(diameter / 2),
+      child: SizedBox(
+        width: diameter,
+        height: diameter,
+        child: Container(
+          child: _getArtworkImage(),
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+          ),
         ),
       ),
     );

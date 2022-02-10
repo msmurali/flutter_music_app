@@ -5,6 +5,7 @@ enum Routes {
   infoRoute,
   favouritesRoute,
   playlistsRoute,
+  searchRoute,
 }
 
 enum StorageKey {

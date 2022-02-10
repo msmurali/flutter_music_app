@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide BackButton;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../global/constants/enums.dart';
+import '../widgets/back_button.dart';
 import 'player_screen.dart';
 import '../../logic/bloc/preferences_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../logic/bloc/favourites_bloc/bloc.dart';
-import '../widgets/app_bar_button.dart';
 import '../widgets/error_indicator.dart';
 import '../widgets/mini_player.dart';
 import '../widgets/scaffold_with_sliding_panel.dart';
@@ -21,23 +21,7 @@ class FavouritesScreen extends StatelessWidget {
     ThemeData theme = Theme.of(context);
 
     return AppBar(
-      leading: AppBarButton(
-        margin: const EdgeInsets.only(left: 16.0),
-        radius: 20.0,
-        tooltip: 'Back',
-        child: const Padding(
-          padding: EdgeInsets.only(
-            left: 6.0,
-          ),
-          child: Icon(
-            Icons.arrow_back_ios,
-            size: 16.0,
-          ),
-        ),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
+      leading: const BackButton(),
       title: Text(
         'Favourites',
         style: theme.textTheme.headline6,

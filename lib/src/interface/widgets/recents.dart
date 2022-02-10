@@ -18,7 +18,7 @@ class _RecentsState extends State<Recents> {
   Widget build(BuildContext context) {
     return BlocBuilder<RecentsBloc, RecentsState>(
       builder: (context, state) {
-        List<SongModel> _recents = state.songs;
+        List<SongModel> _recents = state.songs.toList();
         if (_recents.isEmpty) {
           return const SizedBox(
             height: 300,
@@ -28,9 +28,10 @@ class _RecentsState extends State<Recents> {
           );
         } else {
           return SizedBox(
-            height: 200,
+            height: 180,
             child: ListView.builder(
-              itemCount: 20,
+              scrollDirection: Axis.horizontal,
+              itemCount: _recents.length,
               itemBuilder: (BuildContext context, int index) {
                 return CircularTile(
                   song: _recents[index],

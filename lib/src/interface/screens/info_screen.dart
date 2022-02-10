@@ -1,9 +1,14 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide BackButton;
+import 'package:music/src/data/providers/artwork_provider.dart';
+import 'package:music/src/interface/widgets/back_button.dart';
 import '../widgets/circular_artwork.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import '../widgets/app_bar_button.dart';
 import '../widgets/mini_player.dart';
 import '../widgets/scaffold_with_sliding_panel.dart';
+import 'player_screen.dart';
+
+final ArtworkProvider _artworkProvider = ArtworkProvider();
 
 class InfoScreen extends StatelessWidget {
   final SongModel song;
@@ -13,20 +18,7 @@ class InfoScreen extends StatelessWidget {
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       leadingWidth: 56.0,
-      leading: const AppBarButton(
-        margin: EdgeInsets.only(left: 16.0),
-        radius: 20.0,
-        tooltip: 'Back',
-        child: Padding(
-          padding: EdgeInsets.only(
-            left: 6.0,
-          ),
-          child: Icon(
-            Icons.arrow_back_ios,
-            size: 16.0,
-          ),
-        ),
-      ),
+      leading: const BackButton(),
       title: Text(
         song.title,
         style: Theme.of(context).textTheme.headline6,
@@ -39,30 +31,63 @@ class InfoScreen extends StatelessWidget {
       appBar: _buildAppBar(context),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const CircularArtwork(radius: 60.0),
-            InfoColumn(
-              title: 'Title',
-              subtitle: song.title,
-            ),
-            InfoColumn(
-              title: 'Artist',
-              subtitle: song.artist ?? 'Unknown Artist',
-            ),
-            InfoColumn(
-              title: 'Album',
-              subtitle: song.album ?? 'Unknown Album',
-            ),
-            InfoColumn(
-              title: 'Genre',
-              subtitle: song.genre ?? 'Unknown Genre',
-            ),
-            InfoColumn(
-              title: 'Location',
-              subtitle: song.data,
-            ),
-          ],
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              FutureBuilder(
+                future: _artworkProvider.getSongArtwork(song),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Container(
+                      width: 260,
+                      height: 260,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(130.0),
+                        color: Colors.grey,
+                      ),
+                    );
+                  } else if (snapshot.hasData && snapshot.data != null) {
+                    return CircularArtwork(
+                      radius: 130.0,
+                      imageData: snapshot.data,
+                    );
+                  } else {
+                    return const CircularArtwork(
+                      radius: 130.0,
+                    );
+                  }
+                },
+              ),
+              const SizedBox(height: 20.0),
+              InfoColumn(
+                title: 'Title',
+                subtitle: song.title,
+              ),
+              const SizedBox(height: 20.0),
+              InfoColumn(
+                title: 'Artist',
+                subtitle: song.artist ?? 'Unknown Artist',
+              ),
+              const SizedBox(height: 20.0),
+              InfoColumn(
+                title: 'Album',
+                subtitle: song.album ?? 'Unknown Album',
+              ),
+              const SizedBox(height: 20.0),
+              InfoColumn(
+                title: 'Genre',
+                subtitle: song.genre ?? 'Unknown Genre',
+              ),
+              const SizedBox(height: 20.0),
+              InfoColumn(
+                title: 'Location',
+                subtitle: song.data,
+              ),
+              const SizedBox(height: 20.0),
+            ],
+          ),
         ),
       ),
     );
@@ -75,7 +100,7 @@ class InfoScreen extends StatelessWidget {
         child: ScaffoldWithSlidingPanel(
           body: _buildInfoScreen(context),
           collapsed: const MiniPlayer(),
-          expanded: Container(color: Colors.white),
+          expanded: const PlayerScreen(),
         ),
       ),
     );
@@ -96,27 +121,33 @@ class InfoColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
+      padding: const EdgeInsets.only(
+        top: 20.0,
+        left: 16.0,
+        right: 16.0,
+      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             title,
-            style: theme.textTheme.bodyText2,
+            style: theme.textTheme.bodyText2!.copyWith(fontSize: 17.0),
           ),
           SizedBox(
             height: 2.0,
-            width: 40.0,
+            width: 25.0,
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(1.0),
-                color: theme.colorScheme.onPrimary,
+                color: Colors.pinkAccent.shade400,
               ),
             ),
           ),
-          const SizedBox(height: 4.0),
+          const SizedBox(height: 12.0),
           Text(
             subtitle,
             style: theme.textTheme.bodyText2,
+            maxLines: 4,
           ),
         ],
       ),
