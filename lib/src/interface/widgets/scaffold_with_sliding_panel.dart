@@ -71,6 +71,7 @@ class _AnimatedSheetState extends State<AnimatedSheet> {
                       milliseconds: 200,
                     ),
                     curve: Curves.easeInOut);
+                _dsController.reset();
                 return false;
               } else {
                 return true;
@@ -98,9 +99,12 @@ class _AnimatedSheetState extends State<AnimatedSheet> {
                         double _opacity = (_dsController.size - _minChildSize) /
                             (_maxChildSize - _minChildSize);
 
-                        return Opacity(
-                          opacity: _opacity.clamp(0.0, 1.0).toDouble(),
-                          child: widget.expanded,
+                        return IgnorePointer(
+                          ignoring: !_expanded,
+                          child: Opacity(
+                            opacity: _opacity.clamp(0.0, 1.0).toDouble(),
+                            child: widget.expanded,
+                          ),
                         );
                       },
                     ),

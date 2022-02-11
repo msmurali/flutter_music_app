@@ -47,8 +47,6 @@ class RecentsServices {
   }
 
   String? songAlreadyInRecents(SongModel recentlyPlayed) {
-    // String? _foundAt;
-
     Box _recentsBox = _hiveServices.getRecentsBox();
 
     String _id = recentlyPlayed.id.toString();
@@ -58,18 +56,5 @@ class RecentsServices {
     }
 
     return null;
-
-    // Map<dynamic, dynamic> _recentsMap = _recentsBox.toMap();
-
-    // _recentsMap.keys.map((key) {
-    //   print('inside map');
-    //   SongModel _song = SongModel(jsonDecode(_recentsMap[key]));
-    //   // print(_song.id);
-    //   if (recentlyPlayed.id == _song.id) {
-    //     _foundAt = int.parse(key);
-    //   }
-    // });
-
-    // return _foundAt;
   }
 }

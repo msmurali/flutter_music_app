@@ -9,19 +9,11 @@ class RecentsBloc extends Bloc<RecentsEvents, RecentsState> {
 
   RecentsBloc({required RecentsState initialState}) : super(initialState) {
     on<AddSongEventToRecents>(_onAddSongEvent);
-    on<RemoveSongEventFromRecents>(_onRemoveSongEvent);
   }
 
   _onAddSongEvent(
       AddSongEventToRecents event, Emitter<RecentsState> emitter) async {
     await _recentsServices.addToRecents(event.song);
-    RecentsState newState = RecentsState(songs: _recentsProvider.getRecents());
-    emitter.call(newState);
-  }
-
-  _onRemoveSongEvent(
-      RemoveSongEventFromRecents event, Emitter<RecentsState> emitter) async {
-    await _recentsServices.rmFromRecents();
     RecentsState newState = RecentsState(songs: _recentsProvider.getRecents());
     emitter.call(newState);
   }

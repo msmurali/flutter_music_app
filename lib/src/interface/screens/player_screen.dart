@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music/src/data/services/recents_services.dart';
 import 'package:music/src/logic/bloc/recents_bloc/bloc.dart';
 import '../utils/custom_icons.dart';
 import '../widgets/circular_artwork.dart';
@@ -13,13 +12,10 @@ import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../global/constants/enums.dart';
 import '../../logic/bloc/playback_mode_bloc/bloc.dart';
-import '../../logic/bloc/queue_bloc/bloc.dart';
-import '../../logic/bloc/queue_index_bloc/bloc.dart';
 import '../../logic/player.dart';
 
 final Player _player = Player.instance;
 final AudioPlayer _audioPlayer = _player.audioPlayer;
-final RecentsServices _recentsServices = RecentsServices();
 
 class PlayerScreen extends StatelessWidget {
   const PlayerScreen({Key? key}) : super(key: key);
@@ -133,7 +129,7 @@ class Foreground extends StatelessWidget {
           BlocBuilder<PlayerBloc, PlayerBlocState>(
             builder: (context, state) {
               Uint8List? _artworkData = state.artworkData;
-              SongModel _song = state.nowPlaying;
+              SongModel _song = state.queue[state.nowPlaying];
 
               return Column(
                 children: [
@@ -208,16 +204,35 @@ class PlayerControlPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ProgressBar(),
-        Controls(),
+        const ProgressBar(),
+        const Controls(),
         _buildBottomPanel(),
       ],
     );
   }
 }
 
-class ProgressBar extends StatelessWidget {
+class ProgressBar extends StatefulWidget {
   const ProgressBar({Key? key}) : super(key: key);
+
+  @override
+  State<ProgressBar> createState() => _ProgressBarState();
+}
+
+class _ProgressBarState extends State<ProgressBar> {
+  @override
+  void initState() {
+    super.initState();
+    _setAudioUrl();
+  }
+
+  void _setAudioUrl() {
+    PlayerBloc _playerBloc = BlocProvider.of<PlayerBloc>(context);
+    List<SongModel> queue = _playerBloc.state.queue;
+    int index = _playerBloc.state.nowPlaying;
+    String _url = queue[index].data;
+    _audioPlayer.setUrl(_url, isLocal: true);
+  }
 
   String formatDuration(Duration? duration) {
     if (duration == null) {
@@ -243,8 +258,9 @@ class ProgressBar extends StatelessWidget {
                 Slider(
                   value: currentDurationSnapshot.data == null
                       ? 0.0
-                      : currentDurationSnapshot.data!.inMicroseconds /
-                          totalDurationSnapshot.data!.inMicroseconds,
+                      : (currentDurationSnapshot.data!.inMicroseconds /
+                              totalDurationSnapshot.data!.inMicroseconds)
+                          .clamp(0.0, 1.0),
                   onChanged: (val) {
                     Duration duration = Duration(
                       microseconds:
@@ -331,7 +347,29 @@ class PlaybackModeButton extends StatelessWidget {
     return BlocBuilder<PlaybackModeBloc, PlaybackModeState>(
       builder: (context, state) {
         return IconButton(
-          onPressed: () {},
+          onPressed: () {
+            PlaybackModeBloc _playbackModeBloc =
+                BlocProvider.of<PlaybackModeBloc>(context);
+            if (state.playbackMode == PlaybackMode.order) {
+              _playbackModeBloc.add(
+                const PlaybackModeEvent(
+                  playbackMode: PlaybackMode.shuffle,
+                ),
+              );
+            } else if (state.playbackMode == PlaybackMode.shuffle) {
+              _playbackModeBloc.add(
+                const PlaybackModeEvent(
+                  playbackMode: PlaybackMode.repeat,
+                ),
+              );
+            } else {
+              _playbackModeBloc.add(
+                const PlaybackModeEvent(
+                  playbackMode: PlaybackMode.order,
+                ),
+              );
+            }
+          },
           icon: _getPlaybackModeIcon(state.playbackMode),
           iconSize: 16,
         );
@@ -345,46 +383,27 @@ class PlayNextButton extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  void _onPressed(BuildContext context) {
-    QueueIndexBloc _queueIndexBloc = BlocProvider.of<QueueIndexBloc>(context);
-
+  void _handlePress(BuildContext context) {
     PlayerBloc _playerBloc = BlocProvider.of<PlayerBloc>(context);
-
-    QueueBloc _queueBloc = BlocProvider.of<QueueBloc>(context);
-
-    List<SongModel> _queueSongs = _queueBloc.state.songs;
-
-    // print(_queueIndexBloc.state.index);
-
-    _queueIndexBloc.add(
-      QueueIndexIncrementEvent(
-        currIndex: BlocProvider.of<QueueIndexBloc>(context).state.index,
-        queueSize: _queueSongs.length,
-      ),
-    );
-
-    _playerBloc.add(
-      ChangeSong(
-        song: _queueSongs[_queueIndexBloc.state.index],
-      ),
-    );
-
-    _audioPlayer.setUrl(
-      BlocProvider.of<PlayerBloc>(context).state.nowPlaying.data,
-      isLocal: true,
-    );
+    PlaybackModeBloc _playbackModeBloc =
+        BlocProvider.of<PlaybackModeBloc>(context);
+    if (_playbackModeBloc.state.playbackMode == PlaybackMode.shuffle) {
+      _playerBloc.add(const PlayRandomSong());
+    } else {
+      _playerBloc.add(const PlayNextSong());
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<QueueIndexBloc, QueueIndexState>(
+    return BlocBuilder<PlayerBloc, PlayerBlocState>(
       builder: (context, state) {
         return CircularIconButton(
           backgroundColor: Colors.black12,
           child: const Icon(CustomIcons.next),
           radius: 25.0,
           iconSize: 18.0,
-          onPressed: () => _onPressed(context),
+          onPressed: () => _handlePress(context),
         );
       },
     );
@@ -396,46 +415,27 @@ class PlayPreviousButton extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  void _onPressed(BuildContext context) {
-    QueueIndexBloc _queueIndexBloc = BlocProvider.of<QueueIndexBloc>(context);
-
+  void _handlePress(BuildContext context) {
     PlayerBloc _playerBloc = BlocProvider.of<PlayerBloc>(context);
-
-    QueueBloc _queueBloc = BlocProvider.of<QueueBloc>(context);
-
-    List<SongModel> _queueSongs = _queueBloc.state.songs;
-
-    // print(_queueIndexBloc.state.index);
-
-    _queueIndexBloc.add(
-      QueueIndexDecrementEvent(
-        currIndex: BlocProvider.of<QueueIndexBloc>(context).state.index,
-        queueSize: _queueSongs.length,
-      ),
-    );
-
-    _playerBloc.add(
-      ChangeSong(
-        song: _queueSongs[_queueIndexBloc.state.index],
-      ),
-    );
-
-    _audioPlayer.setUrl(
-      BlocProvider.of<PlayerBloc>(context).state.nowPlaying.data,
-      isLocal: true,
-    );
+    PlaybackModeBloc _playbackModeBloc =
+        BlocProvider.of<PlaybackModeBloc>(context);
+    if (_playbackModeBloc.state.playbackMode == PlaybackMode.shuffle) {
+      _playerBloc.add(const PlayRandomSong());
+    } else {
+      _playerBloc.add(const PlayPreviousSong());
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<QueueIndexBloc, QueueIndexState>(
+    return BlocBuilder<PlayerBloc, PlayerBlocState>(
       builder: (context, state) {
         return CircularIconButton(
           backgroundColor: Colors.black12,
           child: const Icon(CustomIcons.previous),
           radius: 25.0,
           iconSize: 18.0,
-          onPressed: () => _onPressed(context),
+          onPressed: () => _handlePress(context),
         );
       },
     );
@@ -447,6 +447,13 @@ class PlayPauseButton extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  void _handlePress(BuildContext context, PlayerBlocState state) {
+    SongModel _song = state.queue[state.nowPlaying];
+    _player.playLocalFile(_song);
+    RecentsBloc _recentsBloc = BlocProvider.of<RecentsBloc>(context);
+    _recentsBloc.add(AddSongEventToRecents(song: _song));
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PlayerBloc, PlayerBlocState>(
@@ -454,6 +461,19 @@ class PlayPauseButton extends StatelessWidget {
         return StreamBuilder<PlayerState>(
           stream: _audioPlayer.onPlayerStateChanged,
           builder: (context, snapshot) {
+            _audioPlayer.onPlayerCompletion.listen((event) {
+              PlaybackMode _playbackMode =
+                  BlocProvider.of<PlaybackModeBloc>(context).state.playbackMode;
+              PlayerBloc _playerBloc = BlocProvider.of<PlayerBloc>(context);
+              if (_playbackMode == PlaybackMode.order) {
+                _playerBloc.add(const PlayNextSong());
+              } else if (_playbackMode == PlaybackMode.shuffle) {
+                _playerBloc.add(const PlayRandomSong());
+              } else {
+                _playerBloc.add(const PlaySongAgain());
+              }
+            });
+
             if (snapshot.data == PlayerState.PLAYING) {
               return CircularIconButton(
                 backgroundColor: Colors.black12,
@@ -471,14 +491,7 @@ class PlayPauseButton extends StatelessWidget {
                   alignment: Alignment(0.7, 0.0),
                 ),
                 radius: 30.0,
-                onPressed: () {
-                  _player.playLocalFile(state.nowPlaying);
-
-                  RecentsBloc _recentsBloc =
-                      BlocProvider.of<RecentsBloc>(context);
-
-                  _recentsBloc.add(AddSongEventToRecents(state.nowPlaying));
-                },
+                onPressed: () => _handlePress(context, state),
               );
             }
           },

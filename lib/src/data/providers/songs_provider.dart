@@ -57,15 +57,20 @@ class SongsProvider {
   }
 
   /* search songs, albums, artist*/
-  Future<List<dynamic>> search(String query) async {
+  Future<List<dynamic>?> search(String query) async {
+    if (query == '' || query.isEmpty) {
+      return [];
+    }
+
     List<dynamic> _songs = await searchSongs(query);
     List<dynamic> _artists = await searchArtists(query);
     List<dynamic> _albums = await searchAlbums(query);
-    print(_songs.length);
-    print(_artists.length);
-    print(_albums.length);
 
-    return _songs.followedBy(_artists).followedBy(_albums).toList();
+    if (_songs.isEmpty && _artists.isEmpty && _albums.isEmpty) {
+      return null;
+    }
+
+    return _songs + _artists + _albums;
   }
 
   Future<List<SongModel>> searchSongs(String query) async {
@@ -81,7 +86,7 @@ class SongsProvider {
     List<dynamic> result = await _audioQuery.queryWithFilters(
       query,
       WithFiltersType.ARTISTS,
-      args: AudiosArgs.ARTIST,
+      args: ArtistsArgs.ARTIST,
     );
     return result.toArtistModel();
   }
@@ -90,7 +95,7 @@ class SongsProvider {
     List<dynamic> result = await _audioQuery.queryWithFilters(
       query,
       WithFiltersType.ALBUMS,
-      args: AudiosArgs.ALBUM,
+      args: AlbumsArgs.ALBUM,
     );
     return result.toAlbumModel();
   }

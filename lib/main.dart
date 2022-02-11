@@ -60,7 +60,6 @@ Future<void> main() async {
   await _hiveServices.init();
 
   await _getStorageAccessPermission();
-  // await _favouritesServices.createFavourites();
   await _getFavouritesSongs();
   await _getQueueSongs();
   queueIndex = _queueServices.getQueueIndex();
@@ -104,24 +103,11 @@ Future<void> main() async {
         ),
       ),
       BlocProvider(
-        create: (context) => QueueBloc(
-          initialState: QueueState(
-            songs: queueSongs,
-          ),
-        ),
-      ),
-      BlocProvider(
-        create: (context) => QueueIndexBloc(
-          initialState: QueueIndexState(
-            index: queueIndex,
-          ),
-        ),
-      ),
-      BlocProvider(
         create: (context) => PlayerBloc(
           initialState: PlayerBlocState(
+            queue: queueSongs,
+            nowPlaying: queueIndex,
             artworkData: initialArtworkData,
-            nowPlaying: queueSongs[queueIndex],
           ),
         ),
       ),
@@ -136,6 +122,5 @@ Future<void> main() async {
     child: const AppWidget(),
   );
 
-  // await Hive.box(keys[StorageKey.recents]!).clear();
   runApp(source);
 }

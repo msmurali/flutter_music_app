@@ -9,7 +9,6 @@ class FavouritesProvider {
 
   Future<PlaylistModel> getFavourites() async {
     List<PlaylistModel> result = await _audioQuery.queryPlaylists();
-    print(result.length);
 
     result.removeWhere(
         (playlist) => playlist.playlist != keys[StorageKey.favourites]);

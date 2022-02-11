@@ -7,7 +7,5 @@ class RecentsEvents {
 class AddSongEventToRecents extends RecentsEvents {
   final SongModel song;
 
-  const AddSongEventToRecents(this.song);
+  const AddSongEventToRecents({required this.song});
 }
-
-class RemoveSongEventFromRecents extends RecentsEvents {}

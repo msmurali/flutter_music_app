@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart' hide BackButton;
 import 'package:music/src/interface/screens/player_screen.dart';
 import 'package:music/src/interface/widgets/error_indicator.dart';
-import 'package:music/src/interface/widgets/loading_indicator.dart';
 
 import '../../data/providers/songs_provider.dart';
 import '../utils/custom_icons.dart';
@@ -14,6 +13,7 @@ import '../widgets/music_tab.dart';
 import '../widgets/scaffold_with_sliding_panel.dart';
 
 final TextEditingController _textEditingController = TextEditingController();
+final SongsProvider _songsProvider = SongsProvider();
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -24,7 +24,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   Timer? _debounce;
-  CustomSerachDelegate _delegate = CustomSerachDelegate();
+  String query = '';
   Widget results = const SizedBox();
 
   @override
@@ -39,10 +39,19 @@ class _SearchScreenState extends State<SearchScreen> {
     }
     _debounce = Timer(const Duration(milliseconds: 500), () {
       setState(() {
-        _delegate.query = _textEditingController.text;
-        results = _delegate.buildSuggestions(context);
+        query = _textEditingController.text;
+        results = buildResults(context);
       });
     });
+  }
+
+  Widget buildResults(BuildContext context) {
+    return MusicTab(
+      futureData: _songsProvider.searchSongs(query),
+      errorIndicator: const ErrorIndicator(
+        asset: 'asset/images/no_results.svg',
+      ),
+    );
   }
 
   AppBar _buildAppBar(BuildContext context) {
@@ -140,39 +149,6 @@ class _SearchFieldState extends State<SearchField> {
             border: InputBorder.none,
           ),
         ),
-      ),
-    );
-  }
-}
-
-class CustomSerachDelegate extends SearchDelegate {
-  final SongsProvider _songsProvider = SongsProvider();
-  @override
-  List<Widget>? buildActions(BuildContext context) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Widget? buildLeading(BuildContext context) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    return MusicTab(
-      futureData: _songsProvider.search(query),
-      errorIndicator: const ErrorIndicator(
-        asset: 'asset/images/no_results.svg',
-      ),
-    );
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    return MusicTab(
-      futureData: _songsProvider.search(query),
-      errorIndicator: const ErrorIndicator(
-        asset: 'asset/images/no_results.svg',
       ),
     );
   }

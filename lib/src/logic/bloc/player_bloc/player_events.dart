@@ -4,7 +4,28 @@ class PlayerEvents {
   const PlayerEvents();
 }
 
-class ChangeSong extends PlayerEvents {
+class PlaySongAgain extends PlayerEvents {
+  const PlaySongAgain();
+}
+
+class PlayNextSong extends PlayerEvents {
+  const PlayNextSong();
+}
+
+class PlayPreviousSong extends PlayerEvents {
+  const PlayPreviousSong();
+}
+
+class PlayRandomSong extends PlayerEvents {
+  const PlayRandomSong();
+}
+
+class AddSongNextToNowPlaying extends PlayerEvents {
   final SongModel song;
-  const ChangeSong({required this.song});
+  const AddSongNextToNowPlaying({required this.song});
+}
+
+class ChangeQueueList extends PlayerEvents {
+  final List<SongModel> queue;
+  const ChangeQueueList({required this.queue});
 }
