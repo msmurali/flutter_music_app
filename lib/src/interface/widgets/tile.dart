@@ -11,8 +11,7 @@ import 'music_artwork.dart';
 class Tile extends StatelessWidget {
   final dynamic entity;
   final void Function()? onTap;
-  final void Function(LongPressStartDetails)? onLongPress;
-  final void Function(TapDownDetails)? onTrailingEndPress;
+  final void Function(dynamic)? onLongPress;
   final View? view;
 
   const Tile({
@@ -20,7 +19,6 @@ class Tile extends StatelessWidget {
     required this.entity,
     this.onTap,
     this.onLongPress,
-    this.onTrailingEndPress,
     this.view,
   }) : super(key: key);
 
@@ -63,7 +61,7 @@ class Tile extends StatelessWidget {
         subtitle: _getSubtitle(),
         artwork: _getArtwork(),
         onTap: onTap,
-        onTrailingPressed: onTrailingEndPress,
+        onTrailingPressed: onLongPress,
         entity: entity,
       );
     } else {

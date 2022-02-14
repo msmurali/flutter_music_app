@@ -3,7 +3,6 @@ import '../widgets/back_button.dart';
 import 'player_screen.dart';
 
 import '../../data/providers/playlists_provider.dart';
-import '../widgets/app_bar_button.dart';
 import '../widgets/error_indicator.dart';
 import '../widgets/mini_player.dart';
 import '../widgets/music_tab.dart';
@@ -25,12 +24,17 @@ class PlaylistsScreen extends StatelessWidget {
   }
 
   Widget _buildPlaylists() {
-    return Container();
+    final PlaylistsProvider _playlistsProvider = PlaylistsProvider();
+    return MusicTab(
+      futureData: _playlistsProvider.getPlaylists(),
+      errorIndicator: const ErrorIndicator(
+        asset: 'asset/images/no_playlists.svg',
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final PlaylistsProvider _playlistsProvider = PlaylistsProvider();
     return Material(
       child: SafeArea(
         child: ScaffoldWithSlidingPanel(

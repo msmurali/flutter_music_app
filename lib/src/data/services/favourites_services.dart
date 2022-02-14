@@ -18,9 +18,16 @@ class FavouritesServices {
         .playlistAlreadyExists(keys[StorageKey.favourites]!);
   }
 
-  Future<bool> addToFavourites(int songId) async {
-    PlaylistModel _favourites = await _favouritesProvider.getFavourites();
-    return await _playlistServices.addToPlaylist(_favourites.id, songId);
+  Future<bool> addToFavourites(SongModel song) async {
+    bool alreadyExists = await songAlreadyInFavourites(song);
+    print(alreadyExists);
+
+    if (!alreadyExists) {
+      PlaylistModel _favourites = await _favouritesProvider.getFavourites();
+      return await _playlistServices.addToPlaylist(_favourites.id, song);
+    } else {
+      return false;
+    }
   }
 
   Future<bool> addAllToFavourites(List<SongModel> songs) async {
@@ -28,13 +35,28 @@ class FavouritesServices {
     return await _playlistServices.addAllToPlaylist(_favourites.id, songs);
   }
 
-  Future<bool> songAlreadyInFavourites(int songId) async {
-    String _favourites = keys[StorageKey.favourites]!;
-    return _playlistServices.songAlreadyInPlaylist(songId, _favourites);
+  Future<bool> songAlreadyInFavourites(SongModel song) async {
+    List<SongModel> _favouriteSongs =
+        await _favouritesProvider.getFavouritesSongs();
+
+    bool alreadyExists = false;
+
+    for (int indx = 0; indx < _favouriteSongs.length; indx++) {
+      if (_favouriteSongs[indx].title == song.title) {
+        alreadyExists = true;
+      }
+    }
+
+    return alreadyExists;
   }
 
   Future<bool> rmFromFavourites(int songId) async {
     PlaylistModel _favourites = await _favouritesProvider.getFavourites();
     return await _playlistServices.rmFromPlaylist(_favourites.id, songId);
+  }
+
+  Future<void> clearFavourites() async {
+    PlaylistModel _favourites = await _favouritesProvider.getFavourites();
+    await _playlistServices.clearPlaylist(_favourites.id);
   }
 }

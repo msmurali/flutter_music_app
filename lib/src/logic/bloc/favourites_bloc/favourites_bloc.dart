@@ -10,41 +10,46 @@ class FavouritesBloc extends Bloc<FavouritesEvents, FavouritesState> {
 
   FavouritesBloc({required FavouritesState initialState})
       : super(initialState) {
-    on<AddSongToFavouritesEvent>(_onAddSongFromFavourites);
-    on<RemoveSongToFavouritesEvent>(_onRemoveSongFromFavourites);
+    on<MarkAsFavourite>(_onMarkAsFavourites);
+    on<MarkAsNotFavourite>(_onMarkAsNotFavourites);
   }
 
-  _onAddSongFromFavourites(
-    AddSongToFavouritesEvent event,
+  _onMarkAsFavourites(
+    MarkAsFavourite event,
     Emitter<FavouritesState> emitter,
   ) async {
     SongModel _song = event.song;
 
-    await _favouritesServices.addToFavourites(_song.id);
+    bool _result = await _favouritesServices.addToFavourites(_song);
 
     List<SongModel> _favourites =
         await _favouritesProvider.getFavouritesSongs();
 
     FavouritesState _favState = FavouritesState(
       songs: _favourites,
+      status: _result ? FavStatus.added : FavStatus.none,
+      action: FavAction.add,
     );
 
     emitter.call(_favState);
   }
 
-  _onRemoveSongFromFavourites(
-    RemoveSongToFavouritesEvent event,
+  _onMarkAsNotFavourites(
+    MarkAsNotFavourite event,
     Emitter<FavouritesState> emitter,
   ) async {
     SongModel _song = event.song;
+    print(_song.id);
 
-    await _favouritesServices.rmFromFavourites(_song.id);
+    bool _result = await _favouritesServices.rmFromFavourites(_song.id);
 
     List<SongModel> _favourites =
         await _favouritesProvider.getFavouritesSongs();
 
     FavouritesState _favState = FavouritesState(
       songs: _favourites,
+      status: _result ? FavStatus.removed : FavStatus.none,
+      action: FavAction.remove,
     );
 
     emitter.call(_favState);

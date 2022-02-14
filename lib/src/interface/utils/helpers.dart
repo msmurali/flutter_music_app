@@ -43,25 +43,34 @@ Future<void> showMenuDialog(
         )
         .toList(),
   ).then((value) async {
-    if (value == Option.select) {
-    } else if (value == Option.playNext) {
+    if (value == Option.playNext) {
+      // add to queue
     } else if (value == Option.info) {
       _navigateToInfoScreen(context, entity);
     } else if (value == Option.addToFavourites) {
-      final SongModel _song = entity as SongModel;
-
-      FavouritesBloc _favBloc = BlocProvider.of<FavouritesBloc>(context);
-
-      _favBloc.add(AddSongToFavouritesEvent(song: _song));
+      _markAsFavourite(entity, context);
     } else if (value == Option.addToPlaylist) {
     } else if (value == Option.addAllToPlaylist) {
     } else if (value == Option.addAllToFavourites) {
-      await _addAllToFavourites(entity);
+      _addAllToFavourites(entity, context);
     } else if (value == Option.removeFromFavourites) {
-    } else {
-      return;
-    }
+      _markAsNotFavourite(entity, context);
+    } else if (value == Option.removeFromPlaylist) {
+    } else if (value == Option.removePlaylist) {}
+    return;
   });
+}
+
+void _markAsFavourite(dynamic entity, BuildContext context) {
+  final SongModel _song = entity as SongModel;
+  FavouritesBloc _favBloc = BlocProvider.of<FavouritesBloc>(context);
+  _favBloc.add(MarkAsFavourite(song: _song));
+}
+
+void _markAsNotFavourite(dynamic entity, BuildContext context) {
+  final SongModel _song = entity as SongModel;
+  FavouritesBloc _favBloc = BlocProvider.of<FavouritesBloc>(context);
+  _favBloc.add(MarkAsNotFavourite(song: _song));
 }
 
 void _navigateToInfoScreen(BuildContext context, entity) {
@@ -72,14 +81,20 @@ void _navigateToInfoScreen(BuildContext context, entity) {
   );
 }
 
-Future<bool> _addAllToFavourites(entity) async {
+void _addAllToFavourites(dynamic entity, BuildContext context) async {
   late List<SongModel> songs;
+
   if (entity is AlbumModel) {
     songs = await _songsProvider.getAlbumSongs(entity.album);
   } else if (entity is ArtistModel) {
     songs = await _songsProvider.getArtistSongs(entity.artist);
   }
-  return await _favouritesServices.addAllToFavourites(songs);
+
+  await _favouritesServices.addAllToFavourites(
+    songs.sublist(0, songs.length - 1),
+  );
+
+  _markAsFavourite(songs[songs.length - 1], context);
 }
 
 Future<void> showFormDialog(BuildContext context) async {

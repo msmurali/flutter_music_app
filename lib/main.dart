@@ -60,6 +60,8 @@ Future<void> main() async {
   await _hiveServices.init();
 
   await _getStorageAccessPermission();
+  // print(await _favouritesServices.createFavourites());
+  await _favouritesServices.clearFavourites();
   await _getFavouritesSongs();
   await _getQueueSongs();
   queueIndex = _queueServices.getQueueIndex();
@@ -92,6 +94,8 @@ Future<void> main() async {
         create: (context) => FavouritesBloc(
           initialState: FavouritesState(
             songs: favouritesSongs,
+            action: FavAction.none,
+            status: FavStatus.none,
           ),
         ),
       ),
@@ -121,6 +125,6 @@ Future<void> main() async {
     ],
     child: const AppWidget(),
   );
-
+  await Hive.box(keys[StorageKey.recents]!).clear();
   runApp(source);
 }

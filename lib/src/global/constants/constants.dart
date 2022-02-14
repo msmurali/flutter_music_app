@@ -34,33 +34,51 @@ const keys = <StorageKey, String>{
 };
 
 const optionsText = <Option, String>{
-  Option.select: 'Select',
   Option.playNext: 'Play next',
-  Option.addToPlaylist: 'Add to playlist',
-  Option.addToFavourites: 'Add to favourites',
-  Option.removeFromFavourites: 'Remove from favourites',
-  Option.addAllToFavourites: 'Add all to favourites',
+  Option.addToPlaylist: 'Add to Playlist',
+  Option.removeFromPlaylist: 'Remove from Playlist',
+  Option.addAllToPlaylist: 'Add all to Playlist',
+  Option.removePlaylist: 'Remove Playlist',
+  Option.addToFavourites: 'Add to Favourites',
+  Option.removeFromFavourites: 'Remove from Favourites',
+  Option.addAllToFavourites: 'Add all to Favourites',
   Option.info: 'Song info',
-  Option.addAllToPlaylist: 'Add all to playlists',
 };
 
 const List<Option> songOptions = [
-  Option.select,
   Option.playNext,
   Option.addToFavourites,
   Option.addToPlaylist,
   Option.info,
 ];
 
+const List<Option> albumOptions = [
+  Option.addAllToPlaylist,
+  Option.addAllToFavourites,
+];
+
+const List<Option> artistOptions = [
+  Option.addAllToPlaylist,
+  Option.addAllToFavourites,
+];
+
+const List<Option> playlistOptions = [
+  Option.addAllToFavourites,
+  Option.removePlaylist,
+];
+
+const playlistSongOptions = [
+  Option.playNext,
+  Option.addToFavourites,
+  Option.removeFromPlaylist,
+  Option.info,
+];
+
 const List<Option> favSongOptions = [
+  Option.playNext,
   Option.addToPlaylist,
   Option.info,
   Option.removeFromFavourites,
-];
-
-const List<Option> otherEntitiesOptions = [
-  Option.addAllToPlaylist,
-  Option.addAllToFavourites,
 ];
 
 const sortSongsByText = <SongSortType, String>{

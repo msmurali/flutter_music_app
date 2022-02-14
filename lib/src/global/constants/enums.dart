@@ -46,10 +46,12 @@ enum View {
 enum Option {
   select,
   playNext,
-  addToFavourites,
   addToPlaylist,
+  removeFromPlaylist,
+  addToFavourites,
   removeFromFavourites,
   info,
   addAllToFavourites,
   addAllToPlaylist,
+  removePlaylist,
 }

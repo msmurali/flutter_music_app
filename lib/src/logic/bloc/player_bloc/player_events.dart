@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class PlayerEvents {
@@ -5,19 +6,23 @@ class PlayerEvents {
 }
 
 class PlaySongAgain extends PlayerEvents {
-  const PlaySongAgain();
+  final BuildContext context;
+  const PlaySongAgain({required this.context});
 }
 
 class PlayNextSong extends PlayerEvents {
-  const PlayNextSong();
+  final BuildContext context;
+  const PlayNextSong({required this.context});
 }
 
 class PlayPreviousSong extends PlayerEvents {
-  const PlayPreviousSong();
+  final BuildContext context;
+  const PlayPreviousSong({required this.context});
 }
 
 class PlayRandomSong extends PlayerEvents {
-  const PlayRandomSong();
+  final BuildContext context;
+  const PlayRandomSong({required this.context});
 }
 
 class AddSongNextToNowPlaying extends PlayerEvents {

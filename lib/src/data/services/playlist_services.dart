@@ -10,7 +10,7 @@ class PlaylistServices {
     late int _id;
     final PlaylistsProvider _provider = PlaylistsProvider();
     List<PlaylistModel> _playlists = await _provider.getPlaylists();
-
+    print(_playlists.length);
     _playlists.map((playlist) {
       if (playlist.playlist == playlistName) {
         _id = playlist.id;
@@ -42,8 +42,8 @@ class PlaylistServices {
     return _alreadyExists;
   }
 
-  Future<bool> addToPlaylist(int playlistId, int songId) async {
-    return await _audioQuery.addToPlaylist(playlistId, songId);
+  Future<bool> addToPlaylist(int playlistId, SongModel song) async {
+    return await _audioQuery.addToPlaylist(playlistId, song.id);
   }
 
   Future<bool> addAllToPlaylist(int playlistId, List<SongModel> songs) async {
@@ -52,32 +52,42 @@ class PlaylistServices {
     PlaylistServices _playlistServices = PlaylistServices();
 
     songs.map((song) async {
-      _result = await _playlistServices.addToPlaylist(playlistId, song.id);
+      _result = await _playlistServices.addToPlaylist(playlistId, song);
     });
 
     return _result;
   }
 
   Future<bool> songAlreadyInPlaylist(
-    int songId,
+    SongModel song,
     String playlistName,
   ) async {
     bool _alreadyExists = false;
 
     int _playlistId = await getPlaylistId(playlistName);
 
-    await _playlistsProvider.getPlaylistSongs(_playlistId).then((songsList) {
-      songsList.map((song) {
-        if (song.id == songId) {
-          _alreadyExists = true;
-        }
-      });
-    });
+    List<SongModel> _playlistSongs =
+        await _playlistsProvider.getPlaylistSongs(_playlistId);
+
+    for (int indx = 0; indx < _playlistSongs.length; indx++) {
+      if (_playlistSongs[indx].title == song.title) {
+        _alreadyExists = true;
+      }
+    }
 
     return _alreadyExists;
   }
 
   Future<bool> rmFromPlaylist(int playlistId, int songId) async {
     return await _audioQuery.removeFromPlaylist(playlistId, songId);
+  }
+
+  Future<void> clearPlaylist(int playlistId) async {
+    List<SongModel> _playlistSongs =
+        await _playlistsProvider.getPlaylistSongs(playlistId);
+
+    for (int indx = 0; indx < _playlistSongs.length; indx++) {
+      await rmFromPlaylist(playlistId, _playlistSongs[indx].id);
+    }
   }
 }

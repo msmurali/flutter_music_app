@@ -25,24 +25,26 @@ class HiveServices {
 
   /* Recents */
   Future<Box> initRecentsBox() async {
-    return await Hive.openBox(_recentsKey);
+    return await Hive.openBox(
+      _recentsKey,
+    );
   }
 
   Box getRecentsBox() {
     return Hive.box(_recentsKey);
   }
 
-  Future<void> addToRecentsBox(String key, String str) async {
-    return await Hive.box(_recentsKey).put(key, str);
+  Future<void> addToRecentsBox(String str) async {
+    await Hive.box(_recentsKey).add(str);
   }
 
   Future<void> rmOldestFromRecentsBox() async {
     Box _recentsBox = Hive.box(_recentsKey);
-    String _key = _recentsBox.keyAt(_recentsBox.length - 1);
+    int _key = _recentsBox.keyAt(0);
     await _recentsBox.delete(_key);
   }
 
-  Future<void> rmFromRecentsBox(String key) async {
+  Future<void> rmFromRecentsBox(int key) async {
     Box _recentsBox = Hive.box(_recentsKey);
     await _recentsBox.delete(key);
   }

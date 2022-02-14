@@ -79,9 +79,10 @@ class FavouritesScreen extends StatelessWidget {
           body: Scaffold(
             appBar: _buildAppBar(context),
             body: BlocBuilder<FavouritesBloc, FavouritesState>(
-                builder: (context, state) {
-              return _buildFavourites(context, state.songs);
-            }),
+              builder: (context, state) {
+                return _buildFavourites(context, state.songs);
+              },
+            ),
           ),
           collapsed: const MiniPlayer(),
           expanded: const PlayerScreen(),

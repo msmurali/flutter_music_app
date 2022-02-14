@@ -7,7 +7,7 @@ class CustomListTile extends StatelessWidget {
   final String title;
   final String subtitle;
   final void Function()? onTap;
-  final void Function(TapDownDetails)? onTrailingPressed;
+  final void Function(dynamic)? onTrailingPressed;
   final dynamic entity;
 
   const CustomListTile({

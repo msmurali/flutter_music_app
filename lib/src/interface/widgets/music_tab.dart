@@ -30,9 +30,12 @@ class _MusicTabState extends State<MusicTab>
     return FutureBuilder(
       future: widget.futureData,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        return MusicList(
-          snapshot: snapshot,
-          errorIndicator: widget.errorIndicator,
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 90.0),
+          child: MusicList(
+            snapshot: snapshot,
+            errorIndicator: widget.errorIndicator,
+          ),
         );
       },
     );
@@ -91,20 +94,12 @@ class MusicList extends StatelessWidget {
       return Tile(
         entity: entity,
         onTap: () {},
-        onLongPress: (LongPressStartDetails details) async {
+        onLongPress: (dynamic details) async {
           await showMenuDialog(
             context,
             details,
             entity,
             songOptions,
-          );
-        },
-        onTrailingEndPress: (TapDownDetails details) async {
-          await showMenuDialog(
-            context,
-            details,
-            entity,
-            otherEntitiesOptions,
           );
         },
       );

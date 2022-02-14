@@ -4,12 +4,12 @@ class FavouritesEvents {
   const FavouritesEvents();
 }
 
-class AddSongToFavouritesEvent extends FavouritesEvents {
+class MarkAsFavourite extends FavouritesEvents {
   final SongModel song;
-  const AddSongToFavouritesEvent({required this.song});
+  const MarkAsFavourite({required this.song});
 }
 
-class RemoveSongToFavouritesEvent extends FavouritesEvents {
+class MarkAsNotFavourite extends FavouritesEvents {
   final SongModel song;
-  const RemoveSongToFavouritesEvent({required this.song});
+  const MarkAsNotFavourite({required this.song});
 }

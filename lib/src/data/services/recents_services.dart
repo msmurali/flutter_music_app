@@ -19,26 +19,25 @@ class RecentsServices {
     Box _recentsBox = _hiveServices.getRecentsBox();
     String str = jsonEncode(recentlyPlayed.getMap);
     if (_recentsBox.isEmpty) {
-      _hiveServices.addToRecentsBox(recentlyPlayed.id.toString(), str);
+      _hiveServices.addToRecentsBox(str);
     } else {
-      String? _key = songAlreadyInRecents(recentlyPlayed);
+      int? _key = songAlreadyInRecents(recentlyPlayed);
       if (_key != null) {
         String str = _recentsProvider.getFromRecents(_key);
         await _hiveServices.rmFromRecentsBox(_key);
-        await _hiveServices.addToRecentsBox(_key, str);
+        await _hiveServices.addToRecentsBox(str);
       } else {
         if (_recentsBox.length + 1 > recentsListSize) {
           await _hiveServices.rmOldestFromRecentsBox();
         }
         await _hiveServices.addToRecentsBox(
-          recentlyPlayed.id.toString(),
           json.encode(recentlyPlayed.getMap),
         );
       }
     }
   }
 
-  Future<void> rmFromRecents({String? key}) async {
+  Future<void> rmFromRecents({int? key}) async {
     if (key != null) {
       return await _hiveServices.rmFromRecentsBox(key);
     } else {
@@ -46,15 +45,18 @@ class RecentsServices {
     }
   }
 
-  String? songAlreadyInRecents(SongModel recentlyPlayed) {
+  int? songAlreadyInRecents(SongModel recentlyPlayed) {
     Box _recentsBox = _hiveServices.getRecentsBox();
+    int? _foundAt;
 
-    String _id = recentlyPlayed.id.toString();
+    _recentsBox.toMap().forEach((key, value) {
+      SongModel _song = SongModel(jsonDecode(_recentsBox.get(key)));
 
-    if (_recentsBox.containsKey(_id)) {
-      return _id;
-    }
+      if (_song.id == recentlyPlayed.id) {
+        _foundAt = key;
+      }
+    });
 
-    return null;
+    return _foundAt;
   }
 }

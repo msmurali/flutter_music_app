@@ -4,12 +4,15 @@ import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:music/src/data/providers/artwork_provider.dart';
+import 'package:music/src/interface/screens/favourites_screen.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import '../../../data/services/favourites_services.dart';
 import '../../player.dart';
 import 'bloc.dart';
 
 class PlayerBloc extends Bloc<PlayerEvents, PlayerBlocState> {
   final ArtworkProvider _artworkProvider = ArtworkProvider();
+  final FavouritesServices _favouritesServices = FavouritesServices();
   final Player _player = Player.instance;
 
   PlayerBloc({required PlayerBlocState initialState}) : super(initialState) {
@@ -28,7 +31,10 @@ class PlayerBloc extends Bloc<PlayerEvents, PlayerBlocState> {
     List<SongModel> queue = state.queue;
     int index = state.nowPlaying;
 
-    await _player.playLocalFile(queue[index]);
+    await _player.playLocalFile(
+      queue[index],
+      event.context,
+    );
 
     emitter.call(state);
   }
@@ -48,7 +54,10 @@ class PlayerBloc extends Bloc<PlayerEvents, PlayerBlocState> {
       artworkData: _newArtworkData,
     );
 
-    await _player.playLocalFile(_newState.queue[_newState.nowPlaying]);
+    await _player.playLocalFile(
+      _newState.queue[_newState.nowPlaying],
+      event.context,
+    );
 
     emitter.call(_newState);
   }
@@ -69,7 +78,10 @@ class PlayerBloc extends Bloc<PlayerEvents, PlayerBlocState> {
       artworkData: _newArtworkData,
     );
 
-    await _player.playLocalFile(_newState.queue[_newState.nowPlaying]);
+    await _player.playLocalFile(
+      _newState.queue[_newState.nowPlaying],
+      event.context,
+    );
 
     emitter.call(_newState);
   }
@@ -93,7 +105,10 @@ class PlayerBloc extends Bloc<PlayerEvents, PlayerBlocState> {
       artworkData: _newArtworkData,
     );
 
-    await _player.playLocalFile(_newState.queue[_newState.nowPlaying]);
+    await _player.playLocalFile(
+      _newState.queue[_newState.nowPlaying],
+      event.context,
+    );
 
     emitter.call(_newState);
   }

@@ -15,10 +15,10 @@ class RecentsProvider {
       return SongModel(jsonDecode(str));
     }).toList();
 
-    return _recents;
+    return _recents.reversed.toList();
   }
 
-  String getFromRecents(String key) {
+  String getFromRecents(int key) {
     Box _recentsBox = _hiveServices.getRecentsBox();
     return _recentsBox.get(key);
   }

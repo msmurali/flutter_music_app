@@ -17,7 +17,6 @@ class _RecentsState extends State<Recents> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RecentsBloc, RecentsState>(
-      buildWhen: (previous, current) => previous.songs != current.songs,
       builder: (context, state) {
         List<SongModel> _recents = state.songs.toList();
         if (_recents.isEmpty) {

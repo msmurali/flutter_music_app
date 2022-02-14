@@ -195,9 +195,9 @@ class MiniPlayerPreviousButton extends StatelessWidget {
           PlaybackModeBloc _playbackModeBloc =
               BlocProvider.of<PlaybackModeBloc>(context);
           if (_playbackModeBloc.state.playbackMode == PlaybackMode.shuffle) {
-            _playerBloc.add(const PlayRandomSong());
+            _playerBloc.add(PlayRandomSong(context: context));
           } else {
-            _playerBloc.add(const PlayPreviousSong());
+            _playerBloc.add(PlayPreviousSong(context: context));
           }
         },
         iconSize: 10.0,
@@ -216,15 +216,12 @@ class MiniPlayerPlayButton extends StatelessWidget {
             stream: _audioPlayer.onPlayerStateChanged,
             builder: (context, playerStateSnapshot) {
               return GestureDetector(
-                onTap: () {
+                onTap: () async {
                   if (playerStateSnapshot.data == PlayerState.PLAYING) {
                     _audioPlayer.pause();
                   } else {
                     SongModel _song = state.queue[state.nowPlaying];
-                    _player.playLocalFile(_song);
-                    RecentsBloc _recentsBloc =
-                        BlocProvider.of<RecentsBloc>(context);
-                    _recentsBloc.add(AddSongEventToRecents(song: _song));
+                    await _player.playLocalFile(_song, context);
                   }
                 },
                 child: StreamBuilder<Duration>(
@@ -278,9 +275,9 @@ class MiniPlayerNextButton extends StatelessWidget {
         PlaybackModeBloc _playbackModeBloc =
             BlocProvider.of<PlaybackModeBloc>(context);
         if (_playbackModeBloc.state.playbackMode == PlaybackMode.shuffle) {
-          _playerBloc.add(const PlayRandomSong());
+          _playerBloc.add(PlayRandomSong(context: context));
         } else {
-          _playerBloc.add(const PlayNextSong());
+          _playerBloc.add(PlayNextSong(context: context));
         }
       },
       iconSize: 10.0,
