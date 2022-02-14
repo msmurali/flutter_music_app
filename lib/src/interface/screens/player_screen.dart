@@ -3,22 +3,39 @@ import 'dart:ui';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music/src/logic/bloc/recents_bloc/bloc.dart';
+import '../../logic/bloc/recents_bloc/bloc.dart';
+import '../../logic/bloc/favourites_bloc/bloc.dart';
 import '../utils/custom_icons.dart';
 import '../widgets/circular_artwork.dart';
 import '../widgets/circular_icon_button.dart';
 import '../../logic/bloc/player_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../global/constants/enums.dart';
 import '../../logic/bloc/playback_mode_bloc/bloc.dart';
 import '../../logic/player.dart';
+import '../widgets/toast.dart';
 
 final Player _player = Player.instance;
 final AudioPlayer _audioPlayer = _player.audioPlayer;
 
-class PlayerScreen extends StatelessWidget {
+class PlayerScreen extends StatefulWidget {
   const PlayerScreen({Key? key}) : super(key: key);
+
+  @override
+  State<PlayerScreen> createState() => _PlayerScreenState();
+}
+
+class _PlayerScreenState extends State<PlayerScreen> {
+  late FToast _fToast;
+
+  @override
+  void initState() {
+    super.initState();
+    _fToast = FToast().init(context);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -321,11 +338,7 @@ class FavouritesButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () {},
-      icon: const Icon(CustomIcons.heart_outline),
-      iconSize: 16,
-    );
+    return Container();
   }
 }
 
@@ -388,9 +401,13 @@ class PlayNextButton extends StatelessWidget {
     PlaybackModeBloc _playbackModeBloc =
         BlocProvider.of<PlaybackModeBloc>(context);
     if (_playbackModeBloc.state.playbackMode == PlaybackMode.shuffle) {
-      _playerBloc.add(const PlayRandomSong());
+      _playerBloc.add(PlayRandomSong(
+        context: context,
+      ));
     } else {
-      _playerBloc.add(const PlayNextSong());
+      _playerBloc.add(PlayNextSong(
+        context: context,
+      ));
     }
   }
 
@@ -420,9 +437,17 @@ class PlayPreviousButton extends StatelessWidget {
     PlaybackModeBloc _playbackModeBloc =
         BlocProvider.of<PlaybackModeBloc>(context);
     if (_playbackModeBloc.state.playbackMode == PlaybackMode.shuffle) {
-      _playerBloc.add(const PlayRandomSong());
+      _playerBloc.add(
+        PlayRandomSong(
+          context: context,
+        ),
+      );
     } else {
-      _playerBloc.add(const PlayPreviousSong());
+      _playerBloc.add(
+        PlayPreviousSong(
+          context: context,
+        ),
+      );
     }
   }
 
@@ -447,11 +472,9 @@ class PlayPauseButton extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  void _handlePress(BuildContext context, PlayerBlocState state) {
+  void _handlePress(BuildContext context, PlayerBlocState state) async {
     SongModel _song = state.queue[state.nowPlaying];
-    _player.playLocalFile(_song);
-    RecentsBloc _recentsBloc = BlocProvider.of<RecentsBloc>(context);
-    _recentsBloc.add(AddSongEventToRecents(song: _song));
+    await _player.playLocalFile(_song, context);
   }
 
   @override
@@ -466,11 +489,23 @@ class PlayPauseButton extends StatelessWidget {
                   BlocProvider.of<PlaybackModeBloc>(context).state.playbackMode;
               PlayerBloc _playerBloc = BlocProvider.of<PlayerBloc>(context);
               if (_playbackMode == PlaybackMode.order) {
-                _playerBloc.add(const PlayNextSong());
+                _playerBloc.add(
+                  PlayNextSong(
+                    context: context,
+                  ),
+                );
               } else if (_playbackMode == PlaybackMode.shuffle) {
-                _playerBloc.add(const PlayRandomSong());
+                _playerBloc.add(
+                  PlayRandomSong(
+                    context: context,
+                  ),
+                );
               } else {
-                _playerBloc.add(const PlaySongAgain());
+                _playerBloc.add(
+                  PlaySongAgain(
+                    context: context,
+                  ),
+                );
               }
             });
 
