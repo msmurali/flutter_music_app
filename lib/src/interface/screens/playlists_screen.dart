@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide BackButton;
+import '../../data/models/playlist.dart';
 import '../widgets/back_button.dart';
 import 'player_screen.dart';
 
@@ -26,7 +27,7 @@ class PlaylistsScreen extends StatelessWidget {
   Widget _buildPlaylists() {
     final PlaylistsProvider _playlistsProvider = PlaylistsProvider();
     return MusicTab(
-      futureData: _playlistsProvider.getPlaylists(),
+      futureData: _playlistsProvider.getPlaylists() as Future<List<Playlist>>,
       errorIndicator: const ErrorIndicator(
         asset: 'asset/images/no_playlists.svg',
       ),

@@ -34,7 +34,7 @@ class Tile extends StatelessWidget {
     } else if (entity is AlbumModel) {
       return entity!.album;
     } else {
-      return entity!.playlist;
+      return entity!.name;
     }
   }
 
@@ -46,7 +46,7 @@ class Tile extends StatelessWidget {
     } else if (entity is AlbumModel) {
       return entity.artist ?? 'Unknown Artist';
     } else {
-      return '${entity.numOfSongs} songs';
+      return '${entity.song.length} songs';
     }
   }
 

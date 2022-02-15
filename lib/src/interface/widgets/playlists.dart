@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../data/models/playlist.dart';
 import '../../data/providers/playlists_provider.dart';
 import 'error_indicator.dart';
 import 'loading_indicator.dart';
@@ -29,7 +30,7 @@ class Playlists extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _playlistsProvider.getPlaylists(),
+      future: _playlistsProvider.getPlaylists() as Future<List<Playlist>>,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SizedBox(
