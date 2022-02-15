@@ -37,8 +37,7 @@ class SongsScreen extends StatelessWidget {
       _future = _songsProvider.getArtistSongs(_artist.artist);
     } else {
       Playlist _playlist = entity as Playlist;
-      _future = _playlistsProvider.getPlaylistSongs(_playlist.name)
-          as Future<List<dynamic>>;
+      _future = _playlistsProvider.getPlaylistSongs(_playlist.name);
     }
 
     return FutureBuilder(

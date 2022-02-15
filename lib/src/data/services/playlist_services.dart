@@ -63,6 +63,16 @@ class PlaylistServices {
         .containsKey(song.id);
   }
 
+  Future<bool> renamePlaylist(String oldName, String newName) async {
+    Map<int, String> playlist = _playlistsProvider.getPlaylist(oldName).toMap();
+    await rmPlaylist(oldName);
+    await _hiveServices.createPlaylist(
+      newName,
+      encodedSongs: playlist,
+    );
+    return _hiveServices.getPlaylistsBox().containsKey(newName);
+  }
+
   Future<void> clearPlaylist(String playlistName) async {
     await _hiveServices.clearPlaylist(playlistName);
   }

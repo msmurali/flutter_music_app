@@ -22,6 +22,7 @@ class HiveServices {
     await Hive.initFlutter();
     await initRecentsBox();
     await initFavouritesBox();
+    await initPlaylistsBox();
     await initPreferencesBox();
     await initQueueBox();
   }
@@ -70,7 +71,6 @@ class HiveServices {
   Future<void> addToFavouritesBox(int key, String value) async {
     Box _favouritesBox = Hive.box(_favouritesKey);
     await _favouritesBox.put(key, value);
-    print(_favouritesBox.get(key));
   }
 
   Future<void> addAllToFavourites(List<int> keys, List<String> values) async {
@@ -101,9 +101,9 @@ class HiveServices {
     return Hive.box(_playlistsKey);
   }
 
-  Future<void> createPlaylist(String name) async {
+  Future<void> createPlaylist(String name, {Map<int, String>? encodedSongs}) async {
     Box _playlistsBox = Hive.box(_playlistsKey);
-    await _playlistsBox.put(name, <int, String>{});
+    await _playlistsBox.put(name, encodedSongs ?? <int, String>{});
   }
 
   Future<void> rmPlaylist(String name) async {

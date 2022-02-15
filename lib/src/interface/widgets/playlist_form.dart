@@ -83,7 +83,7 @@ class _PlaylistFormState extends State<PlaylistForm> {
                       _showToastMsg('Playlist name should not be empty');
                       return;
                     }
-                    if (await _playlistsServices.playlistAlreadyExists(_name)) {
+                    if (_playlistsServices.playlistAlreadyExists(_name)) {
                       _showToastMsg('Playlist already exists');
                       return;
                     }

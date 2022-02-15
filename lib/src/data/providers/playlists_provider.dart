@@ -15,7 +15,7 @@ class PlaylistsProvider {
     return Playlist.fromMap(playlistName, _playlist);
   }
 
-  List<Playlist> getPlaylists() {
+  Future<List<Playlist>> getPlaylists() async {
     Box _playlistsBox = _hiveServices.getPlaylistsBox();
 
     return _playlistsBox
@@ -29,7 +29,7 @@ class PlaylistsProvider {
   }
 
   /* get playlist specific songs*/
-  List<SongModel> getPlaylistSongs(String playlistName) {
+  Future<List<SongModel>> getPlaylistSongs(String playlistName) async {
     Box _playlistsBox = _hiveServices.getPlaylistsBox();
 
     Map<int, String> _playlist = _playlistsBox.get(playlistName);

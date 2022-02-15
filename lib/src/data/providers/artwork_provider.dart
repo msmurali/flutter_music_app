@@ -51,7 +51,7 @@ class ArtworkProvider {
     final PlaylistsProvider _playlistsProvider = PlaylistsProvider();
 
     List<SongModel> _playlistSongs =
-        _playlistsProvider.getPlaylistSongs(playlistName);
+        await _playlistsProvider.getPlaylistSongs(playlistName);
 
     if (_playlistSongs.isEmpty) {
       return null;
