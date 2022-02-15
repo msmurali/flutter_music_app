@@ -4,12 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:music/src/data/services/hive_services.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-import '../../global/constants/index.dart';
-import '../providers/favourites_provider.dart';
-import 'playlist_services.dart';
-
 class FavouritesServices {
-  final FavouritesProvider _favouritesProvider = FavouritesProvider();
   final HiveServices _hiveServices = HiveServices();
 
   Future<void> createFavourites() async {
@@ -22,11 +17,10 @@ class FavouritesServices {
   }
 
   Future<bool> addToFavourites(SongModel song) async {
-    Box _favouritesBox = _hiveServices.getFavouritesBox();
     if (songAlreadyExistsInFavourites(song)) {
       return false;
     }
-    await _favouritesBox.add(jsonEncode(song.getMap));
+    await _hiveServices.addToFavouritesBox(song.id, jsonEncode(song.getMap));
     return true;
   }
 

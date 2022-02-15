@@ -36,7 +36,6 @@ class _PlayerScreenState extends State<PlayerScreen> {
     _fToast = FToast().init(context);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -338,7 +337,39 @@ class FavouritesButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return BlocBuilder<PlayerBloc, PlayerBlocState>(
+      builder: (BuildContext context, PlayerBlocState playerState) {
+        int index = playerState.nowPlaying;
+        SongModel song = playerState.queue[index];
+
+        return BlocBuilder<FavouritesBloc, FavouritesState>(
+          builder: (BuildContext context, FavouritesState favState) {
+            List<int> favIds = favState.songs.map((song) => song.id).toList();
+
+            if (favIds.contains(song.id)) {
+              return IconButton(
+                onPressed: () {
+                  print('mark as not fav');
+                  BlocProvider.of<FavouritesBloc>(context).add(
+                    MarkAsNotFavourite(song: song),
+                  );
+                },
+                icon: const Icon(CustomIcons.heart),
+              );
+            } else {
+              return IconButton(
+                onPressed: () {
+                  BlocProvider.of<FavouritesBloc>(context).add(
+                    MarkAsFavourite(song: song),
+                  );
+                },
+                icon: const Icon(CustomIcons.heart_outline),
+              );
+            }
+          },
+        );
+      },
+    );
   }
 }
 

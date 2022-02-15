@@ -70,6 +70,7 @@ class HiveServices {
   Future<void> addToFavouritesBox(int key, String value) async {
     Box _favouritesBox = Hive.box(_favouritesKey);
     await _favouritesBox.put(key, value);
+    print(_favouritesBox.get(key));
   }
 
   Future<void> addAllToFavourites(List<int> keys, List<String> values) async {

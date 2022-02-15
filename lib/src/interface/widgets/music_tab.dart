@@ -30,12 +30,9 @@ class _MusicTabState extends State<MusicTab>
     return FutureBuilder(
       future: widget.futureData,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 90.0),
-          child: MusicList(
-            snapshot: snapshot,
-            errorIndicator: widget.errorIndicator,
-          ),
+        return MusicList(
+          snapshot: snapshot,
+          errorIndicator: widget.errorIndicator,
         );
       },
     );

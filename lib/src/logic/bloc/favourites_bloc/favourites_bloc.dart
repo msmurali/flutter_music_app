@@ -38,10 +38,13 @@ class FavouritesBloc extends Bloc<FavouritesEvents, FavouritesState> {
     Emitter<FavouritesState> emitter,
   ) async {
     SongModel _song = event.song;
+    print(_song.id);
 
     await _favouritesServices.rmFromFavourites(_song);
 
     List<SongModel> _favourites = _favouritesProvider.getFavouritesSongs();
+
+    _favourites.forEach((elem) => print(elem.id));
 
     FavouritesState _favState = FavouritesState(
       songs: _favourites,

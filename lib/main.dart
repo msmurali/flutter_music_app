@@ -58,6 +58,7 @@ Future<void> main() async {
   // print(await _favouritesServices.createFavourites());
   await _favouritesServices.clearFavourites();
   await _getQueueSongs();
+  await _hiveServices.setQueueIndex(0);
   queueIndex = _queueServices.getQueueIndex();
   await _getSongArtwork();
 
