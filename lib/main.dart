@@ -90,7 +90,7 @@ Future<void> main() async {
           initialState: FavouritesState(
             songs: _favouritesProvider.getFavouritesSongs(),
             action: FavAction.none,
-            status: FavStatus.none,
+            status: Status.none,
           ),
         ),
       ),

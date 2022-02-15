@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../logic/bloc/favourites_bloc/bloc.dart';
 import '../utils/custom_icons.dart';
@@ -19,55 +19,19 @@ import '../widgets/toast.dart';
 final Player _player = Player.instance;
 final AudioPlayer _audioPlayer = _player.audioPlayer;
 
-class PlayerScreen extends StatefulWidget {
+class PlayerScreen extends StatelessWidget {
   const PlayerScreen({Key? key}) : super(key: key);
 
   @override
-  State<PlayerScreen> createState() => _PlayerScreenState();
-}
-
-class _PlayerScreenState extends State<PlayerScreen> {
-  late FToast _fToast;
-
-  @override
-  void initState() {
-    super.initState();
-    _fToast = FToast().init(context);
-  }
-
-  void _toastHandler(BuildContext context, FavouritesState state) {
-    if (state.action == FavAction.add && state.status == FavStatus.added) {
-      _fToast.showToast(
-        child: const ToastWidget(
-          text: 'Added to favourites',
-        ),
-        fadeDuration: 50,
-        toastDuration: const Duration(milliseconds: 500),
-      );
-    } else {
-      _fToast.showToast(
-        child: const ToastWidget(
-          text: 'Removed from favourites',
-        ),
-        fadeDuration: 50,
-        toastDuration: const Duration(milliseconds: 500),
-      );
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocListener<FavouritesBloc, FavouritesState>(
-      listener: _toastHandler,
-      child: SizedBox(
-        child: Stack(
-          children: const [
-            Background(),
-            Foreground(),
-          ],
-        ),
-        height: MediaQuery.of(context).size.height,
+    return SizedBox(
+      child: Stack(
+        children: const [
+          Background(),
+          Foreground(),
+        ],
       ),
+      height: MediaQuery.of(context).size.height,
     );
   }
 }
@@ -352,10 +316,43 @@ class Controls extends StatelessWidget {
   }
 }
 
-class FavouritesButton extends StatelessWidget {
+class FavouritesButton extends StatefulWidget {
   const FavouritesButton({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<FavouritesButton> createState() => _FavouritesButtonState();
+}
+
+class _FavouritesButtonState extends State<FavouritesButton> {
+  late FToast _fToast;
+
+  @override
+  void initState() {
+    super.initState();
+    _fToast = FToast().init(context);
+  }
+
+  void _toastHandler(BuildContext context, FavouritesState state) {
+    if (state.action == Action.add && state.status == Status.succeed) {
+      _fToast.showToast(
+        child: const ToastWidget(
+          text: 'Added to favourites',
+        ),
+        fadeDuration: 50,
+        toastDuration: const Duration(milliseconds: 500),
+      );
+    } else {
+      _fToast.showToast(
+        child: const ToastWidget(
+          text: 'Removed from favourites',
+        ),
+        fadeDuration: 50,
+        toastDuration: const Duration(milliseconds: 500),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -364,7 +361,8 @@ class FavouritesButton extends StatelessWidget {
         int index = playerState.nowPlaying;
         SongModel song = playerState.queue[index];
 
-        return BlocBuilder<FavouritesBloc, FavouritesState>(
+        return BlocConsumer<FavouritesBloc, FavouritesState>(
+          listener: _toastHandler,
           builder: (BuildContext context, FavouritesState favState) {
             List<int> favIds = favState.songs.map((song) => song.id).toList();
 

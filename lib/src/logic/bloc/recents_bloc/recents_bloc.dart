@@ -15,7 +15,6 @@ class RecentsBloc extends Bloc<RecentsEvents, RecentsState> {
     AddSongEventToRecents event,
     Emitter<RecentsState> emitter,
   ) async {
-    print('recents song: ${event.song.id}');
     await _recentsServices.addToRecents(event.song);
     RecentsState newState = RecentsState(songs: _recentsProvider.getRecents());
     emitter.call(newState);

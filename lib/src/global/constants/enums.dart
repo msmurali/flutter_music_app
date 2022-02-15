@@ -56,3 +56,16 @@ enum Option {
   addAllToPlaylist,
   removePlaylist,
 }
+
+enum Status {
+  succeed,
+  failed,
+  none,
+}
+
+enum Action {
+  add,
+  remove,
+  rename,
+  none,
+}

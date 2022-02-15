@@ -1,21 +1,11 @@
 import 'package:on_audio_query/on_audio_query.dart';
 
-enum FavStatus {
-  added,
-  removed,
-  none,
-}
-
-enum FavAction {
-  add,
-  remove,
-  none,
-}
+import '../../../global/constants/enums.dart';
 
 class FavouritesState {
   final List<SongModel> songs;
-  final FavStatus status;
-  final FavAction action;
+  final Status status;
+  final Action action;
   const FavouritesState({
     required this.songs,
     required this.action,

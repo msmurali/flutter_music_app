@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import '../../../data/providers/favourites_provider.dart';
 import '../../../data/services/favourites_services.dart';
+import '../../../global/constants/enums.dart';
 import 'bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
@@ -26,8 +27,8 @@ class FavouritesBloc extends Bloc<FavouritesEvents, FavouritesState> {
 
     FavouritesState _favState = FavouritesState(
       songs: _favourites,
-      status: _result ? FavStatus.added : FavStatus.none,
-      action: FavAction.add,
+      status: _result ? Status.succeed : Status.failed,
+      action: Action.add,
     );
 
     emitter.call(_favState);
@@ -38,18 +39,15 @@ class FavouritesBloc extends Bloc<FavouritesEvents, FavouritesState> {
     Emitter<FavouritesState> emitter,
   ) async {
     SongModel _song = event.song;
-    print(_song.id);
 
-    await _favouritesServices.rmFromFavourites(_song);
+    bool _result = await _favouritesServices.rmFromFavourites(_song);
 
     List<SongModel> _favourites = _favouritesProvider.getFavouritesSongs();
 
-    _favourites.forEach((elem) => print(elem.id));
-
     FavouritesState _favState = FavouritesState(
       songs: _favourites,
-      status: FavStatus.removed,
-      action: FavAction.remove,
+      status: _result ? Status.succeed : Status.failed,
+      action: Action.remove,
     );
 
     emitter.call(_favState);

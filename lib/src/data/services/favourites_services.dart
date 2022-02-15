@@ -30,8 +30,9 @@ class FavouritesServices {
     }
   }
 
-  Future<void> rmFromFavourites(SongModel song) async {
+  Future<bool> rmFromFavourites(SongModel song) async {
     await _hiveServices.rmFromFavouritesBox(song.id);
+    return !_hiveServices.getFavouritesBox().containsKey(song.id);
   }
 
   Future<void> clearFavourites() async {
