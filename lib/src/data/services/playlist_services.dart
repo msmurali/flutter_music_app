@@ -1,93 +1,69 @@
+import 'dart:convert';
+import 'package:music/src/data/services/hive_services.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../providers/playlists_provider.dart';
 
 class PlaylistServices {
-  final OnAudioQuery _audioQuery = OnAudioQuery();
+  final HiveServices _hiveServices = HiveServices();
   final PlaylistsProvider _playlistsProvider = PlaylistsProvider();
 
-  static Future<int> getPlaylistId(String playlistName) async {
-    late int _id;
-    final PlaylistsProvider _provider = PlaylistsProvider();
-    List<PlaylistModel> _playlists = await _provider.getPlaylists();
-    print(_playlists.length);
-    _playlists.map((playlist) {
-      if (playlist.playlist == playlistName) {
-        _id = playlist.id;
-      }
-    });
-
-    return _id;
-  }
-
   Future<bool> createPlaylist(String playlistName) async {
-    return await _audioQuery.createPlaylist(playlistName);
+    await _hiveServices.createPlaylist(playlistName);
+    return _hiveServices.getPlaylistsBox().containsKey(playlistName);
   }
 
-  Future<bool> rmPlaylist(int playlistId) async {
-    return await _audioQuery.removePlaylist(playlistId);
+  Future<bool> rmPlaylist(String playlistName) async {
+    await _hiveServices.rmPlaylist(playlistName);
+    return !_hiveServices.getPlaylistsBox().containsKey(playlistName);
   }
 
-  Future<bool> playlistAlreadyExists(playlistName) async {
-    bool _alreadyExists = false;
-
-    List<PlaylistModel> _playlists = await _playlistsProvider.getPlaylists();
-
-    _playlists.map((playlist) {
-      if (playlist.playlist == playlistName) {
-        _alreadyExists = true;
-      }
-    });
-
-    return _alreadyExists;
+  bool playlistAlreadyExists(playlistName) {
+    return _hiveServices.getPlaylistsBox().containsKey(playlistName);
   }
 
-  Future<bool> addToPlaylist(int playlistId, SongModel song) async {
-    return await _audioQuery.addToPlaylist(playlistId, song.id);
+  Future<bool> addToPlaylist(String playlistName, SongModel song) async {
+    await _hiveServices.addToPlaylist(
+      playlistName,
+      song.id,
+      jsonEncode(song.getMap),
+    );
+    return _playlistsProvider
+        .getPlaylist(playlistName)
+        .toMap()
+        .containsKey(song.id);
   }
 
-  Future<bool> addAllToPlaylist(int playlistId, List<SongModel> songs) async {
-    bool _result = true;
-
-    PlaylistServices _playlistServices = PlaylistServices();
-
-    songs.map((song) async {
-      _result = await _playlistServices.addToPlaylist(playlistId, song);
-    });
-
-    return _result;
+  Future<bool> rmFromPlaylist(String playlistName, SongModel song) async {
+    await _hiveServices.rmFromPlaylist(playlistName, song.id);
+    return !_playlistsProvider
+        .getPlaylist(playlistName)
+        .toMap()
+        .containsKey(song.id);
   }
 
-  Future<bool> songAlreadyInPlaylist(
-    SongModel song,
+  Future<void> addAllToPlaylist(
     String playlistName,
+    List<SongModel> songs,
   ) async {
-    bool _alreadyExists = false;
-
-    int _playlistId = await getPlaylistId(playlistName);
-
-    List<SongModel> _playlistSongs =
-        await _playlistsProvider.getPlaylistSongs(_playlistId);
-
-    for (int indx = 0; indx < _playlistSongs.length; indx++) {
-      if (_playlistSongs[indx].title == song.title) {
-        _alreadyExists = true;
-      }
-    }
-
-    return _alreadyExists;
+    await _hiveServices.addAllToPlaylist(
+      playlistName,
+      songs.map((song) => song.id).toList(),
+      songs.map((song) => jsonEncode(song.getMap)).toList(),
+    );
   }
 
-  Future<bool> rmFromPlaylist(int playlistId, int songId) async {
-    return await _audioQuery.removeFromPlaylist(playlistId, songId);
+  bool songAlreadyInPlaylist(
+    String playlistName,
+    SongModel song,
+  ) {
+    return _playlistsProvider
+        .getPlaylist(playlistName)
+        .toMap()
+        .containsKey(song.id);
   }
 
-  Future<void> clearPlaylist(int playlistId) async {
-    List<SongModel> _playlistSongs =
-        await _playlistsProvider.getPlaylistSongs(playlistId);
-
-    for (int indx = 0; indx < _playlistSongs.length; indx++) {
-      await rmFromPlaylist(playlistId, _playlistSongs[indx].id);
-    }
+  Future<void> clearPlaylist(String playlistName) async {
+    await _hiveServices.clearPlaylist(playlistName);
   }
 }

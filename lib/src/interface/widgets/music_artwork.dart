@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:music/src/data/models/playlist.dart';
 import 'package:music/src/interface/widgets/placeholder_image.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
@@ -83,8 +84,9 @@ class MusicArtwork extends StatelessWidget {
         entity as AlbumModel,
       );
     } else {
+      Playlist _playlist = entity as Playlist;
       return await _artworkProvider.getPlaylistArtwork(
-        entity as PlaylistModel,
+        _playlist.name,
       );
     }
   }

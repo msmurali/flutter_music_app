@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../logic/bloc/recents_bloc/bloc.dart';
 import '../../logic/bloc/favourites_bloc/bloc.dart';
 import '../utils/custom_icons.dart';
 import '../widgets/circular_artwork.dart';

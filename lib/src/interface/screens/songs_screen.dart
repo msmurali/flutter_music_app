@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart' hide BackButton;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../data/models/playlist.dart';
 import '../../global/constants/enums.dart';
 import 'player_screen.dart';
 import '../../logic/bloc/preferences_bloc/bloc.dart';
@@ -33,8 +36,9 @@ class SongsScreen extends StatelessWidget {
       ArtistModel _artist = entity as ArtistModel;
       _future = _songsProvider.getArtistSongs(_artist.artist);
     } else {
-      PlaylistModel _playlist = entity as PlaylistModel;
-      _future = _playlistsProvider.getPlaylistSongs(_playlist.id);
+      Playlist _playlist = entity as Playlist;
+      _future = _playlistsProvider.getPlaylistSongs(_playlist.name)
+          as Future<List<dynamic>>;
     }
 
     return FutureBuilder(

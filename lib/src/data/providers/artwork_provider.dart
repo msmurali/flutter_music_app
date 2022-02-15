@@ -46,12 +46,12 @@ class ArtworkProvider {
     return await _artworkProvider.getSongArtwork(_artistSongs[0]);
   }
 
-  Future<Uint8List?> getPlaylistArtwork(PlaylistModel playlist) async {
+  Future<Uint8List?> getPlaylistArtwork(String playlistName) async {
     final ArtworkProvider _artworkProvider = ArtworkProvider();
     final PlaylistsProvider _playlistsProvider = PlaylistsProvider();
 
     List<SongModel> _playlistSongs =
-        await _playlistsProvider.getPlaylistSongs(playlist.id);
+        _playlistsProvider.getPlaylistSongs(playlistName);
 
     if (_playlistSongs.isEmpty) {
       return null;
