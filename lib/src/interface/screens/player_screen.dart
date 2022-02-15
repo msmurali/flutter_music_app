@@ -36,16 +36,39 @@ class _PlayerScreenState extends State<PlayerScreen> {
     _fToast = FToast().init(context);
   }
 
+  void _toastHandler(BuildContext context, FavouritesState state) {
+    if (state.action == FavAction.add && state.status == FavStatus.added) {
+      _fToast.showToast(
+        child: const ToastWidget(
+          text: 'Added to favourites',
+        ),
+        fadeDuration: 50,
+        toastDuration: const Duration(milliseconds: 500),
+      );
+    } else {
+      _fToast.showToast(
+        child: const ToastWidget(
+          text: 'Removed from favourites',
+        ),
+        fadeDuration: 50,
+        toastDuration: const Duration(milliseconds: 500),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: Stack(
-        children: const [
-          Background(),
-          Foreground(),
-        ],
+    return BlocListener<FavouritesBloc, FavouritesState>(
+      listener: _toastHandler,
+      child: SizedBox(
+        child: Stack(
+          children: const [
+            Background(),
+            Foreground(),
+          ],
+        ),
+        height: MediaQuery.of(context).size.height,
       ),
-      height: MediaQuery.of(context).size.height,
     );
   }
 }
@@ -349,7 +372,6 @@ class FavouritesButton extends StatelessWidget {
             if (favIds.contains(song.id)) {
               return IconButton(
                 onPressed: () {
-                  print('mark as not fav');
                   BlocProvider.of<FavouritesBloc>(context).add(
                     MarkAsNotFavourite(song: song),
                   );

@@ -12,6 +12,7 @@ class ToastWidget extends StatelessWidget {
         horizontal: 8.0,
       ),
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4.0),
         color: Colors.grey[350],
       ),
       child: Text(
