@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../global/constants/index.dart';
+import '../../logic/bloc/player_bloc/bloc.dart';
+import '../../logic/player.dart';
 import '../utils/helpers.dart';
 import '../../logic/bloc/preferences_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'error_indicator.dart';
 import 'loading_indicator.dart';
 import 'tile.dart';
+
+final _player = Player.instance;
 
 class MusicTab extends StatefulWidget {
   final Future<List<dynamic>> futureData;
@@ -90,14 +94,38 @@ class MusicList extends StatelessWidget {
     if (entity is SongModel) {
       return Tile(
         entity: entity,
-        onTap: () {},
-        onLongPress: (dynamic details) async {
-          await showMenuDialog(
+        onTap: () async {
+          PlayerBlocState _playerState =
+              BlocProvider.of<PlayerBloc>(context).state;
+          int index = _playerState.nowPlaying;
+          SongModel song = _playerState.queue[index];
+          await _player.playLocalFile(
+            song,
             context,
-            details,
-            entity,
-            songOptions,
           );
+        },
+        onLongPress: (dynamic details) async {
+          await showMenuDialog(context, details, entity, songOptions);
+        },
+      );
+    } else if (entity is AlbumModel) {
+      return Tile(
+        entity: entity,
+        onTap: () {
+          _navigateToSongsScreen(context, entity);
+        },
+        onLongPress: (dynamic details) async {
+          await showMenuDialog(context, details, entity, albumOptions);
+        },
+      );
+    } else if (entity is ArtistModel) {
+      return Tile(
+        entity: entity,
+        onTap: () {
+          _navigateToSongsScreen(context, entity);
+        },
+        onLongPress: (dynamic details) async {
+          await showMenuDialog(context, details, entity, artistOptions);
         },
       );
     } else {
@@ -105,6 +133,9 @@ class MusicList extends StatelessWidget {
         entity: entity,
         onTap: () {
           _navigateToSongsScreen(context, entity);
+        },
+        onLongPress: (dynamic details) async {
+          await showMenuDialog(context, details, entity, playlistOptions);
         },
       );
     }

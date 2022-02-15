@@ -55,6 +55,7 @@ enum Option {
   addAllToFavourites,
   addAllToPlaylist,
   removePlaylist,
+  renamePlaylist,
 }
 
 enum Status {

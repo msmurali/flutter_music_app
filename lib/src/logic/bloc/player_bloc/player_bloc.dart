@@ -4,15 +4,14 @@ import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:music/src/data/providers/artwork_provider.dart';
-import 'package:music/src/interface/screens/favourites_screen.dart';
+import 'package:music/src/data/services/queue_services.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import '../../../data/services/favourites_services.dart';
 import '../../player.dart';
 import 'bloc.dart';
 
 class PlayerBloc extends Bloc<PlayerEvents, PlayerBlocState> {
   final ArtworkProvider _artworkProvider = ArtworkProvider();
-  final FavouritesServices _favouritesServices = FavouritesServices();
+  final QueueServices _queueServices = QueueServices();
   final Player _player = Player.instance;
 
   PlayerBloc({required PlayerBlocState initialState}) : super(initialState) {
@@ -60,6 +59,8 @@ class PlayerBloc extends Bloc<PlayerEvents, PlayerBlocState> {
     );
 
     emitter.call(_newState);
+
+    await _queueServices.setQueueIndex(_newIndex);
   }
 
   Future<void> _onPlayPreviousSongEvent(
@@ -84,6 +85,8 @@ class PlayerBloc extends Bloc<PlayerEvents, PlayerBlocState> {
     );
 
     emitter.call(_newState);
+
+    await _queueServices.setQueueIndex(_newIndex);
   }
 
   Future<void> _onPlayRandomSongEvent(
@@ -111,6 +114,8 @@ class PlayerBloc extends Bloc<PlayerEvents, PlayerBlocState> {
     );
 
     emitter.call(_newState);
+
+    await _queueServices.setQueueIndex(_newIndex);
   }
 
   Future<void> _onAddSongNextToNowPlaying(
@@ -136,7 +141,7 @@ class PlayerBloc extends Bloc<PlayerEvents, PlayerBlocState> {
   ) async {
     List<SongModel> _newQueue = event.queue;
 
-    int _newIndex = 0;
+    int _newIndex = event.index;
 
     Uint8List? _newArtwork =
         await _artworkProvider.getSongArtwork(_newQueue[_newIndex]);
@@ -148,5 +153,8 @@ class PlayerBloc extends Bloc<PlayerEvents, PlayerBlocState> {
     );
 
     emitter.call(_newState);
+
+    await _queueServices.setQueueIndex(_newIndex);
+    await _queueServices.setQueue(_newQueue);
   }
 }

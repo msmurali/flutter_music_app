@@ -1,8 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Action;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:music/src/interface/widgets/toast.dart';
 
 import '../../data/services/playlist_services.dart';
+import '../../global/constants/enums.dart';
+import '../../logic/bloc/playlists_bloc/bloc.dart';
 
 class PlaylistForm extends StatefulWidget {
   const PlaylistForm({Key? key}) : super(key: key);
@@ -27,6 +30,8 @@ class _PlaylistFormState extends State<PlaylistForm> {
     _fToast.showToast(
       child: ToastWidget(text: msg),
       gravity: ToastGravity.BOTTOM,
+      fadeDuration: 50,
+      toastDuration: const Duration(milliseconds: 500),
     );
   }
 
@@ -36,68 +41,81 @@ class _PlaylistFormState extends State<PlaylistForm> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
       ),
-      child: Form(
-        child: Column(
-          children: [
-            const SizedBox(height: 20.0),
-            TextField(
-              cursorColor: theme.colorScheme.onSurface,
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.white.withOpacity(0.05),
-                    width: 1.4,
+      child: BlocListener<PlaylistsBloc, PlaylistsState>(
+        listener: (BuildContext context, PlaylistsState state) {
+          if (state.action == Action.add && state.status == Status.succeed) {
+            _showToastMsg('Playlist created');
+          } else if (state.action == Action.add &&
+              state.status == Status.failed) {
+            _showToastMsg('Something went wrong');
+          }
+        },
+        child: Form(
+          child: Column(
+            children: [
+              const SizedBox(height: 20.0),
+              TextField(
+                cursorColor: theme.colorScheme.onSurface,
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.white.withOpacity(0.05),
+                      width: 1.4,
+                    ),
                   ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.onSurface,
-                    width: 1.4,
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.onSurface,
+                      width: 1.4,
+                    ),
                   ),
+                  isDense: true,
+                  border: const OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.05),
                 ),
-                isDense: true,
-                border: const OutlineInputBorder(),
-                filled: true,
-                fillColor: Colors.white.withOpacity(0.05),
+                controller: _textEditingController,
               ),
-              controller: _textEditingController,
-            ),
-            const SizedBox(height: 20.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text(
-                    'Discard',
+              const SizedBox(height: 20.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'Discard',
+                    ),
+                    style: theme.textButtonTheme.style,
                   ),
-                  style: theme.textButtonTheme.style,
-                ),
-                const SizedBox(width: 20.0),
-                TextButton(
-                  onPressed: () async {
-                    String _name = _textEditingController.text.trim();
-                    if (_name.isEmpty) {
-                      _showToastMsg('Playlist name should not be empty');
-                      return;
-                    }
-                    if (_playlistsServices.playlistAlreadyExists(_name)) {
-                      _showToastMsg('Playlist already exists');
-                      return;
-                    }
-                    await _playlistsServices.createPlaylist(_name);
-                    _showToastMsg('Playlist created');
-                    setState(() {});
-                  },
-                  child: const Text(
-                    'Create',
+                  const SizedBox(width: 20.0),
+                  TextButton(
+                    onPressed: () async {
+                      String _name = _textEditingController.text.trim();
+                      if (_name.isEmpty) {
+                        _showToastMsg('Playlist name should not be empty');
+                        return;
+                      }
+                      if (_playlistsServices.playlistAlreadyExists(_name)) {
+                        _showToastMsg('Playlist already exists');
+                        return;
+                      }
+                      BlocProvider.of<PlaylistsBloc>(context).add(
+                        CreatePlaylist(
+                          playlistName: _name,
+                        ),
+                      );
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'Create',
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

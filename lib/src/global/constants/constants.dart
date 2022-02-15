@@ -44,6 +44,7 @@ const optionsText = <Option, String>{
   Option.removeFromFavourites: 'Remove from Favourites',
   Option.addAllToFavourites: 'Add all to Favourites',
   Option.info: 'Song info',
+  Option.renamePlaylist: 'Rename Playlist',
 };
 
 const List<Option> songOptions = [
@@ -66,6 +67,7 @@ const List<Option> artistOptions = [
 const List<Option> playlistOptions = [
   Option.addAllToFavourites,
   Option.removePlaylist,
+  Option.renamePlaylist,
 ];
 
 const playlistSongOptions = [

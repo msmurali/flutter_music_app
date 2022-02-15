@@ -1,10 +1,13 @@
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:music/src/data/models/playlist.dart';
+import 'package:music/src/data/providers/playlists_provider.dart';
 import 'package:music/src/data/services/favourites_services.dart';
 import 'package:music/src/global/constants/index.dart';
+import 'package:music/src/logic/bloc/playlists_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import 'src/data/providers/artwork_provider.dart';
@@ -31,10 +34,12 @@ final QueueServices _queueServices = QueueServices();
 final ArtworkProvider _artworkProvider = ArtworkProvider();
 final RecentsProvider _recentsProvider = RecentsProvider();
 final PlayerServices _playerServices = PlayerServices();
+final PlaylistsProvider _playlistsProvider = PlaylistsProvider();
 
 late List<SongModel> queueSongs;
 late int queueIndex;
 late Uint8List? initialArtworkData;
+late List<Playlist> playlists;
 
 Future<void> _getStorageAccessPermission() async {
   await AppPermissions.requestPermissions();
@@ -49,6 +54,10 @@ Future<void> _getSongArtwork() async {
       await _artworkProvider.getSongArtwork(queueSongs[queueIndex]);
 }
 
+Future<void> _getPlaylists() async {
+  playlists = await _playlistsProvider.getPlaylists();
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -58,7 +67,8 @@ Future<void> main() async {
   // print(await _favouritesServices.createFavourites());
   await _favouritesServices.clearFavourites();
   await _getQueueSongs();
-  await _hiveServices.setQueueIndex(0);
+  await _hiveServices.setQueueIndex(0); // TODO:
+  await _getPlaylists();
   queueIndex = _queueServices.getQueueIndex();
   await _getSongArtwork();
 
@@ -89,7 +99,7 @@ Future<void> main() async {
         create: (context) => FavouritesBloc(
           initialState: FavouritesState(
             songs: _favouritesProvider.getFavouritesSongs(),
-            action: FavAction.none,
+            action: Action.none,
             status: Status.none,
           ),
         ),
@@ -117,9 +127,18 @@ Future<void> main() async {
           ),
         ),
       ),
+      BlocProvider(
+        create: (context) => PlaylistsBloc(
+          initialState: PlaylistsState(
+            playlists: playlists,
+            action: Action.none,
+            status: Status.none,
+          ),
+        ),
+      ),
     ],
     child: const AppWidget(),
   );
-  await Hive.box(keys[StorageKey.recents]!).clear();
+  await Hive.box(keys[StorageKey.recents]!).clear(); // TODO:
   runApp(source);
 }
