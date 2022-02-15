@@ -11,6 +11,7 @@ enum Routes {
 enum StorageKey {
   favourites,
   recents,
+  playlists,
   queue,
   queueIndex,
   playbackMode,

@@ -22,8 +22,7 @@ class FavouritesBloc extends Bloc<FavouritesEvents, FavouritesState> {
 
     bool _result = await _favouritesServices.addToFavourites(_song);
 
-    List<SongModel> _favourites =
-        await _favouritesProvider.getFavouritesSongs();
+    List<SongModel> _favourites = _favouritesProvider.getFavouritesSongs();
 
     FavouritesState _favState = FavouritesState(
       songs: _favourites,
@@ -39,16 +38,14 @@ class FavouritesBloc extends Bloc<FavouritesEvents, FavouritesState> {
     Emitter<FavouritesState> emitter,
   ) async {
     SongModel _song = event.song;
-    print(_song.id);
 
-    bool _result = await _favouritesServices.rmFromFavourites(_song.id);
+    await _favouritesServices.rmFromFavourites(_song);
 
-    List<SongModel> _favourites =
-        await _favouritesProvider.getFavouritesSongs();
+    List<SongModel> _favourites = _favouritesProvider.getFavouritesSongs();
 
     FavouritesState _favState = FavouritesState(
       songs: _favourites,
-      status: _result ? FavStatus.removed : FavStatus.none,
+      status: FavStatus.removed,
       action: FavAction.remove,
     );
 

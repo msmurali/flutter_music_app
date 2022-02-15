@@ -32,17 +32,12 @@ final ArtworkProvider _artworkProvider = ArtworkProvider();
 final RecentsProvider _recentsProvider = RecentsProvider();
 final PlayerServices _playerServices = PlayerServices();
 
-late List<SongModel> favouritesSongs;
 late List<SongModel> queueSongs;
 late int queueIndex;
 late Uint8List? initialArtworkData;
 
 Future<void> _getStorageAccessPermission() async {
   await AppPermissions.requestPermissions();
-}
-
-Future<void> _getFavouritesSongs() async {
-  favouritesSongs = await _favouritesProvider.getFavouritesSongs();
 }
 
 Future<void> _getQueueSongs() async {
@@ -62,7 +57,6 @@ Future<void> main() async {
   await _getStorageAccessPermission();
   // print(await _favouritesServices.createFavourites());
   await _favouritesServices.clearFavourites();
-  await _getFavouritesSongs();
   await _getQueueSongs();
   queueIndex = _queueServices.getQueueIndex();
   await _getSongArtwork();
@@ -93,7 +87,7 @@ Future<void> main() async {
       BlocProvider(
         create: (context) => FavouritesBloc(
           initialState: FavouritesState(
-            songs: favouritesSongs,
+            songs: _favouritesProvider.getFavouritesSongs(),
             action: FavAction.none,
             status: FavStatus.none,
           ),

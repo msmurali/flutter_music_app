@@ -15,10 +15,13 @@ class HiveServices {
   final String _preferencesKey = keys[StorageKey.preferences]!;
   final String _queueKey = keys[StorageKey.queue]!;
   final String _queueIndexKey = keys[StorageKey.queueIndex]!;
+  final String _favouritesKey = keys[StorageKey.favourites]!;
+  final String _playlistsKey = keys[StorageKey.playlists]!;
 
   Future<void> init() async {
     await Hive.initFlutter();
     await initRecentsBox();
+    await initFavouritesBox();
     await initPreferencesBox();
     await initQueueBox();
   }
@@ -51,6 +54,94 @@ class HiveServices {
 
   Future<int> clearRecentsBox() async {
     return await Hive.box(_recentsKey).clear();
+  }
+
+  /* Favourites */
+  Future<Box> initFavouritesBox() async {
+    return await Hive.openBox(
+      _favouritesKey,
+    );
+  }
+
+  Box getFavouritesBox() {
+    return Hive.box(_favouritesKey);
+  }
+
+  Future<void> addToFavouritesBox(int key, String value) async {
+    Box _favouritesBox = Hive.box(_favouritesKey);
+    await _favouritesBox.put(key, value);
+  }
+
+  Future<void> addAllToFavourites(List<int> keys, List<String> values) async {
+    Box _favouritesBox = Hive.box(_favouritesKey);
+    for (int indx = 0; indx < keys.length; indx++) {
+      await _favouritesBox.put(keys[indx], values[indx]);
+    }
+  }
+
+  Future<void> rmFromFavouritesBox(int key) async {
+    Box _favouritesBox = Hive.box(_favouritesKey);
+    await _favouritesBox.delete(key);
+  }
+
+  Future<void> clearFavouritesBox() async {
+    Box _favouritesBox = Hive.box(_favouritesKey);
+    await _favouritesBox.clear();
+  }
+
+  /* Playlists */
+  Future<Box> initPlaylistsBox() async {
+    return await Hive.openBox(
+      _playlistsKey,
+    );
+  }
+
+  Box getPlaylistsBox() {
+    return Hive.box(_playlistsKey);
+  }
+
+  Future<void> createPlaylist(String name) async {
+    Box _playlistsBox = Hive.box(_playlistsKey);
+    await _playlistsBox.put(name, <int, String>{});
+  }
+
+  Future<void> rmPlaylist(String name) async {
+    Box _playlistsBox = Hive.box(_playlistsKey);
+    await _playlistsBox.delete(name);
+  }
+
+  Future<void> addToPlaylist(String playlistName, int key, String value) async {
+    Box _playlistsBox = Hive.box(_playlistsKey);
+    Map<int, String> _playlist = _playlistsBox.get(playlistName);
+    _playlist[key] = value;
+    await _playlistsBox.put(playlistName, _playlist);
+  }
+
+  Future<void> rmFromPlaylist(String playlistName, int key) async {
+    Box _playlistsBox = Hive.box(_playlistsKey);
+    Map<int, String> _playlist = _playlistsBox.get(playlistName);
+    _playlist.remove(key);
+    await _playlistsBox.put(playlistName, _playlist);
+  }
+
+  Future<void> addAllToPlaylist(
+      String playlistName, List<int> keys, List<String> values) async {
+    Box _playlistsBox = Hive.box(_playlistsKey);
+    Map<int, String> _playlist = _playlistsBox.get(playlistName);
+    for (int indx = 0; indx < keys.length; indx++) {
+      _playlist[keys[indx]] = values[indx];
+    }
+    await _playlistsBox.put(playlistName, _playlist);
+  }
+
+  Future<void> clearPlaylist(String playlistName) async {
+    Box _playlistsBox = Hive.box(_playlistsKey);
+    await _playlistsBox.put(playlistName, <int, String>{});
+  }
+
+  Future<void> clearPlaylistsBox() async {
+    Box _playlistsBox = Hive.box(_playlistsKey);
+    await _playlistsBox.clear();
   }
 
   /* Preferences */

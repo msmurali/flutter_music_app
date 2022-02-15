@@ -19,6 +19,7 @@ const keys = <StorageKey, String>{
   StorageKey.favourites: 'com.mk.music-favourites',
   StorageKey.recents: 'com.mk.music-recents',
   StorageKey.queue: 'com.mk.music-queue',
+  StorageKey.playlists: 'com.mk.music-playlists',
   StorageKey.queueIndex: 'com.mk.music-queue-index',
   StorageKey.playbackMode: 'com.mk.music-playback-mode',
   StorageKey.theme: 'com.mk.music-theme-mode',

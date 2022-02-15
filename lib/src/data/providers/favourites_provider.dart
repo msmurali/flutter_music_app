@@ -1,23 +1,19 @@
+import 'dart:convert';
+
+import 'package:hive/hive.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-import '../../global/constants/index.dart';
-import 'playlists_provider.dart';
+import '../services/hive_services.dart';
 
 class FavouritesProvider {
-  final OnAudioQuery _audioQuery = OnAudioQuery();
-  final PlaylistsProvider _playlistsProvider = PlaylistsProvider();
+  final HiveServices _hiveServices = HiveServices();
 
-  Future<PlaylistModel> getFavourites() async {
-    List<PlaylistModel> result = await _audioQuery.queryPlaylists();
-
-    result.removeWhere(
-        (playlist) => playlist.playlist != keys[StorageKey.favourites]);
-
-    return result[0];
-  }
-
-  Future<List<SongModel>> getFavouritesSongs() async {
-    PlaylistModel _favourites = await FavouritesProvider().getFavourites();
-    return await _playlistsProvider.getPlaylistSongs(_favourites.id);
+  List<SongModel> getFavouritesSongs() {
+    Box _favouritesBox = _hiveServices.getFavouritesBox();
+    return _favouritesBox
+        .toMap()
+        .values
+        .map((str) => SongModel(jsonDecode(str)))
+        .toList();
   }
 }
