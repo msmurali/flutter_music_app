@@ -76,4 +76,8 @@ class PlaylistServices {
   Future<void> clearPlaylist(String playlistName) async {
     await _hiveServices.clearPlaylist(playlistName);
   }
+
+  Future<void> clear() async {
+    await _hiveServices.clearPlaylistsBox();
+  }
 }

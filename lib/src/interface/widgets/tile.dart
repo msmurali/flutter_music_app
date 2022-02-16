@@ -46,7 +46,7 @@ class Tile extends StatelessWidget {
     } else if (entity is AlbumModel) {
       return entity.artist ?? 'Unknown Artist';
     } else {
-      return '${entity.songs.length} songs';
+      return '${entity!.numOfSongs} songs';
     }
   }
 

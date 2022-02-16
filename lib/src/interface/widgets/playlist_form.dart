@@ -31,7 +31,7 @@ class _PlaylistCreationFormState extends State<PlaylistCreationForm> {
       child: ToastWidget(text: msg),
       gravity: ToastGravity.BOTTOM,
       fadeDuration: 50,
-      toastDuration: const Duration(milliseconds: 500),
+      toastDuration: const Duration(seconds: 1),
     );
   }
 
@@ -106,12 +106,18 @@ class _PlaylistCreationFormState extends State<PlaylistCreationForm> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return SimpleDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
       title: Text(
         _formTitle,
         style: theme.textTheme.headline6,
       ),
       alignment: Alignment.center,
-      contentPadding: const EdgeInsets.all(16.0),
+      contentPadding: const EdgeInsets.symmetric(
+        vertical: 16.0,
+        horizontal: 16.0,
+      ),
       children: [
         _buildForm(context),
       ],
@@ -135,15 +141,17 @@ class FormTextField extends StatelessWidget {
       cursorColor: theme.colorScheme.onSurface,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(100.0),
           borderSide: BorderSide(
             color: Colors.white.withOpacity(0.05),
-            width: 1.4,
+            width: 1,
           ),
         ),
         focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(100.0),
           borderSide: BorderSide(
             color: theme.colorScheme.onSurface,
-            width: 1.4,
+            width: 1,
           ),
         ),
         isDense: true,

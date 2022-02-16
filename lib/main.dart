@@ -6,6 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:music/src/data/models/playlist.dart';
 import 'package:music/src/data/providers/playlists_provider.dart';
 import 'package:music/src/data/services/favourites_services.dart';
+import 'package:music/src/data/services/playlist_services.dart';
 import 'package:music/src/global/constants/index.dart';
 import 'package:music/src/logic/bloc/playlists_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -35,6 +36,7 @@ final ArtworkProvider _artworkProvider = ArtworkProvider();
 final RecentsProvider _recentsProvider = RecentsProvider();
 final PlayerServices _playerServices = PlayerServices();
 final PlaylistsProvider _playlistsProvider = PlaylistsProvider();
+final PlaylistServices _playlistServices = PlaylistServices();
 
 late List<SongModel> queueSongs;
 late int queueIndex;
@@ -68,6 +70,7 @@ Future<void> main() async {
   await _favouritesServices.clearFavourites();
   await _getQueueSongs();
   await _hiveServices.setQueueIndex(0); // TODO:
+  await _playlistServices.clear();
   await _getPlaylists();
   queueIndex = _queueServices.getQueueIndex();
   await _getSongArtwork();

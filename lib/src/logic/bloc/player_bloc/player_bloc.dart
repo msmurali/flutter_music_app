@@ -133,6 +133,8 @@ class PlayerBloc extends Bloc<PlayerEvents, PlayerBlocState> {
     );
 
     emitter.call(_newState);
+
+    await _queueServices.setQueue(_newQueue);
   }
 
   Future<void> _onChangeQueueList(
@@ -150,6 +152,11 @@ class PlayerBloc extends Bloc<PlayerEvents, PlayerBlocState> {
       queue: _newQueue,
       nowPlaying: _newIndex,
       artworkData: _newArtwork,
+    );
+
+    await _player.playLocalFile(
+      _newState.queue[_newState.nowPlaying],
+      event.context,
     );
 
     emitter.call(_newState);

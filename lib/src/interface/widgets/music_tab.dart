@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../global/constants/index.dart';
 import '../../logic/bloc/player_bloc/bloc.dart';
-import '../../logic/player.dart';
 import '../utils/helpers.dart';
 import '../../logic/bloc/preferences_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'error_indicator.dart';
 import 'loading_indicator.dart';
 import 'tile.dart';
-
-final _player = Player.instance;
 
 class MusicTab extends StatefulWidget {
   final Future<List<dynamic>> futureData;
@@ -54,53 +51,39 @@ class MusicList extends StatelessWidget {
       : super(key: key);
 
   Widget _buildList(BuildContext context, List<dynamic> data) {
-    return Column(
-      children: [
-        ListView.builder(
-          physics: const BouncingScrollPhysics(),
-          itemCount: data.length,
-          itemBuilder: (BuildContext context, int index) {
-            return _buildTile(context, data[index], index);
-          },
-        ),
-        const SizedBox(
-          height: 90.0,
-        )
-      ],
+    return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      itemCount: data.length,
+      itemBuilder: (BuildContext context, int index) {
+        return _buildTile(context, data[index], index);
+      },
     );
   }
 
   Widget _buildGrid(BuildContext context, List<dynamic> data) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: BlocBuilder<PreferencesBloc, PreferencesState>(
-            buildWhen: (PreferencesState previous, PreferencesState current) {
-              return previous.gridSize != current.gridSize;
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: BlocBuilder<PreferencesBloc, PreferencesState>(
+        buildWhen: (PreferencesState previous, PreferencesState current) {
+          return previous.gridSize != current.gridSize;
+        },
+        builder: (context, state) {
+          int _gridSize =
+              BlocProvider.of<PreferencesBloc>(context).state.gridSize;
+          return GridView.builder(
+            physics: const BouncingScrollPhysics(),
+            itemCount: data.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: _gridSize,
+              mainAxisSpacing: 6.0,
+              crossAxisSpacing: 6.0,
+            ),
+            itemBuilder: (BuildContext context, int index) {
+              return _buildTile(context, data[index], index);
             },
-            builder: (context, state) {
-              int _gridSize =
-                  BlocProvider.of<PreferencesBloc>(context).state.gridSize;
-              return GridView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: data.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: _gridSize,
-                  mainAxisSpacing: 6.0,
-                  crossAxisSpacing: 6.0,
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  return _buildTile(context, data[index], index);
-                },
-              );
-            },
-          ),
-        ),
-        const SizedBox(
-          height: 90.0,
-        )
-      ],
+          );
+        },
+      ),
     );
   }
 
@@ -109,13 +92,12 @@ class MusicList extends StatelessWidget {
       return Tile(
         entity: entity,
         onTap: () async {
-          PlayerBlocState _playerState =
-              BlocProvider.of<PlayerBloc>(context).state;
-          int index = _playerState.nowPlaying;
-          SongModel song = _playerState.queue[index];
-          await _player.playLocalFile(
-            song,
-            context,
+          BlocProvider.of<PlayerBloc>(context).add(
+            ChangeQueueList(
+              queue: snapshot.data,
+              index: index,
+              context: context,
+            ),
           );
         },
         onLongPress: (dynamic details) async {
@@ -149,7 +131,14 @@ class MusicList extends StatelessWidget {
           _navigateToSongsScreen(context, entity);
         },
         onLongPress: (dynamic details) async {
-          await showMenuDialog(context, details, entity, playlistOptions);
+          await showMenuDialog(
+              context,
+              details,
+              {
+                'playlistName': snapshot.data.name,
+                'song': entity,
+              },
+              playlistOptions);
         },
       );
     }

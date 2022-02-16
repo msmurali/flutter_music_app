@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart' hide BackButton;
-import '../../data/models/playlist.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music/src/logic/bloc/index.dart';
+import '../../global/constants/index.dart';
+import '../../logic/bloc/playlists_bloc/bloc.dart';
+import '../utils/helpers.dart';
 import '../widgets/back_button.dart';
+import '../widgets/tile.dart';
 import 'player_screen.dart';
 
-import '../../data/providers/playlists_provider.dart';
 import '../widgets/error_indicator.dart';
 import '../widgets/mini_player.dart';
-import '../widgets/music_tab.dart';
 import '../widgets/scaffold_with_sliding_panel.dart';
 
 class PlaylistsScreen extends StatelessWidget {
@@ -24,14 +27,66 @@ class PlaylistsScreen extends StatelessWidget {
     );
   }
 
+  void _navigateToSongsScreen(BuildContext context, dynamic entity) {
+    Navigator.pushNamed(context, routes[Routes.songsRoute]!, arguments: entity);
+  }
+
   Widget _buildPlaylists() {
-    final PlaylistsProvider _playlistsProvider = PlaylistsProvider();
-    return MusicTab(
-      futureData: _playlistsProvider.getPlaylists() as Future<List<Playlist>>,
-      errorIndicator: const ErrorIndicator(
-        asset: 'asset/images/no_playlists.svg',
-      ),
-    );
+    return BlocBuilder<PlaylistsBloc, PlaylistsState>(builder: (
+      BuildContext context,
+      PlaylistsState playlistsState,
+    ) {
+      if (playlistsState.playlists.isEmpty) {
+        return const ErrorIndicator(
+          asset: 'asset/images/no_playlists.svg',
+        );
+      } else {
+        return BlocBuilder<PreferencesBloc, PreferencesState>(
+          builder: (BuildContext context, PreferencesState preferencesState) {
+            if (preferencesState.view == View.grid) {
+              return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: preferencesState.gridSize,
+                  crossAxisSpacing: 6.0,
+                  mainAxisSpacing: 6.0,
+                ),
+                itemCount: playlistsState.playlists.length,
+                itemBuilder: (BuildContext context, int index) {
+                  dynamic entity = playlistsState.playlists[index];
+                  return Tile(
+                    entity: entity,
+                    onTap: () {
+                      _navigateToSongsScreen(context, entity);
+                    },
+                    onLongPress: (dynamic details) async {
+                      await showMenuDialog(
+                          context, details, entity, playlistOptions);
+                    },
+                  );
+                },
+              );
+            } else {
+              return ListView.builder(
+                itemCount: playlistsState.playlists.length,
+                itemBuilder: (BuildContext context, int index) {
+                  dynamic entity = playlistsState.playlists[index];
+                  return Tile(
+                    entity: entity,
+                    onTap: () {
+                      _navigateToSongsScreen(context, entity);
+                    },
+                    onLongPress: (dynamic details) async {
+                      await showMenuDialog(
+                          context, details, entity, playlistOptions);
+                    },
+                  );
+                },
+              );
+            }
+          },
+        );
+      }
+    });
   }
 
   @override

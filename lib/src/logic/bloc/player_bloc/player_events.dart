@@ -33,8 +33,7 @@ class AddSongNextToNowPlaying extends PlayerEvents {
 class ChangeQueueList extends PlayerEvents {
   final List<SongModel> queue;
   final int index;
-  const ChangeQueueList({
-    required this.queue,
-    required this.index,
-  });
+  final BuildContext context;
+  const ChangeQueueList(
+      {required this.queue, required this.index, required this.context});
 }

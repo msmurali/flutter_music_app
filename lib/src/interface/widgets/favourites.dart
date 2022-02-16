@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/providers/favourites_provider.dart';
 import '../../global/constants/index.dart';
 import '../../logic/bloc/favourites_bloc/bloc.dart';
+import '../utils/helpers.dart';
 import 'error_indicator.dart';
-import 'loading_indicator.dart';
 import 'tile.dart';
 
 class Favourites extends StatelessWidget {
   final _favouritesCount = 5;
 
-  Favourites({Key? key}) : super(key: key);
+  const Favourites({Key? key}) : super(key: key);
 
   _buildFavouritesList(BuildContext context, List<dynamic> _songs) {
-    ThemeData theme = Theme.of(context);
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
@@ -29,6 +26,10 @@ class Favourites extends StatelessWidget {
                 entity: _songs[index],
                 onTap: () {},
                 view: View.list,
+                onLongPress: (dynamic details) async {
+                  await showMenuDialog(
+                      context, details, _songs[index], favSongOptions);
+                },
               );
             },
             physics: const NeverScrollableScrollPhysics(),
@@ -74,22 +75,5 @@ class Favourites extends StatelessWidget {
         }
       },
     );
-
-    // FutureBuilder(
-    //   future: _favouritesProvider.getFavouritesSongs(),
-    //   builder: (BuildContext context, AsyncSnapshot snapshot) {
-    //     if (snapshot.connectionState == ConnectionState.waiting) {
-    //       return const SizedBox(
-    //         child: LoadingIndicator(),
-    //         height: 400.0,
-    //       );
-    //     } else if (snapshot.hasData &&
-    //         (snapshot.data.isEmpty || snapshot.data == null)) {
-
-    //     } else {
-
-    //     }
-    //   },
-    // );
   }
 }

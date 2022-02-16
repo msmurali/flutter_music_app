@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart' hide BackButton;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/models/playlist.dart';
+import '../../global/constants/constants.dart';
 import '../../global/constants/enums.dart';
+import '../utils/helpers.dart';
 import 'player_screen.dart';
 import '../../logic/bloc/preferences_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -23,7 +25,7 @@ class SongsScreen extends StatelessWidget {
 
   const SongsScreen({Key? key, required this.entity}) : super(key: key);
 
-  FutureBuilder _buildSongs() {
+  Widget _buildSongs() {
     late Future<List<dynamic>> _future;
 
     SongsProvider _songsProvider = SongsProvider();
@@ -73,12 +75,33 @@ class SongsScreen extends StatelessWidget {
     );
   }
 
+  List<Option> _getOptions() {
+    if (entity is Playlist) {
+      return playlistSongOptions;
+    } else {
+      return songOptions;
+    }
+  }
+
   SliverList _buildList(List<dynamic> data) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
           return Tile(
             entity: data[index],
+            onLongPress: (dynamic details) async {
+              List<Option> options = _getOptions();
+              await showMenuDialog(
+                  context,
+                  details,
+                  entity is Playlist
+                      ? {
+                          'playlistName': entity.name,
+                          'song': data[index],
+                        }
+                      : data[index],
+                  options);
+            },
           );
         },
         childCount: data.length,
@@ -97,6 +120,20 @@ class SongsScreen extends StatelessWidget {
         (BuildContext context, int index) {
           return Tile(
             entity: data[index],
+            onLongPress: (dynamic details) async {
+              List<Option> options = _getOptions();
+
+              await showMenuDialog(
+                  context,
+                  details,
+                  entity is Playlist
+                      ? {
+                          'playlistName': entity.name,
+                          'song': data[index],
+                        }
+                      : data[index],
+                  options);
+            },
           );
         },
         childCount: data.length,
@@ -111,7 +148,7 @@ class SongsScreen extends StatelessWidget {
     } else if (entity is ArtistModel) {
       _title = entity.artist;
     } else {
-      _title = entity.playlist;
+      _title = entity.name;
     }
 
     return Text(
@@ -125,14 +162,14 @@ class SongsScreen extends StatelessWidget {
     );
   }
 
-  _getArtwork() {
+  Widget _getArtwork() {
     return MusicArtwork(
       borderRadius: 0.0,
       entity: entity,
     );
   }
 
-  _buildAppBarBackground(BuildContext context) {
+  Widget _buildAppBarBackground(BuildContext context) {
     return Stack(
       children: [
         Positioned.fill(

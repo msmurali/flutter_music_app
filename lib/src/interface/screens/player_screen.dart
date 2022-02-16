@@ -331,10 +331,11 @@ class _FavouritesButtonState extends State<FavouritesButton> {
   @override
   void initState() {
     super.initState();
-    _fToast = FToast().init(context);
+    _fToast = FToast();
   }
 
   void _toastHandler(BuildContext context, FavouritesState state) {
+    _fToast.init(context);
     if (state.action == Action.add && state.status == Status.succeed) {
       _fToast.showToast(
         child: const ToastWidget(
@@ -343,10 +344,27 @@ class _FavouritesButtonState extends State<FavouritesButton> {
         fadeDuration: 50,
         toastDuration: const Duration(milliseconds: 500),
       );
-    } else {
+    } else if (state.action == Action.add && state.status == Status.failed) {
+      _fToast.showToast(
+        child: const ToastWidget(
+          text: 'Already in favourites',
+        ),
+        fadeDuration: 50,
+        toastDuration: const Duration(milliseconds: 500),
+      );
+    } else if (state.action == Action.remove &&
+        state.status == Status.succeed) {
       _fToast.showToast(
         child: const ToastWidget(
           text: 'Removed from favourites',
+        ),
+        fadeDuration: 50,
+        toastDuration: const Duration(milliseconds: 500),
+      );
+    } else {
+      _fToast.showToast(
+        child: const ToastWidget(
+          text: 'Something went wrong',
         ),
         fadeDuration: 50,
         toastDuration: const Duration(milliseconds: 500),
@@ -363,6 +381,8 @@ class _FavouritesButtonState extends State<FavouritesButton> {
 
         return BlocConsumer<FavouritesBloc, FavouritesState>(
           listener: _toastHandler,
+          listenWhen: (previous, current) =>
+              previous.songs.length != current.songs.length,
           builder: (BuildContext context, FavouritesState favState) {
             List<int> favIds = favState.songs.map((song) => song.id).toList();
 
