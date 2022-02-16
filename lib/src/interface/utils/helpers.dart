@@ -102,7 +102,7 @@ Future<void> showFormDialog(BuildContext context) async {
     barrierColor: Colors.black26,
     context: context,
     builder: (BuildContext context) {
-      return const PlaylistForm();
+      return const PlaylistCreationForm();
     },
   );
 }

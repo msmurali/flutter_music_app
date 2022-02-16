@@ -71,6 +71,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
             ),
           ),
           Playlists(),
+          const SizedBox(height: 90.0),
         ],
       ),
     );

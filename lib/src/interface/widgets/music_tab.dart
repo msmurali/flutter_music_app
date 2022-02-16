@@ -53,44 +53,58 @@ class MusicList extends StatelessWidget {
   const MusicList({Key? key, required this.snapshot, this.errorIndicator})
       : super(key: key);
 
-  ListView _buildList(BuildContext context, List<dynamic> data) {
-    return ListView.builder(
-      physics: const BouncingScrollPhysics(),
-      itemCount: data.length,
-      itemBuilder: (BuildContext context, int index) {
-        return _buildTile(context, data[index], index);
-      },
+  Widget _buildList(BuildContext context, List<dynamic> data) {
+    return Column(
+      children: [
+        ListView.builder(
+          physics: const BouncingScrollPhysics(),
+          itemCount: data.length,
+          itemBuilder: (BuildContext context, int index) {
+            return _buildTile(context, data[index], index);
+          },
+        ),
+        const SizedBox(
+          height: 90.0,
+        )
+      ],
     );
   }
 
-  Padding _buildGrid(BuildContext context, List<dynamic> data) {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: BlocBuilder<PreferencesBloc, PreferencesState>(
-        buildWhen: (PreferencesState previous, PreferencesState current) {
-          return previous.gridSize != current.gridSize;
-        },
-        builder: (context, state) {
-          int _gridSize =
-              BlocProvider.of<PreferencesBloc>(context).state.gridSize;
-          return GridView.builder(
-            physics: const BouncingScrollPhysics(),
-            itemCount: data.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: _gridSize,
-              mainAxisSpacing: 4.0,
-              crossAxisSpacing: 4.0,
-            ),
-            itemBuilder: (BuildContext context, int index) {
-              return _buildTile(context, data[index], index);
+  Widget _buildGrid(BuildContext context, List<dynamic> data) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: BlocBuilder<PreferencesBloc, PreferencesState>(
+            buildWhen: (PreferencesState previous, PreferencesState current) {
+              return previous.gridSize != current.gridSize;
             },
-          );
-        },
-      ),
+            builder: (context, state) {
+              int _gridSize =
+                  BlocProvider.of<PreferencesBloc>(context).state.gridSize;
+              return GridView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: data.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: _gridSize,
+                  mainAxisSpacing: 6.0,
+                  crossAxisSpacing: 6.0,
+                ),
+                itemBuilder: (BuildContext context, int index) {
+                  return _buildTile(context, data[index], index);
+                },
+              );
+            },
+          ),
+        ),
+        const SizedBox(
+          height: 90.0,
+        )
+      ],
     );
   }
 
-  _buildTile(BuildContext context, dynamic entity, int index) {
+  Widget _buildTile(BuildContext context, dynamic entity, int index) {
     if (entity is SongModel) {
       return Tile(
         entity: entity,
