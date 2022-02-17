@@ -62,7 +62,7 @@ class MusicList extends StatelessWidget {
 
   Widget _buildGrid(BuildContext context, List<dynamic> data) {
     return Padding(
-      padding: const EdgeInsets.all(4.0),
+      padding: const EdgeInsets.all(10.0),
       child: BlocBuilder<PreferencesBloc, PreferencesState>(
         buildWhen: (PreferencesState previous, PreferencesState current) {
           return previous.gridSize != current.gridSize;
@@ -75,8 +75,8 @@ class MusicList extends StatelessWidget {
             itemCount: data.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: _gridSize,
-              mainAxisSpacing: 6.0,
-              crossAxisSpacing: 6.0,
+              mainAxisSpacing: 8.0,
+              crossAxisSpacing: 8.0,
             ),
             itemBuilder: (BuildContext context, int index) {
               return _buildTile(context, data[index], index);

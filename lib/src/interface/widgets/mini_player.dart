@@ -150,11 +150,15 @@ class MiniPlayerInfoColumn extends StatelessWidget {
               children: [
                 Text(
                   _song.title,
-                  style: Theme.of(context).textTheme.bodyText2,
+                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        color: Colors.white,
+                      ),
                 ),
                 Text(
                   _song.artist ?? 'Unknown',
-                  style: Theme.of(context).textTheme.subtitle2,
+                  style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                        color: Colors.white,
+                      ),
                 ),
               ],
             );
@@ -189,19 +193,21 @@ class MiniPlayerPreviousButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircularIconButton(
-        child: const Icon(CustomIcons.previous),
-        onPressed: () {
-          PlayerBloc _playerBloc = BlocProvider.of<PlayerBloc>(context);
-          PlaybackModeBloc _playbackModeBloc =
-              BlocProvider.of<PlaybackModeBloc>(context);
-          if (_playbackModeBloc.state.playbackMode == PlaybackMode.shuffle) {
-            _playerBloc.add(PlayRandomSong(context: context));
-          } else {
-            _playerBloc.add(PlayPreviousSong(context: context));
-          }
-        },
-        iconSize: 10.0,
-        radius: 16.0);
+      child: const Icon(CustomIcons.previous),
+      onPressed: () {
+        PlayerBloc _playerBloc = BlocProvider.of<PlayerBloc>(context);
+        PlaybackModeBloc _playbackModeBloc =
+            BlocProvider.of<PlaybackModeBloc>(context);
+        if (_playbackModeBloc.state.playbackMode == PlaybackMode.shuffle) {
+          _playerBloc.add(PlayRandomSong(context: context));
+        } else {
+          _playerBloc.add(PlayPreviousSong(context: context));
+        }
+      },
+      iconSize: 10.0,
+      radius: 16.0,
+      color: Colors.white,
+    );
   }
 }
 
@@ -242,12 +248,14 @@ class MiniPlayerPlayButton extends StatelessWidget {
                           child: playerStateSnapshot.data == PlayerState.PLAYING
                               ? const Icon(
                                   CustomIcons.pause,
+                                  color: Colors.white,
                                   size: 15.0,
                                 )
                               : const Align(
                                   alignment: Alignment(0.15, 0.0),
                                   child: Icon(
                                     CustomIcons.play,
+                                    color: Colors.white,
                                     size: 15.0,
                                   ),
                                 ),
@@ -269,6 +277,7 @@ class MiniPlayerNextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircularIconButton(
+      color: Colors.white,
       child: const Icon(CustomIcons.next),
       onPressed: () {
         PlayerBloc _playerBloc = BlocProvider.of<PlayerBloc>(context);

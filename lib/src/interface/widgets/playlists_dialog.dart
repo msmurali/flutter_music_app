@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music/src/interface/widgets/playlist_form.dart';
 import 'package:music/src/logic/bloc/playlists_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
@@ -15,15 +16,31 @@ class PlaylistsDialog extends StatelessWidget {
         BlocProvider.of<PlaylistsBloc>(context).state.playlists;
 
     return playlists
-        .map((playlist) => TextButton(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  playlist.name,
-                  style: Theme.of(context).textTheme.bodyText2,
+        .map((playlist) => SizedBox(
+              width: double.infinity,
+              child: TextButton(
+                style: ButtonStyle(
+                  backgroundColor:
+                      Theme.of(context).textButtonTheme.style!.backgroundColor,
+                  foregroundColor:
+                      Theme.of(context).textButtonTheme.style!.foregroundColor,
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        4.0,
+                      ),
+                    ),
+                  ),
                 ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    playlist.name,
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                ),
+                onPressed: () => _addToPlaylist(context, playlist.name),
               ),
-              onPressed: () => _addToPlaylist(context, playlist.name),
             ))
         .toList();
   }
@@ -65,23 +82,29 @@ class PlaylistsDialog extends StatelessWidget {
       contentPadding: const EdgeInsets.all(8.0),
       insetPadding: const EdgeInsets.symmetric(
         vertical: 24.0,
-        horizontal: 8.0,
+        horizontal: 16.0,
       ),
       children: [
-        BlocBuilder<PlaylistsBloc, PlaylistsState>(
-          builder: (context, state) {
-            return SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                children: [
-                  ..._getPlaylists(context),
-                ],
-              ),
-            );
-          },
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: BlocBuilder<PlaylistsBloc, PlaylistsState>(
+            builder: (context, state) {
+              return SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    ..._getPlaylists(context),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
         TextButton(
-          onPressed: () => showFormDialog(context),
+          onPressed: () => showFormDialog(
+            context: context,
+            form: PlaylistCreationForm(),
+          ),
           child: const Text(
             'Create playlist',
           ),

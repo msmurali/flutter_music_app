@@ -7,6 +7,7 @@ class CircularIconButton extends StatelessWidget {
   final void Function()? onPressed;
   final double? iconSize;
   final Color? backgroundColor;
+  final Color? color;
 
   const CircularIconButton({
     Key? key,
@@ -16,6 +17,7 @@ class CircularIconButton extends StatelessWidget {
     this.iconSize,
     this.toolTip,
     this.backgroundColor,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -25,10 +27,11 @@ class CircularIconButton extends StatelessWidget {
       height: radius * 2,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: backgroundColor ?? Colors.white.withOpacity(0.05),
+        color: Theme.of(context).colorScheme.secondary.withOpacity(0.05),
       ),
       child: Center(
         child: IconButton(
+          color: color,
           iconSize: iconSize ?? 24.0,
           icon: child,
           onPressed: onPressed,

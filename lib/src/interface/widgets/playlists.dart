@@ -55,11 +55,9 @@ class Playlists extends StatelessWidget {
             },
             child: Text(
               'See More',
-              style: TextStyle(
-                fontFamily: 'Poppins',
-                color: Colors.pinkAccent.shade400,
-                fontWeight: FontWeight.w400,
-              ),
+              style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                    color: Colors.pinkAccent.shade400,
+                  ),
             ),
           ),
         ),

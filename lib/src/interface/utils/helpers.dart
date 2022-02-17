@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:music/src/interface/widgets/playlists_dialog.dart';
 import 'package:music/src/logic/bloc/playlists_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -14,9 +15,24 @@ import '../../global/constants/index.dart';
 import '../../logic/bloc/favourites_bloc/bloc.dart';
 import '../../logic/bloc/player_bloc/bloc.dart';
 import '../widgets/playlist_form.dart';
+import '../widgets/toast.dart';
 
 final FavouritesServices _favouritesServices = FavouritesServices();
 final SongsProvider _songsProvider = SongsProvider();
+final PlaylistsProvider _playlistsProvider = PlaylistsProvider();
+final FToast fToast = FToast();
+
+void showToastMsg({required BuildContext context, required String text}) {
+  fToast.init(context);
+  fToast.showToast(
+    child: ToastWidget(
+      text: text,
+    ),
+    fadeDuration: 50,
+    gravity: ToastGravity.BOTTOM,
+    toastDuration: const Duration(seconds: 1),
+  );
+}
 
 Future<void> showMenuDialog(
   BuildContext context,
@@ -29,7 +45,7 @@ Future<void> showMenuDialog(
 
   RelativeRect position = RelativeRect.fromLTRB(dx, dy, dx, dy);
 
-  TextStyle _textStyle = Theme.of(context).textTheme.bodyText2!;
+  TextStyle _textStyle = Theme.of(context).textTheme.subtitle1!;
 
   await showMenu<Option>(
     context: context,
@@ -64,13 +80,20 @@ Future<void> showMenuDialog(
       _removeFromPlaylist(context, arguments);
     } else if (value == Option.removePlaylist) {
       _removePlaylist(context, arguments);
+    } else if (value == Option.renamePlaylist) {
+      _showRenameFormDialog(context, arguments);
     }
     return;
   });
 }
 
 void _addToQueue(BuildContext context, dynamic entity) {
-  SongModel _song = entity as SongModel;
+  late SongModel _song;
+  if (entity is SongModel) {
+    _song = entity;
+  } else {
+    _song = entity['song'] as SongModel;
+  }
   BlocProvider.of<PlayerBloc>(context).add(
     AddSongNextToNowPlaying(
       song: _song,
@@ -108,9 +131,13 @@ Future<void> _addAllToFavourites(BuildContext context, dynamic entity) async {
     songs = await _songsProvider.getAlbumSongs(entity.album);
   } else if (entity is ArtistModel) {
     songs = await _songsProvider.getArtistSongs(entity.artist);
+  } else {
+    songs = await _playlistsProvider.getPlaylistSongs(entity.name);
   }
 
-  if (songs.length > 1) {
+  if (songs.isEmpty) {
+    return;
+  } else if (songs.length > 1) {
     await _favouritesServices.addAllToFavourites(
       songs.sublist(0, songs.length - 1),
     );
@@ -168,12 +195,25 @@ Future<void> _showPlaylistsDialog(
   );
 }
 
-Future<void> showFormDialog(BuildContext context) async {
+Future<void> showFormDialog(
+    {required BuildContext context, required Widget form}) async {
   await showDialog(
     barrierColor: Colors.black26,
     context: context,
     builder: (BuildContext context) {
-      return const PlaylistCreationForm();
+      return form;
+    },
+  );
+}
+
+Future<void> _showRenameFormDialog(BuildContext context, dynamic entity) async {
+  await showDialog(
+    barrierColor: Colors.black26,
+    context: context,
+    builder: (BuildContext context) {
+      return PlaylistRenameForm(
+        playlistName: entity.name,
+      );
     },
   );
 }

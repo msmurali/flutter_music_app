@@ -45,6 +45,7 @@ class PlaylistsScreen extends StatelessWidget {
           builder: (BuildContext context, PreferencesState preferencesState) {
             if (preferencesState.view == View.grid) {
               return GridView.builder(
+                physics: const BouncingScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: preferencesState.gridSize,
                   crossAxisSpacing: 6.0,
@@ -67,6 +68,7 @@ class PlaylistsScreen extends StatelessWidget {
               );
             } else {
               return ListView.builder(
+                physics: const BouncingScrollPhysics(),
                 itemCount: playlistsState.playlists.length,
                 itemBuilder: (BuildContext context, int index) {
                   dynamic entity = playlistsState.playlists[index];
@@ -96,7 +98,10 @@ class PlaylistsScreen extends StatelessWidget {
         child: ScaffoldWithSlidingPanel(
           body: Scaffold(
             appBar: _buildAppBar(context),
-            body: _buildPlaylists(),
+            body: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: _buildPlaylists(),
+            ),
           ),
           collapsed: const MiniPlayer(),
           expanded: const PlayerScreen(),

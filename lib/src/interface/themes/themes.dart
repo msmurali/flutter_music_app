@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 const Color darkPrimary = Color(0xFF121212);
 const Color darkPrimaryLight = Color(0xFF353535);
@@ -74,6 +75,13 @@ final darkThemeData = ThemeData(
       fontWeight: FontWeight.w400,
       color: darkSecondary,
     ),
+    bodyText1: TextStyle(
+      fontFamily: 'Poppins',
+      fontSize: 16.0,
+      fontWeight: FontWeight.w400,
+      color: darkSecondary,
+      overflow: TextOverflow.ellipsis,
+    ),
     bodyText2: TextStyle(
       fontFamily: 'Poppins',
       fontSize: 14.0,
@@ -83,7 +91,7 @@ final darkThemeData = ThemeData(
     ),
     subtitle1: TextStyle(
       fontFamily: 'Poppins',
-      fontSize: 13.0,
+      fontSize: 12.0,
       fontWeight: FontWeight.w400,
       color: darkSecondary,
       overflow: TextOverflow.ellipsis,
@@ -101,7 +109,7 @@ final darkThemeData = ThemeData(
     trackShape: const RoundedRectSliderTrackShape(),
     trackHeight: 1.2,
     activeTrackColor: Colors.white,
-    inactiveTrackColor: Colors.grey.shade300, // TODO:
+    inactiveTrackColor: Colors.grey.shade300,
     thumbColor: Colors.white,
     thumbShape: const RoundSliderThumbShape(
       enabledThumbRadius: 8.0,
@@ -139,12 +147,11 @@ final darkThemeData = ThemeData(
       foregroundColor: MaterialStateProperty.all(
         onSurface,
       ),
-      backgroundColor: MaterialStateProperty.all(
-        Colors.transparent,
-      ),
+      backgroundColor:
+          MaterialStateProperty.all(darkSecondary.withOpacity(0.05)),
       padding: MaterialStateProperty.all(
         const EdgeInsets.symmetric(
-          horizontal: 10.0,
+          horizontal: 14.0,
           vertical: 8.0,
         ),
       ),
@@ -155,6 +162,11 @@ final darkThemeData = ThemeData(
 final lightThemeData = ThemeData(
   brightness: Brightness.light,
   appBarTheme: const AppBarTheme(
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarColor: Colors.black,
+      statusBarBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.dark,
+    ),
     backgroundColor: lightPrimary,
     foregroundColor: lightSecondary,
     elevation: 0.0,
@@ -172,6 +184,9 @@ final lightThemeData = ThemeData(
       fontWeight: FontWeight.w400,
       overflow: TextOverflow.ellipsis,
     ),
+  ),
+  iconTheme: IconThemeData(
+    color: lightSecondary.withOpacity(0.87),
   ),
   tabBarTheme: const TabBarTheme(
     labelColor: onSurface,
@@ -191,7 +206,6 @@ final lightThemeData = ThemeData(
   scaffoldBackgroundColor: lightPrimary,
   listTileTheme: const ListTileThemeData(
     tileColor: lightPrimary,
-    // selectedTileColor: ,
     dense: true,
     iconColor: lightSecondary,
     textColor: lightSecondary,
@@ -216,6 +230,13 @@ final lightThemeData = ThemeData(
       fontWeight: FontWeight.w400,
       color: lightSecondary,
     ),
+    bodyText1: TextStyle(
+      fontFamily: 'Poppins',
+      fontSize: 16.0,
+      fontWeight: FontWeight.w400,
+      color: lightSecondary,
+      overflow: TextOverflow.ellipsis,
+    ),
     bodyText2: TextStyle(
       fontFamily: 'Poppins',
       fontSize: 14.0,
@@ -226,14 +247,14 @@ final lightThemeData = ThemeData(
     subtitle1: TextStyle(
       fontFamily: 'Poppins',
       fontSize: 12.0,
-      fontWeight: FontWeight.w300,
+      fontWeight: FontWeight.w400,
       color: lightSecondary,
       overflow: TextOverflow.ellipsis,
     ),
     subtitle2: TextStyle(
       fontFamily: 'Poppins',
       fontSize: 10.0,
-      fontWeight: FontWeight.w300,
+      fontWeight: FontWeight.w400,
       color: lightSecondary,
       overflow: TextOverflow.ellipsis,
     ),
@@ -243,14 +264,13 @@ final lightThemeData = ThemeData(
     trackShape: const RoundedRectSliderTrackShape(),
     trackHeight: 1.2,
     activeTrackColor: Colors.white,
-    inactiveTrackColor: Colors.grey.shade300, // TODO:
+    inactiveTrackColor: Colors.grey.shade300,
     thumbColor: Colors.white,
     thumbShape: const RoundSliderThumbShape(
       enabledThumbRadius: 8.0,
     ),
     overlayShape: const RoundSliderOverlayShape(overlayRadius: 0.0),
   ),
-  splashColor: Colors.transparent,
   dialogTheme: const DialogTheme(
     backgroundColor: lightPrimary,
     elevation: 10.0,
@@ -266,6 +286,37 @@ final lightThemeData = ThemeData(
       fontWeight: FontWeight.w400,
       color: darkSecondary,
       overflow: TextOverflow.ellipsis,
+    ),
+  ),
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      textStyle: MaterialStateProperty.all(
+        const TextStyle(
+          fontFamily: 'Poppins',
+          fontSize: 14.0,
+          fontWeight: FontWeight.w500,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+      shape: MaterialStateProperty.all(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            20.0,
+          ),
+        ),
+      ),
+      foregroundColor: MaterialStateProperty.all(
+        onSurface,
+      ),
+      backgroundColor: MaterialStateProperty.all(
+        lightSecondary.withOpacity(0.05),
+      ),
+      padding: MaterialStateProperty.all(
+        const EdgeInsets.symmetric(
+          horizontal: 10.0,
+          vertical: 8.0,
+        ),
+      ),
     ),
   ),
 );

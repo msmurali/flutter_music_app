@@ -32,7 +32,7 @@ class PlaylistsProvider {
   Future<List<SongModel>> getPlaylistSongs(String playlistName) async {
     Box _playlistsBox = _hiveServices.getPlaylistsBox();
 
-    Map<int, String> _playlist = _playlistsBox.get(playlistName);
+    Map<dynamic, dynamic> _playlist = _playlistsBox.get(playlistName);
 
     return _playlist.values.map((val) => SongModel(jsonDecode(val))).toList();
   }

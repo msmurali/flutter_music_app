@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music/src/interface/widgets/playlist_form.dart';
 
 import '../utils/helpers.dart';
 import 'favourites.dart';
@@ -19,7 +20,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
     ThemeData theme = Theme.of(context);
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(
-        vertical: 20.0,
+        vertical: 24.0,
       ),
       physics: const BouncingScrollPhysics(),
       child: Column(
@@ -29,22 +30,22 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Text(
               'Recently Played',
-              style: theme.textTheme.bodyText2,
+              style: theme.textTheme.bodyText1,
             ),
           ),
           const Padding(
-            padding: EdgeInsets.symmetric(vertical: 20.0),
+            padding: EdgeInsets.symmetric(vertical: 24.0),
             child: Recents(),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Text(
               'Favourites',
-              style: theme.textTheme.bodyText2,
+              style: theme.textTheme.bodyText1,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20.0),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 24.0),
             child: Favourites(),
           ),
           Padding(
@@ -57,21 +58,30 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
               children: [
                 Text(
                   'Playlists',
-                  style: theme.textTheme.bodyText2,
+                  style: theme.textTheme.bodyText1,
                 ),
                 IconButton(
                   icon: const Icon(
                     Icons.add,
-                    size: 20.0,
+                    size: 24.0,
                   ),
-                  onPressed: () => showFormDialog(context),
+                  onPressed: () => showFormDialog(
+                    context: context,
+                    form: PlaylistCreationForm(),
+                  ),
                   splashColor: Colors.white10,
                 ),
               ],
             ),
           ),
-          Playlists(),
-          const SizedBox(height: 90.0),
+          const Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: 20.0,
+              horizontal: 6.0,
+            ),
+            child: Playlists(),
+          ),
+          const SizedBox(height: 70.0),
         ],
       ),
     );

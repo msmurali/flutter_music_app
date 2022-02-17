@@ -101,7 +101,8 @@ class HiveServices {
     return Hive.box(_playlistsKey);
   }
 
-  Future<void> createPlaylist(String name, {Map<int, String>? encodedSongs}) async {
+  Future<void> createPlaylist(String name,
+      {Map<dynamic, dynamic>? encodedSongs}) async {
     Box _playlistsBox = Hive.box(_playlistsKey);
     await _playlistsBox.put(name, encodedSongs ?? <int, String>{});
   }
@@ -113,14 +114,14 @@ class HiveServices {
 
   Future<void> addToPlaylist(String playlistName, int key, String value) async {
     Box _playlistsBox = Hive.box(_playlistsKey);
-    Map<int, String> _playlist = _playlistsBox.get(playlistName);
+    Map<dynamic, dynamic> _playlist = _playlistsBox.get(playlistName);
     _playlist[key] = value;
     await _playlistsBox.put(playlistName, _playlist);
   }
 
   Future<void> rmFromPlaylist(String playlistName, int key) async {
     Box _playlistsBox = Hive.box(_playlistsKey);
-    Map<int, String> _playlist = _playlistsBox.get(playlistName);
+    Map<dynamic, dynamic> _playlist = _playlistsBox.get(playlistName);
     _playlist.remove(key);
     await _playlistsBox.put(playlistName, _playlist);
   }
@@ -128,7 +129,7 @@ class HiveServices {
   Future<void> addAllToPlaylist(
       String playlistName, List<int> keys, List<String> values) async {
     Box _playlistsBox = Hive.box(_playlistsKey);
-    Map<int, String> _playlist = _playlistsBox.get(playlistName);
+    Map<dynamic, dynamic> _playlist = _playlistsBox.get(playlistName);
     for (int indx = 0; indx < keys.length; indx++) {
       _playlist[keys[indx]] = values[indx];
     }

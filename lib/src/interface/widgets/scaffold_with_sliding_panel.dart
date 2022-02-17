@@ -90,7 +90,7 @@ class _AnimatedSheetState extends State<AnimatedSheet> {
                     AnimatedBuilder(
                       animation: scrollController,
                       builder: (BuildContext context, Widget? child) {
-                        if (_dsController.size == 1.0) {
+                        if (_dsController.size > 0.8) {
                           _expanded = true;
                         } else {
                           _expanded = false;

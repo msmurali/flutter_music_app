@@ -41,33 +41,35 @@ class CircularTile extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return SizedBox(
-      width: 135,
+      width: 140,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _buildArtwork(),
-          const SizedBox(
-            height: 4.0,
-          ),
+          const SizedBox(height: 4.0),
           SizedBox(
             width: 100,
             child: Text(
               song.title,
-              style: theme.textTheme.bodyText2!.copyWith(
+              style: theme.textTheme.subtitle1!.copyWith(
                 fontSize: 11.0,
               ),
-              overflow: TextOverflow.clip,
+              overflow: TextOverflow.fade,
               maxLines: 1,
               softWrap: false,
             ),
           ),
           SizedBox(
-            width: 50,
+            width: 60,
             child: Text(
               song.artist ?? 'Unknown',
-              style: theme.textTheme.subtitle2,
-              overflow: TextOverflow.clip,
+              style: theme.textTheme.subtitle2!.copyWith(
+                color: Colors.grey,
+              ),
+              overflow: TextOverflow.ellipsis,
               maxLines: 1,
+              softWrap: false,
             ),
           ),
         ],

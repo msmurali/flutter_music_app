@@ -18,7 +18,7 @@ class _RecentsState extends State<Recents> {
   Widget build(BuildContext context) {
     return BlocBuilder<RecentsBloc, RecentsState>(
       builder: (context, state) {
-        List<SongModel> _recents = state.songs.toList();
+        List<SongModel> _recents = state.songs;
         if (_recents.isEmpty) {
           return const SizedBox(
             height: 300,
@@ -28,19 +28,33 @@ class _RecentsState extends State<Recents> {
           );
         } else {
           return SizedBox(
-            height: 180,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: _recents.length,
-              itemBuilder: (BuildContext context, int index) {
-                return CircularTile(
-                  song: _recents[index],
-                );
-              },
-            ),
+            height: 170,
+            child: RecentsList(recents: _recents),
           );
         }
       },
+    );
+  }
+}
+
+class RecentsList extends StatelessWidget {
+  const RecentsList({
+    Key? key,
+    required this.recents,
+  }) : super(key: key);
+
+  final List<SongModel> recents;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemBuilder: (BuildContext context, int index) => CircularTile(
+        song: recents[index],
+      ),
+      itemCount: recents.length,
+      primary: true,
+      scrollDirection: Axis.horizontal,
+      physics: const BouncingScrollPhysics(),
     );
   }
 }

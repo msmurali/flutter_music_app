@@ -5,9 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/models/playlist.dart';
 import '../../global/constants/constants.dart';
 import '../../global/constants/enums.dart';
+import '../../logic/bloc/theme_mode_bloc/bloc.dart';
 import '../utils/helpers.dart';
 import 'player_screen.dart';
 import '../../logic/bloc/preferences_bloc/bloc.dart';
+import '../../logic/bloc/player_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../data/providers/playlists_provider.dart';
@@ -89,6 +91,15 @@ class SongsScreen extends StatelessWidget {
         (BuildContext context, int index) {
           return Tile(
             entity: data[index],
+            onTap: () async {
+              BlocProvider.of<PlayerBloc>(context).add(
+                ChangeQueueList(
+                  queue: data as List<SongModel>,
+                  index: index,
+                  context: context,
+                ),
+              );
+            },
             onLongPress: (dynamic details) async {
               List<Option> options = _getOptions();
               await showMenuDialog(
@@ -120,6 +131,15 @@ class SongsScreen extends StatelessWidget {
         (BuildContext context, int index) {
           return Tile(
             entity: data[index],
+            onTap: () async {
+              BlocProvider.of<PlayerBloc>(context).add(
+                ChangeQueueList(
+                  queue: data as List<SongModel>,
+                  index: index,
+                  context: context,
+                ),
+              );
+            },
             onLongPress: (dynamic details) async {
               List<Option> options = _getOptions();
 
@@ -143,6 +163,7 @@ class SongsScreen extends StatelessWidget {
 
   Text _getTitle(BuildContext context) {
     late String _title;
+
     if (entity is AlbumModel) {
       _title = entity.album;
     } else if (entity is ArtistModel) {
@@ -153,10 +174,10 @@ class SongsScreen extends StatelessWidget {
 
     return Text(
       _title,
-      style: const TextStyle(
-        fontSize: 12.0,
-        fontFamily: 'Poppins',
-      ),
+      style: Theme.of(context).textTheme.headline6!.copyWith(
+            color: Colors.grey[400],
+          ),
+      textAlign: TextAlign.center,
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
     );
@@ -176,21 +197,28 @@ class SongsScreen extends StatelessWidget {
           child: _getArtwork(),
         ),
         Positioned.fill(
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.transparent,
-                  Theme.of(context).colorScheme.primary,
-                ],
-                stops: const [
-                  0.80,
-                  1.00,
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
+          child: BlocBuilder<ThemeModeBloc, ThemeModeState>(
+            builder: (context, state) {
+              if (state.themeMode == ThemeMode.dark) {
+                return Container(
+                    decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.transparent,
+                      Theme.of(context).colorScheme.primary,
+                    ],
+                    stops: const [
+                      0.80,
+                      1.00,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ));
+              } else {
+                return const SizedBox();
+              }
+            },
           ),
         ),
       ],
@@ -203,15 +231,21 @@ class SongsScreen extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
+            titleTextStyle: Theme.of(context).textTheme.headline6,
+            centerTitle: true,
             stretch: true,
             pinned: true,
             leadingWidth: 56.0,
-            leading: const BackButton(),
+            leading: BackButton(
+              color: Colors.white,
+              backgroundColor: Colors.black.withOpacity(0.05),
+            ),
             flexibleSpace: FlexibleSpaceBar(
               title: _getTitle(context),
               centerTitle: true,
               titlePadding: const EdgeInsets.symmetric(
-                horizontal: 8.0,
+                horizontal: 16.0,
+                vertical: 8.0,
               ),
               stretchModes: const [
                 StretchMode.zoomBackground,

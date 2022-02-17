@@ -23,27 +23,34 @@ class CustomListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return ListTile(
-      visualDensity: const VisualDensity(vertical: 2),
-      leading: artwork,
-      title: Text(
-        title,
-        style: theme.textTheme.bodyText2,
-        maxLines: 1,
-      ),
-      subtitle: Text(
-        subtitle,
-        style: theme.textTheme.subtitle2,
-        maxLines: 1,
-      ),
-      trailing: GestureDetector(
-        onTapDown: onTrailingPressed,
-        child: const Icon(
-          CustomIcons.more,
-          size: 18.0,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2.0),
+      child: ListTile(
+        visualDensity: const VisualDensity(vertical: 2),
+        leading: artwork,
+        title: Text(
+          title,
+          style: theme.textTheme.bodyText2,
+          maxLines: 1,
         ),
+        subtitle: Text(
+          subtitle,
+          style: theme.textTheme.subtitle2,
+          maxLines: 1,
+        ),
+        trailing: GestureDetector(
+          onTapDown: onTrailingPressed,
+          child: const SizedBox(
+            width: 40.0,
+            height: 40.0,
+            child: Icon(
+              CustomIcons.more,
+              size: 18.0,
+            ),
+          ),
+        ),
+        onTap: onTap,
       ),
-      onTap: onTap,
     );
   }
 }

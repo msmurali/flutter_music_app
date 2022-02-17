@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' hide BackButton;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../global/constants/constants.dart';
 import '../../global/constants/enums.dart';
+import '../../logic/bloc/player_bloc/bloc.dart';
 import '../utils/helpers.dart';
 import '../widgets/back_button.dart';
 import 'player_screen.dart';
@@ -54,7 +55,15 @@ class FavouritesScreen extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return Tile(
                     entity: songs[index],
-                    onTap: () {},
+                    onTap: () async {
+                      BlocProvider.of<PlayerBloc>(context).add(
+                        ChangeQueueList(
+                          queue: songs,
+                          index: index,
+                          context: context,
+                        ),
+                      );
+                    },
                     onLongPress: (dynamic details) async {
                       await showMenuDialog(
                           context, details, songs[index], favSongOptions);
@@ -68,7 +77,15 @@ class FavouritesScreen extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return Tile(
                     entity: songs[index],
-                    onTap: () {},
+                    onTap: () async {
+                      BlocProvider.of<PlayerBloc>(context).add(
+                        ChangeQueueList(
+                          queue: songs,
+                          index: index,
+                          context: context,
+                        ),
+                      );
+                    },
                     onLongPress: (dynamic details) async {
                       await showMenuDialog(
                           context, details, songs[index], favSongOptions);

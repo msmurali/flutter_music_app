@@ -3,11 +3,20 @@ import 'package:flutter/material.dart';
 import 'app_bar_button.dart';
 
 class BackButton extends StatelessWidget {
-  const BackButton({Key? key}) : super(key: key);
+  final Color? color;
+  final Color? backgroundColor;
+
+  const BackButton({
+    Key? key,
+    this.color,
+    this.backgroundColor,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBarButton(
+      color: color,
+      backgroundColor: backgroundColor,
       child: const Padding(
         padding: EdgeInsets.only(
           left: 6.0,

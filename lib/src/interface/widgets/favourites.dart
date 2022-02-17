@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../global/constants/index.dart';
 import '../../logic/bloc/favourites_bloc/bloc.dart';
+import '../../logic/bloc/player_bloc/bloc.dart';
 import '../utils/helpers.dart';
 import 'error_indicator.dart';
 import 'tile.dart';
@@ -24,7 +26,15 @@ class Favourites extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               return Tile(
                 entity: _songs[index],
-                onTap: () {},
+                onTap: () async {
+                  BlocProvider.of<PlayerBloc>(context).add(
+                    ChangeQueueList(
+                      queue: _songs as List<SongModel>,
+                      index: index,
+                      context: context,
+                    ),
+                  );
+                },
                 view: View.list,
                 onLongPress: (dynamic details) async {
                   await showMenuDialog(
@@ -45,11 +55,9 @@ class Favourites extends StatelessWidget {
               },
               child: Text(
                 'See More',
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  color: Colors.pinkAccent.shade400,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                      color: Colors.pinkAccent.shade400,
+                    ),
               ),
             ),
           ),

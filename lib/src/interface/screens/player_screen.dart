@@ -5,16 +5,15 @@ import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../logic/bloc/favourites_bloc/bloc.dart';
 import '../utils/custom_icons.dart';
+import '../utils/helpers.dart';
 import '../widgets/circular_artwork.dart';
 import '../widgets/circular_icon_button.dart';
 import '../../logic/bloc/player_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../global/constants/enums.dart';
 import '../../logic/bloc/playback_mode_bloc/bloc.dart';
 import '../../logic/player.dart';
-import '../widgets/toast.dart';
 
 final Player _player = Player.instance;
 final AudioPlayer _audioPlayer = _player.audioPlayer;
@@ -168,13 +167,16 @@ class Info extends StatelessWidget {
           style: Theme.of(context).textTheme.bodyText2!.copyWith(
                 fontWeight: FontWeight.w500,
                 fontSize: 18.0,
+                color: Colors.white,
               ),
         ),
         const SizedBox(height: 6.0),
         Text(
           song.artist ?? 'Unknown Artist',
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyText2,
+          style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                color: Colors.white,
+              ),
         ),
       ],
     );
@@ -189,11 +191,13 @@ class PlayerControlPanel extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IconButton(
+          color: Colors.white,
           icon: const Icon(CustomIcons.add_to_playlist),
           onPressed: () {},
           iconSize: 20.0,
         ),
         IconButton(
+          color: Colors.white,
           icon: const Icon(CustomIcons.play),
           onPressed: () {},
           iconSize: 20.0,
@@ -255,6 +259,7 @@ class _ProgressBarState extends State<ProgressBar> {
         return StreamBuilder<Duration>(
           stream: _audioPlayer.onAudioPositionChanged,
           builder: (context, currentDurationSnapshot) {
+            ThemeData theme = Theme.of(context);
             return Column(
               children: [
                 Slider(
@@ -279,9 +284,15 @@ class _ProgressBarState extends State<ProgressBar> {
                     children: [
                       Text(
                         formatDuration(currentDurationSnapshot.data),
+                        style: theme.textTheme.subtitle2!.copyWith(
+                          color: Colors.white,
+                        ),
                       ),
                       Text(
                         formatDuration(totalDurationSnapshot.data),
+                        style: theme.textTheme.subtitle2!.copyWith(
+                          color: Colors.white,
+                        ),
                       ),
                     ],
                   ),
@@ -316,58 +327,30 @@ class Controls extends StatelessWidget {
   }
 }
 
-class FavouritesButton extends StatefulWidget {
-  const FavouritesButton({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<FavouritesButton> createState() => _FavouritesButtonState();
-}
-
-class _FavouritesButtonState extends State<FavouritesButton> {
-  late FToast _fToast;
-
-  @override
-  void initState() {
-    super.initState();
-    _fToast = FToast();
-  }
+class FavouritesButton extends StatelessWidget {
+  const FavouritesButton({Key? key}) : super(key: key);
 
   void _toastHandler(BuildContext context, FavouritesState state) {
-    _fToast.init(context);
     if (state.action == Action.add && state.status == Status.succeed) {
-      _fToast.showToast(
-        child: const ToastWidget(
-          text: 'Added to favourites',
-        ),
-        fadeDuration: 50,
-        toastDuration: const Duration(milliseconds: 500),
+      showToastMsg(
+        context: context,
+        text: 'Added to favourites',
       );
     } else if (state.action == Action.add && state.status == Status.failed) {
-      _fToast.showToast(
-        child: const ToastWidget(
-          text: 'Already in favourites',
-        ),
-        fadeDuration: 50,
-        toastDuration: const Duration(milliseconds: 500),
+      showToastMsg(
+        context: context,
+        text: 'Already in favourites',
       );
     } else if (state.action == Action.remove &&
         state.status == Status.succeed) {
-      _fToast.showToast(
-        child: const ToastWidget(
-          text: 'Removed from favourites',
-        ),
-        fadeDuration: 50,
-        toastDuration: const Duration(milliseconds: 500),
+      showToastMsg(
+        context: context,
+        text: 'Removed from favourites',
       );
     } else {
-      _fToast.showToast(
-        child: const ToastWidget(
-          text: 'Something went wrong',
-        ),
-        fadeDuration: 50,
-        toastDuration: const Duration(milliseconds: 500),
+      showToastMsg(
+        context: context,
+        text: 'Something went wrong',
       );
     }
   }
@@ -388,6 +371,7 @@ class _FavouritesButtonState extends State<FavouritesButton> {
 
             if (favIds.contains(song.id)) {
               return IconButton(
+                color: Colors.white,
                 onPressed: () {
                   BlocProvider.of<FavouritesBloc>(context).add(
                     MarkAsNotFavourite(song: song),
@@ -397,6 +381,7 @@ class _FavouritesButtonState extends State<FavouritesButton> {
               );
             } else {
               return IconButton(
+                color: Colors.white,
                 onPressed: () {
                   BlocProvider.of<FavouritesBloc>(context).add(
                     MarkAsFavourite(song: song),
@@ -417,11 +402,20 @@ class PlaybackModeButton extends StatelessWidget {
 
   Widget _getPlaybackModeIcon(PlaybackMode playbackMode) {
     if (playbackMode == PlaybackMode.order) {
-      return const Icon(CustomIcons.order);
+      return const Icon(
+        CustomIcons.order,
+        color: Colors.white,
+      );
     } else if (playbackMode == PlaybackMode.shuffle) {
-      return const Icon(CustomIcons.shuffle);
+      return const Icon(
+        CustomIcons.shuffle,
+        color: Colors.white,
+      );
     } else {
-      return const Icon(CustomIcons.loop);
+      return const Icon(
+        CustomIcons.loop,
+        color: Colors.white,
+      );
     }
   }
 
@@ -455,6 +449,7 @@ class PlaybackModeButton extends StatelessWidget {
           },
           icon: _getPlaybackModeIcon(state.playbackMode),
           iconSize: 16,
+          color: Colors.white,
         );
       },
     );
@@ -486,6 +481,7 @@ class PlayNextButton extends StatelessWidget {
     return BlocBuilder<PlayerBloc, PlayerBlocState>(
       builder: (context, state) {
         return CircularIconButton(
+          color: Colors.white,
           backgroundColor: Colors.black12,
           child: const Icon(CustomIcons.next),
           radius: 25.0,
@@ -526,6 +522,7 @@ class PlayPreviousButton extends StatelessWidget {
     return BlocBuilder<PlayerBloc, PlayerBlocState>(
       builder: (context, state) {
         return CircularIconButton(
+          color: Colors.white,
           backgroundColor: Colors.black12,
           child: const Icon(CustomIcons.previous),
           radius: 25.0,
@@ -581,6 +578,7 @@ class PlayPauseButton extends StatelessWidget {
 
             if (snapshot.data == PlayerState.PLAYING) {
               return CircularIconButton(
+                color: Colors.white,
                 backgroundColor: Colors.black12,
                 child: const Icon(CustomIcons.pause),
                 radius: 30.0,
@@ -590,6 +588,7 @@ class PlayPauseButton extends StatelessWidget {
               );
             } else {
               return CircularIconButton(
+                color: Colors.white,
                 backgroundColor: Colors.black12,
                 child: const Align(
                   child: Icon(CustomIcons.play),

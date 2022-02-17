@@ -40,12 +40,12 @@ class _SearchScreenState extends State<SearchScreen> {
     _debounce = Timer(const Duration(milliseconds: 500), () {
       setState(() {
         query = _textEditingController.text;
-        results = buildResults(context);
+        results = buildResults();
       });
     });
   }
 
-  Widget buildResults(BuildContext context) {
+  Widget buildResults() {
     return MusicTab(
       futureData: _songsProvider.searchSongs(query),
       errorIndicator: const ErrorIndicator(

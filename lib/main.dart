@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart' hide Action;
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:music/src/data/models/playlist.dart';
@@ -63,14 +64,20 @@ Future<void> _getPlaylists() async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.black,
+    ),
+  );
+
   await _hiveServices.init();
 
   await _getStorageAccessPermission();
   // print(await _favouritesServices.createFavourites());
   await _favouritesServices.clearFavourites();
   await _getQueueSongs();
-  await _hiveServices.setQueueIndex(0); // TODO:
-  await _playlistServices.clear();
+  // await _hiveServices.setQueueIndex(0); // TODO:
+  // await _playlistServices.clear();
   await _getPlaylists();
   queueIndex = _queueServices.getQueueIndex();
   await _getSongArtwork();

@@ -61,7 +61,9 @@ class GridTile extends StatelessWidget {
                         padding: const EdgeInsets.all(4.0),
                         child: Text(
                           title,
-                          style: theme.textTheme.bodyText2,
+                          style: theme.textTheme.bodyText2!.copyWith(
+                            color: Colors.white,
+                          ),
                           textAlign: TextAlign.center,
                         ),
                       ),
