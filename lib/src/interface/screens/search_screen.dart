@@ -145,7 +145,7 @@ class _SearchFieldState extends State<SearchField> {
             ),
             isDense: true,
             filled: true,
-            fillColor: Colors.white.withOpacity(0.05),
+            fillColor:theme.colorScheme.secondary.withOpacity(0.05),
             border: InputBorder.none,
           ),
         ),

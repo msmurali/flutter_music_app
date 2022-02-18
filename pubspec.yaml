@@ -16,6 +16,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
+  flutter_native_splash: ^2.0.4
   flutter_svg: ^1.0.3
   fluttertoast: ^8.0.8
   hive: ^2.0.5
@@ -23,6 +24,13 @@ dependencies:
   on_audio_query: ^2.5.3+1
   permission_handler: ^8.3.0
   shared_preferences: ^2.0.12
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: asset/images/logo_light.png
+  color_dark: "#121212"
+  image_dark: asset/images/logo_dark.png
+  android: true
 
 dev_dependencies:
   flutter_lints: ^1.0.0

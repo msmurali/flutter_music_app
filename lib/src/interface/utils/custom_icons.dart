@@ -14,9 +14,9 @@ class CustomIcons {
   static const IconData heart = IconData(0xe904, fontFamily: _fontFamily);
   static const IconData loop = IconData(0xe90b, fontFamily: _fontFamily);
   static const IconData mute = IconData(0xe90d, fontFamily: _fontFamily);
-  static const IconData volume_one = IconData(0xe912, fontFamily: _fontFamily);
-  static const IconData volume_two = IconData(0xe913, fontFamily: _fontFamily);
-  static const IconData volume_zero = IconData(0xe914, fontFamily: _fontFamily);
+  static const IconData volume_md = IconData(0xe912, fontFamily: _fontFamily);
+  static const IconData volume_high = IconData(0xe913, fontFamily: _fontFamily);
+  static const IconData volume_low = IconData(0xe914, fontFamily: _fontFamily);
   static const IconData play_next = IconData(0xe90c, fontFamily: _fontFamily);
   static const IconData info = IconData(0xe90f, fontFamily: _fontFamily);
   static const IconData options = IconData(0x1f340, fontFamily: _fontFamily);

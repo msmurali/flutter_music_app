@@ -91,24 +91,6 @@ class Background extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox.expand(
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.black.withOpacity(0.2),
-                  Colors.transparent,
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: const [
-                  0.1,
-                  1.0,
-                ],
-              ),
-            ),
-          ),
-        ),
       ],
     );
   }
@@ -387,7 +369,7 @@ class FavouritesButton extends StatelessWidget {
                     MarkAsFavourite(song: song),
                   );
                 },
-                icon: const Icon(CustomIcons.heart_outline),
+                icon: const Icon(CustomIcons.heart_outline, size: 18.0,),
               );
             }
           },
