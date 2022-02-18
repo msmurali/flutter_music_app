@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'logic/bloc/theme_mode_bloc/bloc.dart';
+
 import 'global/constants/index.dart';
-import 'interface/themes/themes.dart';
 import 'interface/router/app_router.dart';
+import 'interface/themes/themes.dart';
+import 'logic/bloc/theme_mode_bloc/bloc.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({

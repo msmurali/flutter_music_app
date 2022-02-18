@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart' hide BackButton;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music/src/logic/bloc/index.dart';
+
 import '../../global/constants/index.dart';
+import '../../logic/bloc/index.dart';
 import '../../logic/bloc/playlists_bloc/bloc.dart';
 import '../utils/helpers.dart';
 import '../widgets/back_button.dart';
-import '../widgets/tile.dart';
-import 'player_screen.dart';
-
 import '../widgets/error_indicator.dart';
 import '../widgets/mini_player.dart';
 import '../widgets/scaffold_with_sliding_panel.dart';
+import '../widgets/tile.dart';
+import 'player_screen.dart';
 
 class PlaylistsScreen extends StatelessWidget {
   const PlaylistsScreen({Key? key}) : super(key: key);

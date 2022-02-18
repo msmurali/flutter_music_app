@@ -1,22 +1,21 @@
 import 'dart:async';
-import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:on_audio_query/on_audio_query.dart';
+
+import '../../global/constants/enums.dart';
 import '../../logic/bloc/favourites_bloc/bloc.dart';
+import '../../logic/bloc/playback_mode_bloc/bloc.dart';
+import '../../logic/bloc/player_bloc/bloc.dart';
+import '../../logic/player.dart';
 import '../utils/custom_icons.dart';
 import '../utils/helpers.dart';
 import '../widgets/circular_artwork.dart';
 import '../widgets/circular_icon_button.dart';
-import '../../logic/bloc/player_bloc/bloc.dart';
-import 'package:on_audio_query/on_audio_query.dart';
-
-import '../../global/constants/enums.dart';
-import '../../logic/bloc/playback_mode_bloc/bloc.dart';
-import '../../logic/player.dart';
-import '../widgets/volume_slider.dart';
 
 final Player _player = Player.instance;
 final AudioPlayer _audioPlayer = _player.audioPlayer;
@@ -194,7 +193,9 @@ class PlayerControlPanel extends StatelessWidget {
               },
               iconSize: 20.0,
             ),
-            const VolumeButton()
+            VolumeButton(
+              context: context,
+            )
           ],
         ),
       ],
@@ -203,7 +204,8 @@ class PlayerControlPanel extends StatelessWidget {
 }
 
 class VolumeButton extends StatefulWidget {
-  const VolumeButton({Key? key}) : super(key: key);
+  final BuildContext context;
+  const VolumeButton({Key? key, required this.context}) : super(key: key);
 
   @override
   State<VolumeButton> createState() => _VolumeButtonState();
@@ -218,7 +220,7 @@ class _VolumeButtonState extends State<VolumeButton> {
     super.initState();
     _timer = Timer(
       const Duration(seconds: 2),
-      () => Navigator.pop(context),
+      () => Navigator.pop(widget.context),
     );
   }
 

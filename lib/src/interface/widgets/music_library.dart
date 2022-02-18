@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../logic/bloc/preferences_bloc/bloc.dart';
+
 import '../../data/providers/songs_provider.dart';
 import '../../global/constants/constants.dart';
 import '../../global/constants/enums.dart';
+import '../../logic/bloc/preferences_bloc/bloc.dart';
 import '../utils/custom_icons.dart';
 import 'circular_icon_button.dart';
 import 'home_tab.dart';

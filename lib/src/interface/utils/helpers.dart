@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:music/src/interface/widgets/playlists_dialog.dart';
-import 'package:music/src/logic/bloc/playlists_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../data/models/playlist.dart';
@@ -14,7 +12,9 @@ import '../../data/services/favourites_services.dart';
 import '../../global/constants/index.dart';
 import '../../logic/bloc/favourites_bloc/bloc.dart';
 import '../../logic/bloc/player_bloc/bloc.dart';
+import '../../logic/bloc/playlists_bloc/bloc.dart';
 import '../widgets/playlist_form.dart';
+import '../widgets/playlists_dialog.dart';
 import '../widgets/toast.dart';
 
 final FavouritesServices _favouritesServices = FavouritesServices();
@@ -24,6 +24,7 @@ final FToast fToast = FToast();
 
 void showToastMsg({required BuildContext context, required String text}) {
   fToast.init(context);
+  fToast.removeQueuedCustomToasts();
   fToast.showToast(
     child: ToastWidget(
       text: text,

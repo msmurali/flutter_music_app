@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart' hide BackButton;
-import 'package:music/src/data/providers/artwork_provider.dart';
-import 'package:music/src/interface/widgets/back_button.dart';
-import '../widgets/circular_artwork.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
+import '../../data/providers/artwork_provider.dart';
+import '../widgets/back_button.dart';
+import '../widgets/circular_artwork.dart';
 import '../widgets/mini_player.dart';
 import '../widgets/scaffold_with_sliding_panel.dart';
 import 'player_screen.dart';

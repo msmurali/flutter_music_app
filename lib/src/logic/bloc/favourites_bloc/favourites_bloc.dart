@@ -1,9 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:on_audio_query/on_audio_query.dart';
+
 import '../../../data/providers/favourites_provider.dart';
 import '../../../data/services/favourites_services.dart';
 import '../../../global/constants/enums.dart';
 import 'bloc.dart';
-import 'package:on_audio_query/on_audio_query.dart';
 
 class FavouritesBloc extends Bloc<FavouritesEvents, FavouritesState> {
   final FavouritesServices _favouritesServices = FavouritesServices();

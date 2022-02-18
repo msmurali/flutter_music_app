@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:music/src/data/providers/playlists_provider.dart';
-import 'package:music/src/data/providers/songs_provider.dart';
-import 'package:music/src/data/services/playlist_services.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
 import '../../../data/models/playlist.dart';
+import '../../../data/providers/playlists_provider.dart';
+import '../../../data/providers/songs_provider.dart';
+import '../../../data/services/playlist_services.dart';
 import '../../../global/constants/enums.dart';
 import 'bloc.dart';
 

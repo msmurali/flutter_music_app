@@ -1,16 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart' hide BackButton;
-import 'package:music/src/interface/screens/player_screen.dart';
-import 'package:music/src/interface/widgets/error_indicator.dart';
 
 import '../../data/providers/songs_provider.dart';
 import '../utils/custom_icons.dart';
 import '../widgets/back_button.dart';
 import '../widgets/circular_icon_button.dart';
+import '../widgets/error_indicator.dart';
 import '../widgets/mini_player.dart';
 import '../widgets/music_tab.dart';
 import '../widgets/scaffold_with_sliding_panel.dart';
+import 'player_screen.dart';
 
 final TextEditingController _textEditingController = TextEditingController();
 final SongsProvider _songsProvider = SongsProvider();
@@ -145,7 +145,7 @@ class _SearchFieldState extends State<SearchField> {
             ),
             isDense: true,
             filled: true,
-            fillColor:theme.colorScheme.secondary.withOpacity(0.05),
+            fillColor: theme.colorScheme.secondary.withOpacity(0.05),
             border: InputBorder.none,
           ),
         ),

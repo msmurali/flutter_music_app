@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:hive/hive.dart';
-import 'package:music/src/data/services/hive_services.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
+import 'hive_services.dart';
 
 class FavouritesServices {
   final HiveServices _hiveServices = HiveServices();

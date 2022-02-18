@@ -2,18 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart' hide BackButton;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../data/models/playlist.dart';
-import '../../global/constants/constants.dart';
-import '../../global/constants/enums.dart';
-import '../../logic/bloc/theme_mode_bloc/bloc.dart';
-import '../utils/helpers.dart';
-import 'player_screen.dart';
-import '../../logic/bloc/preferences_bloc/bloc.dart';
-import '../../logic/bloc/player_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
+import '../../data/models/playlist.dart';
 import '../../data/providers/playlists_provider.dart';
 import '../../data/providers/songs_provider.dart';
+import '../../global/constants/constants.dart';
+import '../../global/constants/enums.dart';
+import '../../logic/bloc/player_bloc/bloc.dart';
+import '../../logic/bloc/preferences_bloc/bloc.dart';
+import '../../logic/bloc/theme_mode_bloc/bloc.dart';
+import '../utils/helpers.dart';
 import '../widgets/back_button.dart';
 import '../widgets/error_indicator.dart';
 import '../widgets/loading_indicator.dart';
@@ -21,6 +20,7 @@ import '../widgets/mini_player.dart';
 import '../widgets/music_artwork.dart';
 import '../widgets/scaffold_with_sliding_panel.dart';
 import '../widgets/tile.dart';
+import 'player_screen.dart';
 
 class SongsScreen extends StatelessWidget {
   final dynamic entity;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'src/utils/initializer.dart';
 
 Future<void> main() async {

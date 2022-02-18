@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music/src/logic/bloc/playlists_bloc/bloc.dart';
+import '../../logic/bloc/playlists_bloc/bloc.dart';
 import '../../global/constants/index.dart';
 import '../utils/helpers.dart';
 import 'error_indicator.dart';

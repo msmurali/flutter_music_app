@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:on_audio_query/on_audio_query.dart';
+
 import '../../global/constants/index.dart';
 import '../../logic/bloc/player_bloc/bloc.dart';
-import '../utils/helpers.dart';
 import '../../logic/bloc/preferences_bloc/bloc.dart';
-import 'package:on_audio_query/on_audio_query.dart';
+import '../utils/helpers.dart';
 import 'error_indicator.dart';
 import 'loading_indicator.dart';
 import 'tile.dart';

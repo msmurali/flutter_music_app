@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:music/src/interface/widgets/playlist_form.dart';
 
 import '../utils/helpers.dart';
 import 'favourites.dart';
+import 'playlist_form.dart';
 import 'playlists.dart';
 import 'recents.dart';
 

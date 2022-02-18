@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music/src/logic/bloc/recents_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../global/constants/enums.dart';

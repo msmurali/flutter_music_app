@@ -2,7 +2,8 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:music/src/interface/widgets/placeholder_image.dart';
+
+import 'placeholder_image.dart';
 
 class CircularArtwork extends StatelessWidget {
   final Uint8List? imageData;

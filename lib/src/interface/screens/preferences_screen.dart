@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart' hide BackButton;
+
 import '../widgets/back_button.dart';
 import '../widgets/sorting_preferences.dart';
-import '../widgets/view_preferences.dart';
 import '../widgets/theme_preferences.dart';
+import '../widgets/view_preferences.dart';
 
 class PreferencesScreen extends StatelessWidget {
   const PreferencesScreen({Key? key}) : super(key: key);

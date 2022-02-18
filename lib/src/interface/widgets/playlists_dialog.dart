@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music/src/interface/widgets/playlist_form.dart';
-import 'package:music/src/logic/bloc/playlists_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../data/models/playlist.dart';
+import '../../logic/bloc/playlists_bloc/bloc.dart';
 import '../utils/helpers.dart';
+import 'playlist_form.dart';
 
 class PlaylistsDialog extends StatelessWidget {
   final dynamic entity;

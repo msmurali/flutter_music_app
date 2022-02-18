@@ -1,11 +1,11 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:music/src/data/models/playlist.dart';
-import 'package:music/src/interface/widgets/placeholder_image.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
+import '../../data/models/playlist.dart';
 import '../../data/providers/artwork_provider.dart';
+import 'placeholder_image.dart';
 
 class MusicArtwork extends StatelessWidget {
   final dynamic entity;

@@ -5,9 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../app.dart';
-import '../global/constants/index.dart';
-import '../logic/bloc/index.dart';
-
 import '../data/models/playlist.dart';
 import '../data/providers/provider.dart';
 import '../data/services/app_permissions.dart';
@@ -15,6 +12,8 @@ import '../data/services/hive_services.dart';
 import '../data/services/player_services.dart';
 import '../data/services/preferences_services.dart';
 import '../data/services/queue_services.dart';
+import '../global/constants/index.dart';
+import '../logic/bloc/index.dart';
 
 class Initializer {
   static final HiveServices _hiveServices = HiveServices();

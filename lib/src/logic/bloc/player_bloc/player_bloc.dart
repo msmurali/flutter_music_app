@@ -3,9 +3,10 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
-import 'package:music/src/data/providers/artwork_provider.dart';
-import 'package:music/src/data/services/queue_services.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
+import '../../../data/providers/artwork_provider.dart';
+import '../../../data/services/queue_services.dart';
 import '../../player.dart';
 import 'bloc.dart';
 

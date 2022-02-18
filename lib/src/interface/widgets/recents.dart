@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music/src/logic/bloc/recents_bloc/bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
+import '../../logic/bloc/recents_bloc/bloc.dart';
 import 'circular_tile.dart';
 import 'error_indicator.dart';
 

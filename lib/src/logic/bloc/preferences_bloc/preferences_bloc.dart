@@ -1,8 +1,10 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
-import '../../../global/constants/enums.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
 import '../../../data/services/preferences_services.dart';
+import '../../../global/constants/enums.dart';
 import 'bloc.dart';
 
 class PreferencesBloc extends Bloc<PreferencesEvent, PreferencesState> {
