@@ -205,10 +205,10 @@ class SongsScreen extends StatelessWidget {
                   gradient: LinearGradient(
                     colors: [
                       Colors.transparent,
-                      Theme.of(context).colorScheme.primary,
+                      Theme.of(context).colorScheme.primary.withOpacity(0.05),
                     ],
                     stops: const [
-                      0.80,
+                      0.00,
                       1.00,
                     ],
                     begin: Alignment.topCenter,

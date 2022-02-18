@@ -69,9 +69,9 @@ Future<void> showMenuDialog(
     } else if (value == Option.addToFavourites) {
       _markAsFavourite(context, arguments);
     } else if (value == Option.addToPlaylist) {
-      _showPlaylistsDialog(context, arguments);
+      showPlaylistsDialog(context, arguments);
     } else if (value == Option.addAllToPlaylist) {
-      _showPlaylistsDialog(context, arguments);
+      showPlaylistsDialog(context, arguments);
     } else if (value == Option.addAllToFavourites) {
       _addAllToFavourites(context, arguments);
     } else if (value == Option.removeFromFavourites) {
@@ -180,7 +180,7 @@ void _removeFromPlaylist(BuildContext context, Object? arguments) {
   );
 }
 
-Future<void> _showPlaylistsDialog(
+Future<void> showPlaylistsDialog(
   BuildContext context,
   dynamic entity,
 ) async {

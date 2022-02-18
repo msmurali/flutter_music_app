@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:audioplayers/audioplayers.dart';
@@ -14,6 +16,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 import '../../global/constants/enums.dart';
 import '../../logic/bloc/playback_mode_bloc/bloc.dart';
 import '../../logic/player.dart';
+import '../widgets/volume_slider.dart';
 
 final Player _player = Player.instance;
 final AudioPlayer _audioPlayer = _player.audioPlayer;
@@ -168,34 +171,113 @@ class Info extends StatelessWidget {
 class PlayerControlPanel extends StatelessWidget {
   const PlayerControlPanel({Key? key}) : super(key: key);
 
-  _buildBottomPanel() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          color: Colors.white,
-          icon: const Icon(CustomIcons.add_to_playlist),
-          onPressed: () {},
-          iconSize: 20.0,
-        ),
-        IconButton(
-          color: Colors.white,
-          icon: const Icon(CustomIcons.play),
-          onPressed: () {},
-          iconSize: 20.0,
-        ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         const ProgressBar(),
         const Controls(),
-        _buildBottomPanel(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+              color: Colors.white,
+              icon: const Icon(CustomIcons.add_to_playlist),
+              onPressed: () {
+                PlayerBlocState _bloc =
+                    BlocProvider.of<PlayerBloc>(context).state;
+                SongModel _song = _bloc.queue[_bloc.nowPlaying];
+                showPlaylistsDialog(
+                  context,
+                  _song,
+                );
+              },
+              iconSize: 20.0,
+            ),
+            const VolumeButton()
+          ],
+        ),
       ],
+    );
+  }
+}
+
+class VolumeButton extends StatefulWidget {
+  const VolumeButton({Key? key}) : super(key: key);
+
+  @override
+  State<VolumeButton> createState() => _VolumeButtonState();
+}
+
+class _VolumeButtonState extends State<VolumeButton> {
+  double _val = 0.0;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer(
+      const Duration(seconds: 2),
+      () => Navigator.pop(context),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      color: Colors.white,
+      icon: const Icon(CustomIcons.volume_low),
+      onPressed: () {
+        showDialog(
+          context: context,
+          barrierColor: Colors.transparent,
+          builder: (BuildContext context) {
+            return RotatedBox(
+              quarterTurns: 3,
+              child: SimpleDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100.0),
+                ),
+                alignment: Alignment.bottomCenter,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 8.0,
+                  vertical: 16.0,
+                ),
+                children: [
+                  Slider(
+                    value: _val,
+                    onChanged: (double val) {
+                      setState(() => _val = val);
+                      if (_timer != null) {
+                        _timer!.cancel();
+                      }
+                    },
+                    thumbColor: Colors.pinkAccent.shade400,
+                    activeColor: Colors.pinkAccent.shade100,
+                    inactiveColor: Colors.grey[300],
+                    onChangeEnd: (double val) {
+                      setState(() {
+                        _timer = Timer(
+                          const Duration(
+                            seconds: 1,
+                          ),
+                          () {
+                            if (_timer != null && _timer!.isActive) {
+                              Navigator.pop(context);
+                            }
+                          },
+                        );
+                      });
+                    },
+                  ),
+                ],
+                backgroundColor: Colors.white,
+              ),
+            );
+          },
+        ).then((value) => _timer!.cancel());
+      },
+      iconSize: 20.0,
     );
   }
 }
@@ -369,7 +451,10 @@ class FavouritesButton extends StatelessWidget {
                     MarkAsFavourite(song: song),
                   );
                 },
-                icon: const Icon(CustomIcons.heart_outline, size: 18.0,),
+                icon: const Icon(
+                  CustomIcons.heart_outline,
+                  size: 18.0,
+                ),
               );
             }
           },
