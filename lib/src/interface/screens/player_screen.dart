@@ -45,6 +45,12 @@ class Background extends StatelessWidget {
     return Stack(
       children: [
         BlocBuilder<PlayerBloc, PlayerBlocState>(
+          buildWhen: (previous, current) {
+            SongModel prevSong = previous.queue[previous.nowPlaying];
+            SongModel currSong = current.queue[current.nowPlaying];
+
+            return prevSong.id != currSong.id;
+          },
           builder: (BuildContext context, PlayerBlocState state) {
             if (state.artworkData == null) {
               return SizedBox.expand(
@@ -193,9 +199,7 @@ class PlayerControlPanel extends StatelessWidget {
               },
               iconSize: 20.0,
             ),
-            VolumeButton(
-              context: context,
-            )
+            const VolumeButton()
           ],
         ),
       ],
@@ -203,32 +207,26 @@ class PlayerControlPanel extends StatelessWidget {
   }
 }
 
-class VolumeButton extends StatefulWidget {
-  final BuildContext context;
-  const VolumeButton({Key? key, required this.context}) : super(key: key);
-
-  @override
-  State<VolumeButton> createState() => _VolumeButtonState();
-}
-
-class _VolumeButtonState extends State<VolumeButton> {
-  double _val = 0.0;
-  Timer? _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    _timer = Timer(
-      const Duration(seconds: 2),
-      () => Navigator.pop(widget.context),
-    );
-  }
+class VolumeButton extends StatelessWidget {
+  const VolumeButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
       color: Colors.white,
-      icon: const Icon(CustomIcons.volume_low),
+      icon: BlocBuilder<PlayerBloc, PlayerBlocState>(
+        builder: (context, state) {
+          if (state.volume == 0.0) {
+            return const Icon(CustomIcons.mute);
+          } else if (state.volume <= 0.2) {
+            return const Icon(CustomIcons.volume_low);
+          } else if (state.volume <= 0.6) {
+            return const Icon(CustomIcons.volume_md);
+          } else {
+            return const Icon(CustomIcons.volume_high);
+          }
+        },
+      ),
       onPressed: () {
         showDialog(
           context: context,
@@ -246,40 +244,57 @@ class _VolumeButtonState extends State<VolumeButton> {
                   vertical: 16.0,
                 ),
                 children: [
-                  Slider(
-                    value: _val,
-                    onChanged: (double val) {
-                      setState(() => _val = val);
-                      if (_timer != null) {
-                        _timer!.cancel();
-                      }
-                    },
-                    thumbColor: Colors.pinkAccent.shade400,
-                    activeColor: Colors.pinkAccent.shade100,
-                    inactiveColor: Colors.grey[300],
-                    onChangeEnd: (double val) {
-                      setState(() {
-                        _timer = Timer(
-                          const Duration(
-                            seconds: 1,
-                          ),
-                          () {
-                            if (_timer != null && _timer!.isActive) {
-                              Navigator.pop(context);
-                            }
-                          },
-                        );
-                      });
-                    },
+                  VolumeSlider(
+                    context: context,
                   ),
                 ],
                 backgroundColor: Colors.white,
               ),
             );
           },
-        ).then((value) => _timer!.cancel());
+        );
       },
       iconSize: 20.0,
+    );
+  }
+}
+
+class VolumeSlider extends StatefulWidget {
+  final BuildContext context;
+  const VolumeSlider({Key? key, required this.context}) : super(key: key);
+
+  @override
+  State<VolumeSlider> createState() => _VolumeSliderState();
+}
+
+class _VolumeSliderState extends State<VolumeSlider> {
+  late double _val;
+
+  @override
+  void initState() {
+    super.initState();
+    _val = BlocProvider.of<PlayerBloc>(widget.context).state.volume;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<PlayerBloc, PlayerBlocState>(
+      builder: (context, state) {
+        return Slider(
+          value: _val,
+          onChanged: (double val) {
+            setState(() => _val = val);
+          },
+          thumbColor: Colors.pinkAccent.shade400,
+          activeColor: Colors.pinkAccent.shade100,
+          inactiveColor: Colors.grey[300],
+          onChangeEnd: (double val) {
+            BlocProvider.of<PlayerBloc>(context).add(
+              SetVolume(volume: val),
+            );
+          },
+        );
+      },
     );
   }
 }

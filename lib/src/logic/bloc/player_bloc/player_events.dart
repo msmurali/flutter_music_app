@@ -37,3 +37,8 @@ class ChangeQueueList extends PlayerEvents {
   const ChangeQueueList(
       {required this.queue, required this.index, required this.context});
 }
+
+class SetVolume extends PlayerEvents {
+  final double volume;
+  const SetVolume({required this.volume});
+}

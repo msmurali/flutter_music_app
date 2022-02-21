@@ -11,15 +11,13 @@ class RecentsProvider {
   List<SongModel> getRecents() {
     Box _recentsBox = _hiveServices.getRecentsBox();
 
-    List<SongModel> _recents = _recentsBox.values.map((str) {
-      return SongModel(jsonDecode(str));
-    }).toList();
+    List<Map<dynamic, dynamic>> _values = _recentsBox.values
+        .map((str) => jsonDecode(str) as Map<dynamic, dynamic>)
+        .toList();
 
-    return _recents.reversed.toList();
-  }
+    _values.sort((a, b) =>
+        DateTime.parse(a['time']).compareTo(DateTime.parse(b['time'])) * -1);
 
-  String getFromRecents(int key) {
-    Box _recentsBox = _hiveServices.getRecentsBox();
-    return _recentsBox.get(key);
+    return _values.map((elem) => SongModel(elem['song'])).toList();
   }
 }

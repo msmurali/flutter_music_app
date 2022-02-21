@@ -14,6 +14,7 @@ import '../data/services/preferences_services.dart';
 import '../data/services/queue_services.dart';
 import '../global/constants/index.dart';
 import '../logic/bloc/index.dart';
+import '../logic/player.dart';
 
 class Initializer {
   static final HiveServices _hiveServices = HiveServices();
@@ -36,6 +37,7 @@ class Initializer {
     await _initQueue();
     await _initPlaylists();
     await _initArtwork();
+    await _initAudioPlayer();
 
     return MultiBlocProvider(
       providers: [
@@ -82,6 +84,7 @@ class Initializer {
               queue: _queueSongs,
               nowPlaying: _queueServices.getQueueIndex(),
               artworkData: _initialArtworkData,
+              volume: 0.4,
             ),
           ),
         ),
@@ -122,5 +125,9 @@ class Initializer {
 
   static Future<void> _initPlaylists() async {
     _playlists = await _playlistsProvider.getPlaylists();
+  }
+
+  static Future<void> _initAudioPlayer() async {
+    await Player.instance.audioPlayer.setVolume(0.4);
   }
 }

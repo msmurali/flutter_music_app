@@ -54,9 +54,13 @@ class MusicList extends StatelessWidget {
   Widget _buildList(BuildContext context, List<dynamic> data) {
     return ListView.builder(
       physics: const BouncingScrollPhysics(),
-      itemCount: data.length,
+      itemCount: data.length + 1,
       itemBuilder: (BuildContext context, int index) {
-        return _buildTile(context, data[index], index);
+        if (index < data.length) {
+          return _buildTile(context, data[index], index);
+        } else {
+          return const SizedBox(height: 80.0);
+        }
       },
     );
   }
@@ -73,14 +77,18 @@ class MusicList extends StatelessWidget {
               BlocProvider.of<PreferencesBloc>(context).state.gridSize;
           return GridView.builder(
             physics: const BouncingScrollPhysics(),
-            itemCount: data.length,
+            itemCount: data.length + 1,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: _gridSize,
               mainAxisSpacing: 8.0,
               crossAxisSpacing: 8.0,
             ),
             itemBuilder: (BuildContext context, int index) {
-              return _buildTile(context, data[index], index);
+              if (index < data.length) {
+                return _buildTile(context, data[index], index);
+              } else {
+                return const SizedBox(height: 80.0);
+              }
             },
           );
         },

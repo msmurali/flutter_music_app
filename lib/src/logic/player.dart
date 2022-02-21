@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
+import 'bloc/player_bloc/bloc.dart';
 import 'bloc/recents_bloc/bloc.dart';
 
 class Player {
@@ -18,7 +19,7 @@ class Player {
     await audioPlayer.play(
       filePath,
       isLocal: true,
-      volume: 0.4, // TODO:
+      volume: BlocProvider.of<PlayerBloc>(context).state.volume,
     );
 
     RecentsBloc _recentsBloc = BlocProvider.of<RecentsBloc>(context);

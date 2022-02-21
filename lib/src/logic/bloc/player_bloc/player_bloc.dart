@@ -22,6 +22,7 @@ class PlayerBloc extends Bloc<PlayerEvents, PlayerBlocState> {
     on<PlayRandomSong>(_onPlayRandomSongEvent);
     on<AddSongNextToNowPlaying>(_onAddSongNextToNowPlaying);
     on<ChangeQueueList>(_onChangeQueueList);
+    on<SetVolume>(_onSetVolume);
   }
 
   Future<void> _onPlaySongAgain(
@@ -52,6 +53,7 @@ class PlayerBloc extends Bloc<PlayerEvents, PlayerBlocState> {
       queue: state.queue,
       nowPlaying: _newIndex,
       artworkData: _newArtworkData,
+      volume: state.volume,
     );
 
     await _player.playLocalFile(
@@ -78,6 +80,7 @@ class PlayerBloc extends Bloc<PlayerEvents, PlayerBlocState> {
       queue: state.queue,
       nowPlaying: _newIndex,
       artworkData: _newArtworkData,
+      volume: state.volume,
     );
 
     await _player.playLocalFile(
@@ -107,6 +110,7 @@ class PlayerBloc extends Bloc<PlayerEvents, PlayerBlocState> {
       queue: state.queue,
       nowPlaying: _newIndex,
       artworkData: _newArtworkData,
+      volume: state.volume,
     );
 
     await _player.playLocalFile(
@@ -131,6 +135,7 @@ class PlayerBloc extends Bloc<PlayerEvents, PlayerBlocState> {
       queue: _newQueue,
       nowPlaying: state.nowPlaying,
       artworkData: state.artworkData,
+      volume: state.volume,
     );
 
     emitter.call(_newState);
@@ -153,6 +158,7 @@ class PlayerBloc extends Bloc<PlayerEvents, PlayerBlocState> {
       queue: _newQueue,
       nowPlaying: _newIndex,
       artworkData: _newArtwork,
+      volume: state.volume,
     );
 
     await _player.playLocalFile(
@@ -164,5 +170,21 @@ class PlayerBloc extends Bloc<PlayerEvents, PlayerBlocState> {
 
     await _queueServices.setQueueIndex(_newIndex);
     await _queueServices.setQueue(_newQueue);
+  }
+
+  Future<void> _onSetVolume(
+    SetVolume event,
+    Emitter<PlayerBlocState> emitter,
+  ) async {
+    PlayerBlocState _newState = PlayerBlocState(
+      queue: state.queue,
+      nowPlaying: state.nowPlaying,
+      artworkData: state.artworkData,
+      volume: event.volume,
+    );
+
+    await _player.audioPlayer.setVolume(event.volume);
+
+    emitter.call(_newState);
   }
 }

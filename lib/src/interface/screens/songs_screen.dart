@@ -89,33 +89,37 @@ class SongsScreen extends StatelessWidget {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
-          return Tile(
-            entity: data[index],
-            onTap: () async {
-              BlocProvider.of<PlayerBloc>(context).add(
-                ChangeQueueList(
-                  queue: data as List<SongModel>,
-                  index: index,
-                  context: context,
-                ),
-              );
-            },
-            onLongPress: (dynamic details) async {
-              List<Option> options = _getOptions();
-              await showMenuDialog(
-                  context,
-                  details,
-                  entity is Playlist
-                      ? {
-                          'playlistName': entity.name,
-                          'song': data[index],
-                        }
-                      : data[index],
-                  options);
-            },
-          );
+          if (index < data.length) {
+            return Tile(
+              entity: data[index],
+              onTap: () async {
+                BlocProvider.of<PlayerBloc>(context).add(
+                  ChangeQueueList(
+                    queue: data as List<SongModel>,
+                    index: index,
+                    context: context,
+                  ),
+                );
+              },
+              onLongPress: (dynamic details) async {
+                List<Option> options = _getOptions();
+                await showMenuDialog(
+                    context,
+                    details,
+                    entity is Playlist
+                        ? {
+                            'playlistName': entity.name,
+                            'song': data[index],
+                          }
+                        : data[index],
+                    options);
+              },
+            );
+          } else {
+            return const SizedBox(height: 90.0);
+          }
         },
-        childCount: data.length,
+        childCount: data.length + 1,
       ),
     );
   }
@@ -129,34 +133,38 @@ class SongsScreen extends StatelessWidget {
       ),
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
-          return Tile(
-            entity: data[index],
-            onTap: () async {
-              BlocProvider.of<PlayerBloc>(context).add(
-                ChangeQueueList(
-                  queue: data as List<SongModel>,
-                  index: index,
-                  context: context,
-                ),
-              );
-            },
-            onLongPress: (dynamic details) async {
-              List<Option> options = _getOptions();
+          if (index < data.length) {
+            return Tile(
+              entity: data[index],
+              onTap: () async {
+                BlocProvider.of<PlayerBloc>(context).add(
+                  ChangeQueueList(
+                    queue: data as List<SongModel>,
+                    index: index,
+                    context: context,
+                  ),
+                );
+              },
+              onLongPress: (dynamic details) async {
+                List<Option> options = _getOptions();
 
-              await showMenuDialog(
-                  context,
-                  details,
-                  entity is Playlist
-                      ? {
-                          'playlistName': entity.name,
-                          'song': data[index],
-                        }
-                      : data[index],
-                  options);
-            },
-          );
+                await showMenuDialog(
+                    context,
+                    details,
+                    entity is Playlist
+                        ? {
+                            'playlistName': entity.name,
+                            'song': data[index],
+                          }
+                        : data[index],
+                    options);
+              },
+            );
+          } else {
+            return const SizedBox(height: 90.0);
+          }
         },
-        childCount: data.length,
+        childCount: data.length + 1,
       ),
     );
   }

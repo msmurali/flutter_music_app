@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../global/constants/index.dart';
@@ -38,14 +40,29 @@ class HiveServices {
     return Hive.box(_recentsKey);
   }
 
-  Future<void> addToRecentsBox(String str) async {
-    await Hive.box(_recentsKey).add(str);
+  Future<void> addToRecentsBox(int key, String str) async {
+    await Hive.box(_recentsKey).put(key, str);
   }
 
   Future<void> rmOldestFromRecentsBox() async {
     Box _recentsBox = Hive.box(_recentsKey);
-    int _key = _recentsBox.keyAt(0);
-    await _recentsBox.delete(_key);
+    Map<dynamic, dynamic> _recentsMap = _recentsBox.toMap();
+
+    List<dynamic> _keys = _recentsMap.keys.map((key) => key as int).toList();
+    List<dynamic> _dates = _recentsMap.values
+        .map((val) => DateTime.parse(jsonDecode(val)['time']))
+        .toList();
+
+    int _id = _keys.first;
+    DateTime _oldestDate = _dates.first;
+
+    for (int indx = 1; indx < _recentsMap.length; indx++) {
+      if (_oldestDate.isAfter(_dates[indx])) {
+        _oldestDate = _dates[indx];
+        _id = _keys[indx];
+      }
+    }
+    await _recentsBox.delete(_id);
   }
 
   Future<void> rmFromRecentsBox(int key) async {
@@ -53,8 +70,8 @@ class HiveServices {
     await _recentsBox.delete(key);
   }
 
-  Future<int> clearRecentsBox() async {
-    return await Hive.box(_recentsKey).clear();
+  Future<void> clearRecentsBox() async {
+    await Hive.box(_recentsKey).clear();
   }
 
   /* Favourites */

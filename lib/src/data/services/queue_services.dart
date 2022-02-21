@@ -14,7 +14,9 @@ class QueueServices {
     return _hiveServices.setQueue(_songsMapStringList);
   }
 
-  Future<void> setQueueIndex(int index) async {}
+  Future<void> setQueueIndex(int index) async {
+    await _hiveServices.setQueueIndex(index);
+  }
 
   int getQueueIndex() {
     return _hiveServices.getQueueIndex() ?? 0;

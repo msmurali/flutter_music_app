@@ -51,46 +51,56 @@ class FavouritesScreen extends StatelessWidget {
                   crossAxisSpacing: 6.0,
                   mainAxisSpacing: 6.0,
                 ),
-                itemCount: songs.length,
+                physics: const BouncingScrollPhysics(),
+                itemCount: songs.length + 1,
                 itemBuilder: (BuildContext context, int index) {
-                  return Tile(
-                    entity: songs[index],
-                    onTap: () async {
-                      BlocProvider.of<PlayerBloc>(context).add(
-                        ChangeQueueList(
-                          queue: songs,
-                          index: index,
-                          context: context,
-                        ),
-                      );
-                    },
-                    onLongPress: (dynamic details) async {
-                      await showMenuDialog(
-                          context, details, songs[index], favSongOptions);
-                    },
-                  );
+                  if (index < songs.length) {
+                    return Tile(
+                      entity: songs[index],
+                      onTap: () async {
+                        BlocProvider.of<PlayerBloc>(context).add(
+                          ChangeQueueList(
+                            queue: songs,
+                            index: index,
+                            context: context,
+                          ),
+                        );
+                      },
+                      onLongPress: (dynamic details) async {
+                        await showMenuDialog(
+                            context, details, songs[index], favSongOptions);
+                      },
+                    );
+                  } else {
+                    return const SizedBox(height: 80.0);
+                  }
                 },
               );
             } else {
               return ListView.builder(
-                itemCount: songs.length,
+                physics: const BouncingScrollPhysics(),
+                itemCount: songs.length + 1,
                 itemBuilder: (BuildContext context, int index) {
-                  return Tile(
-                    entity: songs[index],
-                    onTap: () async {
-                      BlocProvider.of<PlayerBloc>(context).add(
-                        ChangeQueueList(
-                          queue: songs,
-                          index: index,
-                          context: context,
-                        ),
-                      );
-                    },
-                    onLongPress: (dynamic details) async {
-                      await showMenuDialog(
-                          context, details, songs[index], favSongOptions);
-                    },
-                  );
+                  if (index < songs.length) {
+                    return Tile(
+                      entity: songs[index],
+                      onTap: () async {
+                        BlocProvider.of<PlayerBloc>(context).add(
+                          ChangeQueueList(
+                            queue: songs,
+                            index: index,
+                            context: context,
+                          ),
+                        );
+                      },
+                      onLongPress: (dynamic details) async {
+                        await showMenuDialog(
+                            context, details, songs[index], favSongOptions);
+                      },
+                    );
+                  } else {
+                    return const SizedBox(height: 90.0);
+                  }
                 },
               );
             }

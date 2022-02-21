@@ -51,7 +51,7 @@ class PlaylistsScreen extends StatelessWidget {
                   crossAxisSpacing: 6.0,
                   mainAxisSpacing: 6.0,
                 ),
-                itemCount: playlistsState.playlists.length,
+                itemCount: playlistsState.playlists.length + 1,
                 itemBuilder: (BuildContext context, int index) {
                   dynamic entity = playlistsState.playlists[index];
                   return Tile(
@@ -69,7 +69,7 @@ class PlaylistsScreen extends StatelessWidget {
             } else {
               return ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: playlistsState.playlists.length,
+                itemCount: playlistsState.playlists.length + 1,
                 itemBuilder: (BuildContext context, int index) {
                   dynamic entity = playlistsState.playlists[index];
                   return Tile(

@@ -20,6 +20,17 @@ class PreferencesScreen extends StatelessWidget {
     );
   }
 
+  Widget _getDivider() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 24.0),
+      child: Divider(
+        height: 10.0,
+        color: Colors.grey[300],
+        thickness: 0.1,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -30,10 +41,12 @@ class PreferencesScreen extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                ThemePreferences(),
-                ViewPreferences(),
-                SortingPreferences(),
+              children: [
+                const ThemePreferences(),
+                _getDivider(),
+                const ViewPreferences(),
+                _getDivider(),
+                const SortingPreferences(),
               ],
             ),
           ),
