@@ -37,6 +37,7 @@
 
 #### **Project Structure**
 
+<pre>
 lib:
 │ generated_plugin_registrant.dart
 │ main.dart
@@ -155,3 +156,4 @@ lib:
 │ theme_mode_state.dart
 └───utils
 initializer.dart
+</pre>
