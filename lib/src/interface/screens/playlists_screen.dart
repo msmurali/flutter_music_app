@@ -2,8 +2,8 @@ import 'package:flutter/material.dart' hide BackButton;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../global/constants/index.dart';
-import '../../logic/bloc/index.dart';
 import '../../logic/bloc/playlists_bloc/bloc.dart';
+import '../../logic/bloc/preferences_bloc/bloc.dart';
 import '../utils/helpers.dart';
 import '../widgets/back_button.dart';
 import '../widgets/error_indicator.dart';
@@ -53,17 +53,21 @@ class PlaylistsScreen extends StatelessWidget {
                 ),
                 itemCount: playlistsState.playlists.length + 1,
                 itemBuilder: (BuildContext context, int index) {
-                  dynamic entity = playlistsState.playlists[index];
-                  return Tile(
-                    entity: entity,
-                    onTap: () {
-                      _navigateToSongsScreen(context, entity);
-                    },
-                    onLongPress: (dynamic details) async {
-                      await showMenuDialog(
-                          context, details, entity, playlistOptions);
-                    },
-                  );
+                  if (index < playlistsState.playlists.length) {
+                    dynamic entity = playlistsState.playlists[index];
+                    return Tile(
+                      entity: entity,
+                      onTap: () {
+                        _navigateToSongsScreen(context, entity);
+                      },
+                      onLongPress: (dynamic details) async {
+                        await showMenuDialog(
+                            context, details, entity, playlistOptions);
+                      },
+                    );
+                  } else {
+                    return const SizedBox(height: 70.0);
+                  }
                 },
               );
             } else {
@@ -71,17 +75,21 @@ class PlaylistsScreen extends StatelessWidget {
                 physics: const BouncingScrollPhysics(),
                 itemCount: playlistsState.playlists.length + 1,
                 itemBuilder: (BuildContext context, int index) {
-                  dynamic entity = playlistsState.playlists[index];
-                  return Tile(
-                    entity: entity,
-                    onTap: () {
-                      _navigateToSongsScreen(context, entity);
-                    },
-                    onLongPress: (dynamic details) async {
-                      await showMenuDialog(
-                          context, details, entity, playlistOptions);
-                    },
-                  );
+                  if (index < playlistsState.playlists.length) {
+                    dynamic entity = playlistsState.playlists[index];
+                    return Tile(
+                      entity: entity,
+                      onTap: () {
+                        _navigateToSongsScreen(context, entity);
+                      },
+                      onLongPress: (dynamic details) async {
+                        await showMenuDialog(
+                            context, details, entity, playlistOptions);
+                      },
+                    );
+                  } else {
+                    return const SizedBox(height: 70.0);
+                  }
                 },
               );
             }
